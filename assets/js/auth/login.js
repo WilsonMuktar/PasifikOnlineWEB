@@ -24,6 +24,7 @@ async function login_authenticate(username, password) {
         password: password,
         grant_type: "password"
     };
+    const https = require('https');
     const agent = new https.Agent({
         rejectUnauthorized: false,
     });
