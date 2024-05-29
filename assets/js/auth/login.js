@@ -1,4 +1,4 @@
-const envHost = "pasifikonline.alwaysdata.net" //http://localhost:8080"
+const envHost = "http://pasifikonline.alwaysdata.net" //http://localhost:8080"
 const token_auth_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const token_validate_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const web_client_id =  "jRqOOEBeGle1L4D31cCXai1h"
