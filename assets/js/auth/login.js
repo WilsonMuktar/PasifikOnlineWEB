@@ -1,8 +1,8 @@
-const envHost = "https://pasifikonline.alwaysdata.net"
+const envHost = "http://localhost:8080"
 const token_auth_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const token_validate_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const web_client_id =  "jRqOOEBeGle1L4D31cCXai1h"
-const web_client_secret = "dxWIpr8qgLq2Udu3dTKRnTYUV4hqwjtX"
+const web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
 
 const login_page_url= "pages/sign-in.html"
 const main_page_url = "index.html"
