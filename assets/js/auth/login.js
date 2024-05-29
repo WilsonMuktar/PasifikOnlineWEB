@@ -2,7 +2,7 @@ const envHost = "https://pasifikonline.alwaysdata.net"
 const token_auth_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const token_validate_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const web_client_id =  "jRqOOEBeGle1L4D31cCXai1h"
-const web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
+const web_client_secret = "dxWIpr8qgLq2Udu3dTKRnTYUV4hqwjtX"
 
 const login_page_url= "pages/sign-in.html"
 const main_page_url = "index.html"
@@ -124,16 +124,16 @@ function validateToken() {
         });
 }
 
-// var origin = window.location.href;
-// if (!origin.includes("sign-in") && !origin.includes("sign-up")) {
-//     // validate
-//     isValid = validateToken()
-//     if (isValid instanceof Error) {
-//         console.log(isValid.message)
-//         alert("Token Expired! Please re-login");
-//         redirectPage(login_page_url)
-//     }
-// }
+var origin = window.location.href;
+if (!origin.includes("sign-in") && !origin.includes("sign-up")) {
+    // validate
+    isValid = validateToken()
+    if (isValid instanceof Error) {
+        console.log(isValid.message)
+        alert("Token Expired! Please re-login");
+        redirectPage(login_page_url)
+    }
+}
 
 loginBtn = document.getElementById("login_btn");
 if (loginBtn){
