@@ -1,6 +1,3 @@
-#!/usr/bin/env -S node --no-warnings
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
-
 const envHost = "https://pasifikonline.alwaysdata.net"
 const token_auth_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const token_validate_url = envHost+"/keyauth/v1/oauth2/tokens/"
