@@ -24,13 +24,16 @@ async function login_authenticate(username, password) {
         password: password,
         grant_type: "password"
     };
-
+    const agent = new https.Agent({
+        rejectUnauthorized: false,
+    });
     await fetch(token_auth_url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(credentials)
+        body: JSON.stringify(credentials),
+        agent
     })
         .then(response => {
             if (!response.ok) {
