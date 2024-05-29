@@ -1,4 +1,4 @@
-const envHost = "http://services-pasifikonline.alwaysdata.net:8308"
+const envHost = "http://pasifikonline.alwaysdata.net"
 const token_auth_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const token_validate_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const web_client_id =  "ECo4LyNiJVOGxOQwUVaiv8B1"
