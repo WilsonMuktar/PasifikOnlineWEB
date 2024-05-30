@@ -1,6 +1,7 @@
-const envHost = "https://pasifikonline.alwaysdata.net" //http://localhost:8080"
+const envHost = "http://localhost:8080" // "https://pasifikonline.alwaysdata.net"
 const token_auth_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const token_validate_url = envHost+"/keyauth/v1/oauth2/tokens/"
+const register_url = envHost+"/keyauth/v1/members/"
 const web_client_id =  "jRqOOEBeGle1L4D31cCXai1h"
 const web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
 
@@ -33,7 +34,7 @@ async function login_authenticate(username, password) {
     })
         .then(response => {
             if (!response.ok) {
-                return new Error('Authentication failed');
+                return alert('Authentication failed:'+response.json());
             }
             return response.json();
         })
@@ -51,7 +52,8 @@ async function login_authenticate(username, password) {
 }
 
 // Function to make revoke token requests
-function logout() {
+function logout(e) {
+    e.preventDefault()
     const token = localStorage.getItem('authToken');
     const userCredential = localStorage.getItem('authCredential');
 
@@ -145,8 +147,51 @@ if (loginBtn){
 
 logoutBtn = document.getElementById("logout_btn");
 if (logoutBtn) {
-    logoutBtn.addEventListener('click', function () {
-        logout()
+    logoutBtn.addEventListener('click', function (e) {
+        logout(e)
+    });
+}
+
+// Register new user
+function signup() {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        alert("token not valid")
+        return new Error('Token not found in local storage');
+    }
+
+    // get access_token from token data
+    accessToken = token
+    const payload = {
+        account: document.getElementById("signup_username").value,
+        password : document.getElementById("signup_password").value,
+        department_id: document.getElementById("signup_department").value,
+        email: document.getElementById("signup_email").value
+    };
+    fetch(register_url, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                return alert('Request failed: '+response.json());
+            }
+            alert("successfully registered!")
+            redirectPage(main_page_url)
+        })
+        .catch(error => {
+            return alert('Request failed: '+response.json());
+        });
+}
+
+signupBtn = document.getElementById("signup_btn");
+if (signupBtn) {
+    signupBtn.addEventListener('click', function () {
+        signup()
     });
 }
 
