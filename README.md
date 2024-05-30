@@ -1,9 +1,10 @@
-<img width="1728" alt="image" src="https://github.com/WilsonMuktar/PasifikOnlineWeb/assets/13670967/c08c5527-95ce-4def-9b68-b0d3be6381cf">
-
+![PasifikOnlineLogo](./assets/img/pasifikonline1.png)
 # PasifikOnlineWeb
 Pasifik Online is a Business Management System based on fish vessel Operations based in Sibolga City 
 
 Pasifik Online Web is a Webpage to comprehensive Business Management System designed to streamline operations specifically for fish vessels. It provides a robust platform to manage various aspects of fish vessel activities, including but not limited to inventory management, catch tracking, crew management, financial transactions, and reporting.
+
+<img width="1728" alt="image" src="https://github.com/WilsonMuktar/PasifikOnlineWeb/assets/13670967/c08c5527-95ce-4def-9b68-b0d3be6381cf">
 
 Key Features:
 
@@ -31,7 +32,9 @@ To get started with Pasifik Online, clone the repository and refer to the docume
 
 Feel free to adjust the details or structure as needed for your specific project!
 
-
+## More
+- [Database Structure]
+  - [USERS](./README-USER-DB)
 
 ## Get Started
 
