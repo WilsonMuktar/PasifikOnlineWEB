@@ -34,7 +34,7 @@ Feel free to adjust the details or structure as needed for your specific project
 
 ## More
 - [Database Structure]
-  - [USERS](./README-USER-DB)
+  - [AUTHENTICATION](./README-AUTH-DB.md)
 
 ## Get Started
 
