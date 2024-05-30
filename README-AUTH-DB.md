@@ -51,6 +51,8 @@ Thus, the Pasifik Online System exemplifies a sophisticated data management para
    └── user_domain_mappings
    
 ```
+<img width="1201" alt="image" src="https://github.com/WilsonMuktar/PasifikOnlineWeb/assets/13670967/f61ec492-e2d3-4faf-a92a-7c0f12f97ca1">
+
 
 ## Domains (unique, no need APIs)
 | Column          | Type             | Description |
