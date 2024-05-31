@@ -84,7 +84,7 @@ function validateToken() {
 
     // get access_token from token data
     accessToken = token
-    fetch(token_validate_url+accessToken, {
+    fetch(token_validate_url+accessToken+"/", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ function validateToken() {
     })
         .then(response => {
             if (!response.ok) {
-                alert("Token Expired! Please re-login");
+                alert("Token Expired! Please re-login!!!");
                 // Handle response
                 localStorage.removeItem("authToken");
                 localStorage.removeItem("authCredential");
