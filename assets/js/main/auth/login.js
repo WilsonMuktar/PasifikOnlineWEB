@@ -1,23 +1,26 @@
-const envHost = "http://localhost:8080" // "https://pasifikonline.alwaysdata.net"
-const token_auth_url = envHost+"/keyauth/v1/oauth2/tokens/"
-const token_validate_url = envHost+"/keyauth/v1/oauth2/tokens/"
-const register_url = envHost+"/keyauth/v1/members/"
-const web_client_id =  "jRqOOEBeGle1L4D31cCXai1h"
-const web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
-
-const login_page_url= "pages/sign-in.html"
-const main_page_url = "index.html"
-
 // Function to encode a string to Base64
 function base64Encode(str) {
     return btoa(unescape(encodeURIComponent(str)));
 }
 
+// Register new user
+function signup() {
+    const payload = {
+        account: document.getElementById("signup_username").value,
+        password : document.getElementById("signup_password").value,
+        department_id: document.getElementById("signup_department").value,
+        email: document.getElementById("signup_email").value
+    };
+    MAKE_REQUEST("POST", register_url, payload, true, function () {
+        alert("successfully registered!")
+        redirectPage(main_page_url)
+    })
+}
+
 // Function to authenticate and store token in local storage
-async function login_authenticate(username, password) {
+function login_authenticate(username, password) {
     // keep user credential
     localStorage.setItem('authCredential', base64Encode(username+":"+password));
-
     const credentials = {
         client_id: web_client_id,
         client_secret : web_client_secret,
@@ -25,30 +28,14 @@ async function login_authenticate(username, password) {
         password: password,
         grant_type: "password"
     };
-    await fetch(token_auth_url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-        .then(response => {
-            if (!response.ok) {
-                return alert('Authentication failed:'+response.json());
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Assuming the server responds with a token data
-            const token = data.data.access_token;
+    MAKE_REQUEST("POST",token_auth_url,credentials,false,function(response){
+        // Assuming the server responds with a token data
+        const token = response.data.access_token;
 
-            // Store the token in local storage
-            localStorage.setItem('authToken', token);
-            redirectPage(main_page_url)
-        })
-        .catch(error => {
-            return new Error('Authentication error');
-        });
+        // Store the token in local storage
+        localStorage.setItem('authToken', token);
+        redirectPage(main_page_url)
+    })
 }
 
 // Function to make revoke token requests
@@ -150,42 +137,6 @@ if (logoutBtn) {
     logoutBtn.addEventListener('click', function (e) {
         logout(e)
     });
-}
-
-// Register new user
-function signup() {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-        alert("token not valid")
-        return new Error('Token not found in local storage');
-    }
-
-    // get access_token from token data
-    accessToken = token
-    const payload = {
-        account: document.getElementById("signup_username").value,
-        password : document.getElementById("signup_password").value,
-        department_id: document.getElementById("signup_department").value,
-        email: document.getElementById("signup_email").value
-    };
-    fetch(register_url, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-        },
-        body: JSON.stringify(payload)
-    })
-        .then(response => {
-            if (!response.ok) {
-                return alert('Request failed: '+response.json());
-            }
-            alert("successfully registered!")
-            redirectPage(main_page_url)
-        })
-        .catch(error => {
-            return alert('Request failed: '+response.json());
-        });
 }
 
 signupBtn = document.getElementById("signup_btn");
