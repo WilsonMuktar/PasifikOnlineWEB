@@ -104,3 +104,5 @@
 .nav-list li{
     padding-left: 1rem !important;
 }
+
+#account_name, #account_roles { color:white !important;}

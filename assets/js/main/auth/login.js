@@ -11,7 +11,11 @@ function signup() {
         department_id: document.getElementById("signup_department").value,
         email: document.getElementById("signup_email").value
     };
-    MAKE_REQUEST("POST", register_url, payload, true, function () {
+    MAKE_REQUEST("POST", register_url, JSON.stringify(payload), true, function (response) {
+        if (response instanceof Error) {
+            alert("Registeration failed!")
+            return
+        }
         alert("successfully registered!")
         redirectPage(main_page_url)
     })
@@ -20,6 +24,7 @@ function signup() {
 // Function to authenticate and store token in local storage
 function login_authenticate(username, password) {
     // keep user credential
+    localStorage.setItem('user_name', username);
     localStorage.setItem('authCredential', base64Encode(username+":"+password));
     const credentials = {
         client_id: web_client_id,
@@ -28,12 +33,24 @@ function login_authenticate(username, password) {
         password: password,
         grant_type: "password"
     };
-    MAKE_REQUEST("POST",token_auth_url,credentials,false,function(response){
+    MAKE_REQUEST("POST",token_auth_url, JSON.stringify(credentials),false,function(response){
+        if (response instanceof Error) {
+            alert("Username/Password not correct!")
+            return
+        }
         // Assuming the server responds with a token data
         const token = response.data.access_token;
 
         // Store the token in local storage
         localStorage.setItem('authToken', token);
+
+        // Store user roles
+        roles = ""
+        for(i=0;i<response.data.roles.length;i++) {
+            roles = response.data.roles[i].name
+            break
+        }
+        localStorage.setItem('user_roles', roles);
         redirectPage(main_page_url)
     })
 }
@@ -60,21 +77,19 @@ function logout(e) {
     })
         .then(response => {
             // Handle response
-            localStorage.removeItem("authToken");
-            localStorage.removeItem("authCredential");
+            localStorage.clear();
             redirectPage(login_page_url)
         })
         .catch(error => {
             // Handle response
-            localStorage.removeItem("authToken");
-            localStorage.removeItem("authCredential");
+            localStorage.clear();
             redirectPage(login_page_url)
             return new Error('Request error:', error);
         });
 }
 
 // Function to make authenticated requests
-function validateToken() {
+async function validateToken() {
     const token = localStorage.getItem('authToken');
     const userCredential = localStorage.getItem('authCredential')
 
@@ -84,32 +99,22 @@ function validateToken() {
 
     // get access_token from token data
     accessToken = token
-    fetch(token_validate_url+accessToken+"/", {
+    response = await fetch(token_validate_url+accessToken+"/", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Basic ${userCredential}`
         },
     })
-        .then(response => {
-            if (!response.ok) {
-                alert("Token Expired! Please re-login!!!");
-                // Handle response
-                localStorage.removeItem("authToken");
-                localStorage.removeItem("authCredential");
-                redirectPage(login_page_url)
-                return new Error('Authentication failed');
-            }
-            return "success"
-        })
-        .catch(error => {
-            alert("Token Expired! Please re-login");
-            // Handle response
-            localStorage.removeItem("authToken");
-            localStorage.removeItem("authCredential");
-            redirectPage(login_page_url)
-            return new Error('Request error:', error);
-        });
+    if (!response.ok) {
+        // Handle response
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("authCredential");
+        redirectPage(login_page_url)
+        return new Error('Authentication failed');
+    }
+    const result = await response.json()
+    return "success"
 }
 
 var origin = window.location.href;
@@ -118,6 +123,9 @@ if (!origin.includes("sign-in") && !origin.includes("sign-up")) {
     isValid = validateToken()
     if (isValid instanceof Error) {
         console.log(isValid.message)
+        alert("Token Expired! Please re-login");
+        redirectPage(login_page_url)
+    } else if (isValid == undefined){
         alert("Token Expired! Please re-login");
         redirectPage(login_page_url)
     }
@@ -144,12 +152,4 @@ if (signupBtn) {
     signupBtn.addEventListener('click', function () {
         signup()
     });
-}
-
-function redirectPage(url) {
-    if (origin.includes("page")) {
-        window.location.replace("../" + url);
-    } else {
-        window.location.replace(url);
-    }
 }
