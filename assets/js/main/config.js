@@ -1,4 +1,4 @@
-const envHost = "http://localhost:8080" //"http://pasifikonline.alwaysdata.net/service" //
+const envHost = "http://pasifikonline.alwaysdata.net/service" //"http://localhost:8080" //
 const web_service_id = "54311ba1-353d-4c28-a142-4eb465dcf1c1"
 const web_client_id =  "jRqOOEBeGle1L4D31cCXai1h"
 const web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
