@@ -646,8 +646,9 @@ function processPopup(title, title_extra, data) {
             `,function(){
                 document.getElementById("unbind_role_btn").addEventListener('click', function (e) {
                     user_id = document.getElementById("unbind_role_user_id").value
-                    role_id = document.getElementById("unbind_role_name").value
-                    MAKE_REQUEST("POST", role_user_unbind.format(user_id,role_id), "", true, function(response) {
+                    role_id = document.getElementById("bind_role_name").value
+                    role_name = document.getElementById("bind_role_name").name
+                    MAKE_REQUEST("POST", role_user_unbind.format(user_id,role_id,role_name), "", true, function(response) {
                         if (response instanceof Error) {
                             alert("UnBind Role to User failed!")
                             return false;
