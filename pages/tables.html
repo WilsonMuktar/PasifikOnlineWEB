@@ -22,6 +22,13 @@
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+    </div>
+  </div>
   <div class="min-height-300 bg-primary position-absolute w-100"></div>
   <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
     <div class="sidenav-header">
@@ -239,6 +246,10 @@
           <div class="card mb-4">
             <div class="card-header pb-0">
               <h6>Role table</h6>
+              <ul class="nav-list">
+                <li><span onclick="openPopup('Add Role','')" >&plus;</span></li>
+                <!--li><span onclick="openPopup('Update Role','')" >⟳</span></li-->
+              </ul>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -248,6 +259,7 @@
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Feature</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Endpoint</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Method</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -255,6 +267,7 @@
                   <tr class="datagrid__row vertical-animation">
                     <td><span><div class="datagrid__loader" style="width: 96%;"></div></span></td>
                     <td><span><div class="datagrid__loader" style="width: 79%;"></div></span></td>
+                    <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
                     <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
                   </tr>
                   </tbody>
@@ -389,57 +402,6 @@
         processRoleTable(resp)
       }
     })
-
-    function processRoleTable(response) {
-      data = response.data
-      rows = ""
-      for (i = data.length - 1; i >= 0; i--) {
-        table = document.getElementById("role_table")
-        // process features
-        for (j = 0; j < data[i].features.length; j++) {
-          rows += `
-            <tr>
-             <td><div class="d-flex px-2"><div><img src="../assets/img/theme/unass.jpg" class="avatar avatar-sm rounded-circle me-2" alt="spotify"></div>
-              <div class="my-auto"><h6 class="mb-0 text-sm">${data[i].name}</h6></div></div></td>
-             <td><p class="text-sm font-weight-bold mb-0">${data[i].features[j].name}</p></td>
-             <td><span class="text-xs font-weight-bold">${data[i].features[j].endpoint}</span></td>
-             <td class="align-middle"><button class="btn btn-link text-secondary mb-0"><i class="fa fa-ellipsis-v text-xs"></i></button></td>
-            </tr>
-        `
-        }
-        table.tBodies[0].innerHTML = rows;
-      }
-    }
-
-    function prosesUserTable(response) {
-      data = response.data
-      rows = ""
-      for (i=data.length-1; i>=0; i--) {
-        table = document.getElementById("user_table")
-        // process default avatar
-        if (data[i].avatar == undefined) {
-          data[i].avatar = "../assets/img/avatar/avatar-5.jpg";
-        }
-        // process roles
-        roles = "";
-        for(j=0;j<data[i].roles.length;j++){
-          if (roles == "") { roles+= data[i].roles[j].name} else {
-            roles += ","+data[i].roles[j].name
-          }
-        }
-        rows += `
-            <tr>
-                <td><div class="d-flex px-2 py-1"><div><img src="${data[i].avatar}"class="avatar avatar-sm me-3" alt="user1"></div>
-                    <div class="d-flex flex-column justify-content-center"><h6 class="mb-0 text-sm">${data[i].account}</h6>
-                    <p class="text-xs text-secondary mb-0">${data[i].email}</p></div></div></td>
-                <td><p class="text-xs font-weight-bold mb-0">${roles}</p><p class="text-xs text-secondary mb-0">${data[i].department.name}</p></td>
-                <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-success">Online</span></td>
-                <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">${(new Date(data[i].create_at*1000)).toLocaleDateString('es-CL')}</span></td>
-                <td class="align-middle"><a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Edit</a></td>
-            </tr>`
-      }
-      table.tBodies[0].innerHTML = rows;
-    }
   </script>
   <!--   Core JS Files   -->
   <script src="../assets/js/core/popper.min.js"></script>
