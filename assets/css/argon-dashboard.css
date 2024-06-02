@@ -22292,6 +22292,8 @@ hr.horizontal.gray-light {
 .navbar .navbar-brand {
   color: #344767;
   font-size: 0.875rem;
+  padding: 1.5rem 2rem;
+  display: block;
 }
 
 .navbar .nav-link {

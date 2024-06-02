@@ -8,6 +8,117 @@ if (account_roles != undefined) {
     account_roles.innerHTML = localStorage.getItem('user_roles')
 }
 
+////////////////////
+// NavBar sidebar //
+////////////////////
+document.getElementsByClassName("fixed-plugin-button")[0].addEventListener("click", function (e){
+    sideNavBar = document.getElementById("sidenav-main")
+    if (sideNavBar.classList.contains("sidenav")) {
+       sideNavBar.classList.remove("sidenav")
+    } else {
+        sideNavBar.classList.add("sidenav")
+    }
+
+    /*if (sideNavBar.style.transform) {
+        transform: translateX(0rem);
+    }*/
+})
+document.getElementById("sidenav-collapse-main").innerHTML = `
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link " href="../pages/vessel.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-diamond text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Vessels</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/stock.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-shop text-success text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Stocks</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/transaction.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Transaction</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/stock.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-shop text-success text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Product</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/people.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-02 text-success text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">People</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/trip.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-calendar-grid-58 text-success text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Trip</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/catch.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-trophy text-success text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Catch</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/maintenance.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-settings text-success text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Maintenance</span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/profile.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="user.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Users</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/role.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Roles</span>
+                </a>
+            </li>
+        </ul>
+`
+
 async function MAKE_REQUEST(method,url,payload,needToken,callback) {
     // fetch request
     options = {
@@ -24,7 +135,9 @@ async function MAKE_REQUEST(method,url,payload,needToken,callback) {
         const accessToken = localStorage.getItem('authToken');
         if (!accessToken) {
             alert("token not valid")
-            return new Error('Token not found in local storage');
+            // Handle response
+            localStorage.clear();
+            redirectPage(login_page_url)
         }
         options.headers['Authorization'] = `Bearer ${accessToken}`
     }
@@ -85,11 +198,52 @@ String.prototype.format = String.prototype.format || function () {
 /*****************/
 /* PROCESS TABLE */
 /*****************/
+function processStockTable(response) {
+    data = response.data
+    rows = ""
+    table = document.getElementById("stock_table")
+    for (i = data.length - 1; i >= 0; i--) {
+                rows += `
+                    <tr>
+                     <td><div class="d-flex px-2"><div><img src="../assets/img/theme/unass.jpg" class="avatar avatar-sm rounded-circle me-2"></div>
+                      <div class="my-auto"><h6 class="mb-0 text-sm">${data[i].product_id}</h6></div></div></td>
+                     <td><p class="text-sm font-weight-bold mb-0">${str(data[i].location)}</p></td>
+                     <td><span class="text-xs font-weight-bold">${str(data[i].quantity)}</span></td>
+                     <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-secondary">${str(data[i].date_added)}</span></td>
+                     <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-secondary">${str(data[i].supplier_id)}</span></td>
+                     <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-secondary">${str(data[i].transaction_type)}</span></td>
+                     <td class="align-middle text-center"><button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Vessel",${JSON.stringify(data[i])},"")'><i class="fa fa-ellipsis-v text-xs"></i></button></td>
+                    </tr>
+                `
+    }
+    table.tBodies[0].innerHTML = rows;
+}
+
+function processVesselTable(response) {
+    data = response.data
+    rows = ""
+    table = document.getElementById("vessel_table")
+    for (i = data.length - 1; i >= 0; i--) {
+                rows += `
+                    <tr>
+                     <td><div class="d-flex px-2"><div><img src="../assets/img/theme/unass.jpg" class="avatar avatar-sm rounded-circle me-2"></div>
+                      <div class="my-auto"><h6 class="mb-0 text-sm">${data[i].vessel_name}</h6></div></div></td>
+                     <td><p class="text-sm font-weight-bold mb-0">${str(data[i].vessel_type)}</p></td>
+                     <td><span class="text-xs font-weight-bold">${str(data[i].registration_number)}</span></td>
+                     <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-secondary">${str(data[i].year_built)}</span></td>
+                     <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-secondary">${str(data[i].fisheries_permits)}</span></td>
+                     <td class="align-middle text-center"><button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Vessel",${JSON.stringify(data[i])},"")'><i class="fa fa-ellipsis-v text-xs"></i></button></td>
+                    </tr>
+                `
+    }
+    table.tBodies[0].innerHTML = rows;
+}
+
 function processRoleTable(response) {
     data = response.data
     rows = ""
+    table = document.getElementById("role_table")
     for (i = data.length - 1; i >= 0; i--) {
-        table = document.getElementById("role_table")
         // process features
         if (data[i].features != undefined) {
             for (j = 0; j < data[i].features.length; j++) {
@@ -133,8 +287,8 @@ function processRoleTable(response) {
 function prosesUserTable(response) {
     data = response.data
     rows = ""
+    table = document.getElementById("user_table")
     for (i=data.length-1; i>=0; i--) {
-        table = document.getElementById("user_table")
         // process default avatar
         if (data[i].avatar == undefined) {
             data[i].avatar = "../assets/img/avatar/avatar-5.jpg";
@@ -279,27 +433,17 @@ function processPopup(title, title_extra, data) {
                   </div>
             `,function(){
                 document.getElementById("update_user_btn").addEventListener('click', function (e) {
-                    user_account = document.getElementById("update_user_account").value
-                    user_email = document.getElementById("update_user_email").value
-                    user_realname = document.getElementById("update_user_realname").value
-                    user_nickname = document.getElementById("update_user_nickname").value
-                    user_gender = document.getElementById("update_user_gender").value
-                    user_address = document.getElementById("update_user_address").value
-                    user_city = document.getElementById("update_user_city").value
-                    user_province = document.getElementById("update_user_province").value
-                    user_mobile = document.getElementById("update_user_mobile").value
-                    user_phone = document.getElementById("update_user_phone").value
                     payload = {
-                        "account": user_account,
-                        "email": user_email,
-                        "real_name": user_realname,
-                        "nick_name": user_nickname,
-                        "gender": user_gender,
-                        "address": user_address,
-                        "city": user_city,
-                        "province": user_province,
-                        "mobile": user_mobile,
-                        "phone": user_phone,
+                        "account": document.getElementById("update_user_account").value,
+                        "email": document.getElementById("update_user_email").value,
+                        "real_name": document.getElementById("update_user_realname").value,
+                        "nick_name": document.getElementById("update_user_nickname").value,
+                        "gender":  document.getElementById("update_user_gender").value,
+                        "address": document.getElementById("update_user_address").value,
+                        "city": document.getElementById("update_user_city").value,
+                        "province": document.getElementById("update_user_province").value,
+                        "mobile": document.getElementById("update_user_mobile").value,
+                        "phone": document.getElementById("update_user_phone").value,
                         "domain_id": data.domain.id,
                         "department_id": data.department.id,
                     }
@@ -593,8 +737,9 @@ function processPopup(title, title_extra, data) {
             `,function(){
                 document.getElementById("bind_role_btn").addEventListener('click', function (e) {
                     user_id = document.getElementById("bind_role_user_id").value
-                    role_id = document.getElementById("bind_role_name").value
-                    role_name = document.getElementById("bind_role_name").name
+                    roleObj = document.getElementById("bind_role_name")
+                    role_id = roleObj.value
+                    role_name = roleObj.options[roleObj.selectedIndex].text
                     MAKE_REQUEST("POST", role_user_bind.format(user_id,role_id,role_name), "", true, function(response) {
                         if (response instanceof Error) {
                             alert("Bind Role to User failed!")
@@ -646,8 +791,9 @@ function processPopup(title, title_extra, data) {
             `,function(){
                 document.getElementById("unbind_role_btn").addEventListener('click', function (e) {
                     user_id = document.getElementById("unbind_role_user_id").value
-                    role_id = document.getElementById("bind_role_name").value
-                    role_name = document.getElementById("bind_role_name").name
+                    roleObj = document.getElementById("unbind_role_name")
+                    role_id = roleObj.value
+                    role_name = roleObj.options[roleObj.selectedIndex].text
                     MAKE_REQUEST("POST", role_user_unbind.format(user_id,role_id,role_name), "", true, function(response) {
                         if (response instanceof Error) {
                             alert("UnBind Role to User failed!")

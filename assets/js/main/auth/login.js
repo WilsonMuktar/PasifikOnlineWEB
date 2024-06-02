@@ -43,6 +43,7 @@ function login_authenticate(username, password) {
 
         // Store the token in local storage
         localStorage.setItem('authToken', token);
+        localStorage.setItem('userData', JSON.stringify(response.data));
 
         // Store user roles
         roles = ""
@@ -63,7 +64,9 @@ function logout(e) {
 
     if (!token) {
         alert("token not valid")
-        return new Error('Token not found in local storage');
+        // Handle response
+        localStorage.clear();
+        redirectPage(login_page_url)
     }
 
     // get access_token from token data
