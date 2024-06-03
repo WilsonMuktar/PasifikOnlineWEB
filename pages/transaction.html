@@ -96,17 +96,17 @@
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
-                <table id="user_table" class="table align-items-center mb-0">
+                <table id="transaction_table" class="table align-items-center mb-0">
                   <thead><tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TransactionID</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Transaction ID</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Type</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">VesselID</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Buyer</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Seller</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">PaymentType</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">PaymentStatus</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Type</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Vessel ID</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Buyer</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Seller</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Payment Type</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Payment Status</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
                   </tr></thead>
                   <tbody>
@@ -176,7 +176,7 @@
       if (resp instanceof Error) {
         console.log(resp);
       } else {
-        prosesTransactionTable(resp)
+        processTransactionTable(resp)
       }
     })
   </script>

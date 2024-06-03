@@ -1,7 +1,15 @@
-const envHost = "http://pasifikonline.alwaysdata.net/service" //"http://localhost:8080" //
-const web_service_id = "54311ba1-353d-4c28-a142-4eb465dcf1c1"
-const web_client_id = "jRqOOEBeGle1L4D31cCXai1h" //"ECo4LyNiJVOGxOQwUVaiv8B1"//
-const web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM" //"dxWIpr8qgLq2Udu3dTKRnTYUV4hqwjtX" //
+var envHost = "http://pasifikonline.alwaysdata.net/service"
+var web_service_id = "54311ba1-353d-4c28-a142-4eb465dcf1c1"
+var web_client_id = "jRqOOEBeGle1L4D31cCXai1h"
+var web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
+
+// check rather running in local
+if (window.location.href.indexOf("file:///") > -1) {
+    envHost = "http://localhost:8080"
+    web_service_id = "54311ba1-353d-4c28-a142-4eb465dcf1c1"
+    web_client_id = "ECo4LyNiJVOGxOQwUVaiv8B1"
+    web_client_secret = "dxWIpr8qgLq2Udu3dTKRnTYUV4hqwjtX"
+}
 
 const user_api_url = envHost+"/keyauth/v1/members/"
 const user_api_id_url = envHost+"/keyauth/v1/members/{0}/"
@@ -24,5 +32,5 @@ const token_validate_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const register_url = envHost+"/keyauth/v1/members/"
 
 
-const main_page_url= "pages/dashboard.html"
+const main_page_url= "pages/vessel.html"
 const login_page_url= "pages/sign-in.html"

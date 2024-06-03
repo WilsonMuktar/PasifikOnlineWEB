@@ -91,19 +91,18 @@
             <div class="card-header pb-0">
               <h6>People table</h6>
               <ul class="nav-list">
-                <li><span onclick="openPopup('Add People','')" >&plus;</span></li>
+                <li><span onclick="openPopup('Add Person','')" >&plus;</span></li>
               </ul>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
-                <table id="user_table" class="table align-items-center mb-0">
+                <table id="people_table" class="table align-items-center mb-0">
                   <thead><tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">First Name</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Last Name</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Category</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone Number</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">City</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Category</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone Number</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">City</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
                   </tr></thead>
                   <tbody>
@@ -170,7 +169,7 @@
       if (resp instanceof Error) {
         console.log(resp);
       } else {
-        prosesPeopleTable(resp)
+        processPeopleTable(resp)
       }
     })
   </script>

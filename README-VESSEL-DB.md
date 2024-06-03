@@ -27,7 +27,7 @@ Fields include trip name, dates, ports, vessel ID, captain ID, and additional no
 Usage: Facilitates trip planning, scheduling, and tracking for operational and logistical purposes.
 6. Transactions Table
 Tracks various transactions within the fisheries management system, including purchases, sales, returns, and debt settlements.
-Includes fields such as transaction type, item ID, quantity, prices, involved parties, and payment details.
+Includes fields such as transaction type, product ID, quantity, prices, involved parties, and payment details.
 Usage: Enables financial tracking, auditing, and analysis of transactions within the system.
 7. Maintenances Table
 Manages records of maintenance tasks performed on fishing vessels, including dates, descriptions, parts used, and costs.
