@@ -5,6 +5,7 @@ const web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM" //"dxWIpr8qgLq2Udu3
 
 const user_api_url = envHost+"/keyauth/v1/members/"
 const user_api_id_url = envHost+"/keyauth/v1/members/{0}/"
+const product_api_url = envHost+"/keyauth/v1/products/"
 const maintenance_api_url = envHost+"/keyauth/v1/maintenances/"
 const catch_api_url = envHost+"/keyauth/v1/catches/"
 const trip_api_url = envHost+"/keyauth/v1/trips/"

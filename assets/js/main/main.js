@@ -50,7 +50,7 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="../pages/stock.html">
+                <a class="nav-link" href="../pages/product.html">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-shop text-success text-sm opacity-10"></i>
                     </div>
@@ -804,5 +804,170 @@ function processPopup(title, title_extra, data) {
                     })
                 });
             }];
+        case 'Add Product':
+            return [`
+                <span class="close">&times;</span>
+                <div class="card">
+                    <div class="card-header pb-0">
+                      <div class="d-flex align-items-center">
+                        <p class="mb-0">${title}</p>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Product Name</label>
+                            <input id="add_product_name" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Product Category</label>
+                            <label for="example-text-input" class="form-control-label">Status</label>
+                            <select id="add_product_category" name="product_category" class="form-control">
+                                <option value="Material">Material</option>
+                                <option value="Equipment">Equipment</option>
+                                <option value="Catch">Catch</option>
+                                <option value="Other">Other</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Description</label>
+                            <textarea id="add_product_description" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Category</label>
+                            <input id="add_product_extra_category" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Brand</label>
+                            <input id="add_product_brand" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Price</label>
+                            <input id="add_product_price" class="form-control" type="number" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Unit of Measurement</label>
+                            <input id="add_product_unit_of_measurement" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Quantity in Stock</label>
+                            <input id="add_product_quantity_in_stock" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Supplier Name</label>
+                            <input id="add_product_supplier_name" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Supplier Contact</label>
+                            <input id="add_product_supplier_contact" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Product Image</label>
+                            <input id="add_product_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Status</label>
+                            <select id="add_product_availability_status" name="availability_status" class="form-control">
+                                <option value="In Stock">In Stock</option>
+                                <option value="Out of Stock">Out of Stock</option>
+                                <option value="Backordered">Backordered</option>
+                                <option value="Discontinued">Discontinued</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Keywords</label>
+                            <input id="add_product_keywords" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label for="example-text-input" class="form-control-label">Notes</label>
+                            <input id="add_product_notes" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                      <hr class="horizontal dark">
+                      <button id="add_product_btn" class="btn btn-primary btn-sm ms-auto">ADD PRODUCT</button>
+                    </div>
+                  </div>
+            `, function (){
+                document.getElementById("add_product_btn").addEventListener('click', function (e) {
+                    product_name = document.getElementById("add_product_name").value;
+                    product_category = document.getElementById("add_product_category").value;
+                    product_description = document.getElementById("add_product_description").value;
+                    product_extra_category = document.getElementById("add_product_extra_category").value;
+                    product_brand = document.getElementById("add_product_brand").value;
+                    product_price = parseFloat(document.getElementById("add_product_price").value);
+                    product_unit_of_measurement = document.getElementById("add_product_unit_of_measurement").value;
+                    product_quantity_in_stock = parseInt(document.getElementById("add_product_quantity_in_stock").value);
+                    product_supplier_name = document.getElementById("add_product_supplier_name").value;
+                    product_supplier_contact = document.getElementById("add_product_supplier_contact").value;
+                    product_image_file = document.getElementById("add_product_image").files[0];
+                    product_availability_status = document.getElementById("add_product_availability_status").value;
+                    product_keywords = document.getElementById("add_product_keywords").value;
+                    product_notes = document.getElementById("add_product_notes").value;
+
+                    // process image uploaded file to BLOB
+                    var reader = new FileReader();
+                    reader.onloadend = function() {
+                        blobText = reader.result
+                        console.log(blobText);
+
+                        // You would handle image upload separately, this is just for demonstration
+                        // Construct payload
+                        let payload = {
+                            "product_name": product_name,
+                            "product_category": product_category,
+                            "description": product_description,
+                            "category": product_extra_category,
+                            "brand": product_brand,
+                            "price": product_price,
+                            "unit_of_measurement": product_unit_of_measurement,
+                            "quantity_in_stock": product_quantity_in_stock,
+                            "supplier_name": product_supplier_name,
+                            "supplier_contact": product_supplier_contact,
+                            "product_image": blobText, // Just an example, you may need to handle image upload differently
+                            "availability_status": product_availability_status,
+                            "keywords": product_keywords,
+                            "notes": product_notes,
+                        };
+
+                        // Send payload to server
+                        MAKE_REQUEST("POST", product_api_url, JSON.stringify(payload), true, function(response) {
+                            if (response instanceof Error) {
+                                alert("Failed to add new product!");
+                                return false;
+                            }
+                            // Refresh the page
+                            location.reload();
+                        });
+                    }
+                    reader.readAsDataURL(product_image_file);
+                });
+            }]
     }
 }
