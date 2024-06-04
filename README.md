@@ -4,7 +4,8 @@ Pasifik Online is a Business Management System based on fish vessel Operations b
 
 Pasifik Online Web is a Webpage to comprehensive Business Management System designed to streamline operations specifically for fish vessels. It provides a robust platform to manage various aspects of fish vessel activities, including but not limited to inventory management, catch tracking, crew management, financial transactions, and reporting.
 
-<img width="1728" alt="image" src="https://github.com/WilsonMuktar/PasifikOnlineWeb/assets/13670967/c08c5527-95ce-4def-9b68-b0d3be6381cf">
+<img width="1728" alt="image" src="./assets/img/pasifikonline-login.png">
+<img width="1728" alt="image" src="./assets/img/pasifikonline-manage.png">
 
 Key Features:
 
@@ -63,6 +64,14 @@ PasifikOnlineWeb
   ├── docs
   │   ├── documentation.html
   ├── pages
+  │   ├── vessel.html
+  │   ├── stock.html
+  │   ├── product.html
+  │   ├── trip.html
+  │   ├── transaction.html
+  │   ├── people.html
+  │   ├── maintenance.html
+  │   └── catch.html
   ├── CHANGELOG.md
   ├── gulpfile.js
   ├── package.json
