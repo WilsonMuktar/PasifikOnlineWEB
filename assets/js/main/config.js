@@ -1,4 +1,4 @@
-var envHost = "http://pasifikonline.alwaysdata.net/service"
+var envHost = "https://pasifikonline-yenwie-c0344cc5.koyeb.app" // "http://pasifikonline.alwaysdata.net/service"
 var web_service_id = "54311ba1-353d-4c28-a142-4eb465dcf1c1"
 var web_client_id = "jRqOOEBeGle1L4D31cCXai1h"
 var web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
