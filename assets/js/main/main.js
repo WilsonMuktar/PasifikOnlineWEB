@@ -1,3 +1,26 @@
+//Localization
+// Define a function to load the localization file
+function loadLocalization(language) {
+    // Assuming localization files are stored in a directory named "locales"
+    const localizationFile = envHost+`/assets/locales/localization_${language}.json`;
+
+    // Fetch the localization file
+    fetch(localizationFile)
+        .then(response => response.json())
+        .then(data => {
+            // Apply translations to elements with data-i18n-key attribute
+            Object.keys(data).forEach(key => {
+                const element = document.querySelector(`[data-i18n-key="${key}"]`);
+                if (element) {
+                    element.textContent = data[key];
+                }
+            });
+        })
+        .catch(error => console.error("Error loading localization:", error));
+}
+// apply localization
+loadLocalization(localStorage.getItem("localization_language"))
+
 // Assign username and roles in nav
 account_name = document.getElementById("account_name");
 account_roles= document.getElementById("account_roles");

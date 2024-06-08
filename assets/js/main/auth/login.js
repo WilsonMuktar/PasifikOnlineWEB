@@ -22,10 +22,11 @@ function signup() {
 }
 
 // Function to authenticate and store token in local storage
-function login_authenticate(username, password) {
+function login_authenticate(username, password, lang) {
     // keep user credential
     localStorage.setItem('user_name', username);
     localStorage.setItem('authCredential', base64Encode(username+":"+password));
+    localStorage.setItem('localization_language', lang);
     const credentials = {
         client_id: web_client_id,
         client_secret : web_client_secret,
@@ -139,7 +140,8 @@ if (loginBtn){
     loginBtn.addEventListener('click', function (){
         email = document.getElementById("login_email").value
         password = document.getElementById("login_password").value
-        login_authenticate(email, password)
+        lang = document.getElementById("localization_selector").value
+        login_authenticate(email, password, lang)
     });
 }
 

@@ -1,0 +1,25 @@
+{
+  "login_page_title": "Masuk",
+  "login_heading": "Masuk",
+  "login_button": "Masuk",
+  "login_forgot": "Lupa",
+  "login_username_password": "Username / KataSandi?",
+  "login_create_account": "Daftar Akun Baru",
+
+  "page_title": "PASIFIK-ONLINE",
+  "modal_close": "Tutup",
+  "brand_name": "PASIFIK-ONLINE",
+  "sign_out": "Keluar",
+  "breadcrumb_pages": "Halaman",
+  "breadcrumb_vessels": "Kapal",
+  "heading_vessels": "Kapal",
+  "account_name": "Nama Akun",
+  "account_roles": "Jabatan Akun",
+  "vessel_table_title": "Tabel Kapal",
+  "table_heading_vessel": "Kapal",
+  "table_heading_type": "Tipe",
+  "table_heading_registration_number": "Nomor Registrasi",
+  "table_heading_year_built": "Tahun Buatan",
+  "table_heading_fisheries_permits": "Izin Perikanan",
+  "table_heading_actions": "Aksi"
+}
