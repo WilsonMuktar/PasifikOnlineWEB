@@ -76,6 +76,7 @@ document.getElementsByClassName("fixed-plugin-button")[0].addEventListener("clic
         transform: translateX(0rem);
     }*/
 })
+// navigation sidebar update
 document.getElementById("sidenav-collapse-main").innerHTML = `
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -83,7 +84,7 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-ship text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Vessels</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_vessel">Vessels</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -91,7 +92,7 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-shop text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Stocks</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_stock">Stocks</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -99,7 +100,7 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Transaction</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_transaction">Transaction</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -107,7 +108,7 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-product-hunt text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Product</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_product">Product</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -115,7 +116,7 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-02 text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">People</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_people">People</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -123,7 +124,7 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-calendar-grid-58 text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Trip</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_trip">Trip</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -131,7 +132,7 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-trophy text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Catch</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_catch">Catch</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -139,18 +140,18 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-settings text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Maintenance</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_maintenance">Maintenance</span>
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6" data-i18n-key="breadcrumb_account_pages">Account pages</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="../pages/profile.html">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Profile</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_profile">Profile</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -158,7 +159,7 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Users</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_user">Users</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -166,7 +167,7 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Roles</span>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_role">Roles</span>
                 </a>
             </li>
         </ul>
