@@ -35,7 +35,7 @@
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="../index.html" target="_blank">
             <img src="../assets/img/pasifikonline.png" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="me-1 font-weight-bold">PASIFIK-ONLINE</span>
+            <span class="me-1 font-weight-bold" data-i18n-key="main_logo">PASIFIK-ONLINE</span>
         </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -49,7 +49,7 @@
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni text-info text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" style="color:#FF0000">Sign Out</span>
+                    <span class="nav-link-text ms-1" style="color:#FF0000" data-i18n-key="sign_out">Sign Out</span>
                 </a>
             </li>
         </ul>
@@ -61,10 +61,10 @@
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
-                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Tables</li>
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;"><span data-i18n-key="pages" data-i18n-key="breadcrumb_pages">Pages</span></a></li>
+                    <li class="breadcrumb-item text-sm text-white active" aria-current="page"><span data-i18n-key="breadcrumb_trip">Trips</span></li>
                 </ol>
-                <h6 class="font-weight-bolder text-white mb-0">Tables</h6>
+                <h6 class="font-weight-bolder text-white mb-0" data-i18n-key="heading_trip">Trips</h6>
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                 <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -76,8 +76,8 @@
                 <ul class="navbar-nav  justify-content-end">
                     <li class="nav-item dropdown pe-2 d-flex align-items-center">
                         <div class="d-flex px-2 py-1"  style="margin-top: 30px;"><div><img src="../assets/img/avatar/avatar-5.jpg" class="avatar avatar-sm me-3" alt="user1"></div>
-                            <div class="d-flex flex-column justify-content-center"><h6 id="account_name" class="mb-0 text-sm"></h6>
-                                <p id="account_roles" class="text-xs text-secondary mb-0"></p></div></div>
+                            <div class="d-flex flex-column justify-content-center"><h6 id="account_name" class="mb-0 text-sm" data-i18n-key="account_name"></h6>
+                                <p id="account_roles" class="text-xs text-secondary mb-0" data-i18n-key="account_roles"></p></div></div>
                     </li>
                 </ul>
             </div>
@@ -89,7 +89,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Trip table</h6>
+                        <h6 data-i18n-key="trip_table">Trip table</h6>
                         <ul class="nav-list">
                             <li><span onclick="openPopup('Add Trip','')" >&plus;</span></li>
                         </ul>
@@ -99,11 +99,11 @@
                             <table id="trip_table" class="table align-items-center justify-content-center mb-0">
                                 <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TripName</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Departure</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Return</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">VesselID</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Captain</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="trip_name">TripName</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="departure">Departure</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="return">Return</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="vessel_id">VesselID</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="captain">Captain</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -186,8 +186,6 @@
         Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
 </script>
-<!-- Github buttons -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
 <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
 </body>

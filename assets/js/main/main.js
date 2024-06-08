@@ -2,7 +2,7 @@
 // Define a function to load the localization file
 function loadLocalization(language) {
     // Assuming localization files are stored in a directory named "locales"
-    const localizationFile = envHost+`/assets/locales/localization_${language}.json`;
+    const localizationFile = `../assets/locales/localization_${language}.json`;
 
     // Fetch the localization file
     fetch(localizationFile)
@@ -15,8 +15,36 @@ function loadLocalization(language) {
                     element.textContent = data[key];
                 }
             });
+            return
         })
         .catch(error => console.error("Error loading localization:", error));
+
+    // fallback
+    data = {
+        "page_title": "PASIFIK-ONLINE",
+        "modal_close": "Tutup",
+        "brand_name": "PASIFIK-ONLINE",
+        "sign_out": "Keluar",
+        "breadcrumb_pages": "Halaman",
+        "breadcrumb_vessels": "Kapal",
+        "heading_vessels": "Kapal",
+        "account_name": "Nama Akun",
+        "account_roles": "Jabatan Akun",
+        "vessel_table_title": "Tabel Kapal",
+        "table_heading_vessel": "Kapal",
+        "table_heading_type": "Jenis Kapal",
+        "table_heading_registration_number": "Nomor Registrasi",
+        "table_heading_year_built": "Tahun Buatan",
+        "table_heading_fisheries_permits": "Izin Perikanan",
+        "table_heading_actions": "Aksi"
+    }
+    // Apply translations to elements with data-i18n-key attribute
+    Object.keys(data).forEach(key => {
+        const element = document.querySelector(`[data-i18n-key="${key}"]`);
+        if (element) {
+            element.textContent = data[key];
+        }
+    });
 }
 // apply localization
 loadLocalization(localStorage.getItem("localization_language"))
@@ -1111,115 +1139,116 @@ function processPopup(title, title_extra, data) {
 
         case 'Add Product':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Product Name</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_name" class="form-control-label" data-i18n-key="product_name">Product Name</label>
                             <input id="add_product_name" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Product Category</label>
-                            <label for="example-text-input" class="form-control-label">Status</label>
-                            <select id="add_product_category" name="product_category" class="form-control">
-                                <option value="Material">Material</option>
-                                <option value="Equipment">Equipment</option>
-                                <option value="Catch">Catch</option>
-                                <option value="Other">Other</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Description</label>
-                            <textarea id="add_product_description" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Category</label>
-                            <input id="add_product_extra_category" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Brand</label>
-                            <input id="add_product_brand" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Price</label>
-                            <input id="add_product_price" class="form-control" type="number" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Unit of Measurement</label>
-                            <input id="add_product_unit_of_measurement" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Quantity in Stock</label>
-                            <input id="add_product_quantity_in_stock" class="form-control" type="number" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Supplier Name</label>
-                            <input id="add_product_supplier_name" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Supplier Contact</label>
-                            <input id="add_product_supplier_contact" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Product Image</label>
-                            <input id="add_product_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Status</label>
-                            <select id="add_product_availability_status" name="availability_status" class="form-control">
-                                <option value="In Stock">In Stock</option>
-                                <option value="Out of Stock">Out of Stock</option>
-                                <option value="Backordered">Backordered</option>
-                                <option value="Discontinued">Discontinued</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Keywords</label>
-                            <input id="add_product_keywords" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Notes</label>
-                            <input id="add_product_notes" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                      <hr class="horizontal dark">
-                      <button id="add_product_btn" class="btn btn-primary btn-sm ms-auto">ADD PRODUCT</button>
                     </div>
-                  </div>
-            `, function (){
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_category" class="form-control-label" data-i18n-key="product_category">Product Category</label>
+                            <label for="add_product_availability_status" class="form-control-label" data-i18n-key="availability_status">Status</label>
+                            <select id="add_product_category" name="product_category" class="form-control">
+                                <option value="Material" data-i18n-key="material">Material</option>
+                                <option value="Equipment" data-i18n-key="equipment">Equipment</option>
+                                <option value="Catch" data-i18n-key="catch">Catch</option>
+                                <option value="Other" data-i18n-key="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="add_product_description" class="form-control-label" data-i18n-key="description">Description</label>
+                            <textarea id="add_product_description" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_extra_category" class="form-control-label" data-i18n-key="category">Category</label>
+                            <input id="add_product_extra_category" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_brand" class="form-control-label" data-i18n-key="brand">Brand</label>
+                            <input id="add_product_brand" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_price" class="form-control-label" data-i18n-key="price">Price</label>
+                            <input id="add_product_price" class="form-control" type="number" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_unit_of_measurement" class="form-control-label" data-i18n-key="unit_of_measurement">Unit of Measurement</label>
+                            <input id="add_product_unit_of_measurement" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_quantity_in_stock" class="form-control-label" data-i18n-key="quantity_in_stock">Quantity in Stock</label>
+                            <input id="add_product_quantity_in_stock" class="form-control" type="number" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_supplier_name" class="form-control-label" data-i18n-key="supplier_name">Supplier Name</label>
+                            <input id="add_product_supplier_name" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_supplier_contact" class="form-control-label" data-i18n-key="supplier_contact">Supplier Contact</label>
+                            <input id="add_product_supplier_contact" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="add_product_image" class="form-control-label" data-i18n-key="product_image">Product Image</label>
+                            <input id="add_product_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_availability_status" class="form-control-label" data-i18n-key="availability_status">Status</label>
+                            <select id="add_product_availability_status" name="availability_status" class="form-control">
+                                <option value="In Stock" data-i18n-key="in_stock">In Stock</option>
+                                <option value="Out of Stock" data-i18n-key="out_of_stock">Out of Stock</option>
+                                <option value="Backordered" data-i18n-key="backordered">Backordered</option>
+                                <option value="Discontinued" data-i18n-key="discontinued">Discontinued</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="add_product_keywords" class="form-control-label" data-i18n-key="keywords">Keywords</label>
+                            <input id="add_product_keywords" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="add_product_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                            <input id="add_product_notes" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <hr class="horizontal dark">
+                    <button id="add_product_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_product_btn">ADD PRODUCT</button>
+                </div>
+            </div>
+        </div>
+    `, function () {
                 document.getElementById("add_product_btn").addEventListener('click', function (e) {
                     product_name = document.getElementById("add_product_name").value;
                     product_category = document.getElementById("add_product_category").value;
@@ -1262,7 +1291,7 @@ function processPopup(title, title_extra, data) {
                         };
 
                         // Send payload to server
-                        MAKE_REQUEST("POST", product_api_url, JSON.stringify(payload), true, function(response) {
+                        MAKE_REQUEST("POST", product_api_url, JSON.stringify(payload), true, function (response) {
                             if (response instanceof Error) {
                                 alert("Failed to add new product!");
                                 return false;
@@ -1282,6 +1311,7 @@ function processPopup(title, title_extra, data) {
                     }
                 });
             }]
+
         case 'Add Vessel':
             return [`
                 <span class="close">&times;</span>

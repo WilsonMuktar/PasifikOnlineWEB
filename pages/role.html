@@ -49,7 +49,7 @@
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni text-info text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" style="color:#FF0000">Sign Out</span>
+                    <span class="nav-link-text ms-1" style="color:#FF0000" data-i18n-key="sign_out">Sign Out</span>
                 </a>
             </li>
         </ul>
@@ -61,10 +61,10 @@
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
-                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Tables</li>
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;" data-i18n-key="breadcrumb_pages">Pages</a></li>
+                    <li class="breadcrumb-item text-sm text-white active" aria-current="page" data-i18n-key="breadcrumb_role">Roles</li>
                 </ol>
-                <h6 class="font-weight-bolder text-white mb-0">Tables</h6>
+                <h6 class="font-weight-bolder text-white mb-0" data-i18n-key="heading_role">Roles</h6>
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                 <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -89,7 +89,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Role Feature table</h6>
+                        <h6 data-i18n-key="role_feature_table">Role Feature table</h6>
                         <ul class="nav-list">
                             <li><span onclick="openPopup('Add Role','')" >&plus;</span></li>
                             <li><span style="color: red;" onclick="openPopup('Delete Role','')" >&minus;</span></li>
@@ -101,11 +101,11 @@
                             <table id="role_table" class="table align-items-center justify-content-center mb-0">
                                 <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Feature</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Endpoint</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Method</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Actions</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="role">Role</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="feature">Feature</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="endpoint">Endpoint</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="method">Method</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="actions">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -187,8 +187,6 @@
         Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
 </script>
-<!-- Github buttons -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
 <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
 </body>
