@@ -18,33 +18,6 @@ function loadLocalization(language) {
             return
         })
         .catch(error => console.error("Error loading localization:", error));
-
-    // fallback
-    data = {
-        "page_title": "PASIFIK-ONLINE",
-        "modal_close": "Tutup",
-        "brand_name": "PASIFIK-ONLINE",
-        "sign_out": "Keluar",
-        "breadcrumb_pages": "Halaman",
-        "breadcrumb_vessels": "Kapal",
-        "heading_vessels": "Kapal",
-        "account_name": "Nama Akun",
-        "account_roles": "Jabatan Akun",
-        "vessel_table_title": "Tabel Kapal",
-        "table_heading_vessel": "Kapal",
-        "table_heading_type": "Jenis Kapal",
-        "table_heading_registration_number": "Nomor Registrasi",
-        "table_heading_year_built": "Tahun Buatan",
-        "table_heading_fisheries_permits": "Izin Perikanan",
-        "table_heading_actions": "Aksi"
-    }
-    // Apply translations to elements with data-i18n-key attribute
-    Object.keys(data).forEach(key => {
-        const element = document.querySelector(`[data-i18n-key="${key}"]`);
-        if (element) {
-            element.textContent = data[key];
-        }
-    });
 }
 // apply localization
 loadLocalization(localStorage.getItem("localization_language"))
