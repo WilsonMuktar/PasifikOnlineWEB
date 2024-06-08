@@ -121,8 +121,24 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
         </ul>
 `
 
+function showLoader() {
+    var loaderElement = document.createElement('div');
+    loaderElement.style.cssText = 'display: block; position: absolute; height: 100px; width: 100px; top: 50%; left: 50%; margin-left: -50px; margin-top: -50px; background: url("../assets/img/loader.gif"); background-size: 100%; z-index: 999999999999999999999;'
+    loaderElement.id = 'loaderElement';
+    document.body.appendChild(loaderElement)
+}
+
+function hideLoader() {
+    loaderElement = document.getElementById("loaderElement");
+    if (loaderElement != undefined) {
+        document.body.removeChild(loaderElement);
+    }
+}
+
 // Main logic //
 async function MAKE_REQUEST(method,url,payload,needToken,callback) {
+    showLoader();
+
     // fetch request
     options = {
         method: method,
@@ -148,26 +164,31 @@ async function MAKE_REQUEST(method,url,payload,needToken,callback) {
         const response = await fetch(url, options)
         if (!response.ok) {
             callback(new Error(`not enough permission to open [${method}]${url}`))
+            hideLoader();
             return
         }
         try {
             const result = await response.json()
+            hideLoader();
             callback(result)
         } catch (ex) {
+            hideLoader();
             callback("")
         }
     } catch (ex) {
+        hideLoader();
         callback(new Error(`not enough permission to open [${method}]${url}`))
     }
+    hideLoader();
 }
 
 function reorderSelectOptions(options, selected) {
     ordered = ""
     foundSelected = false
-    for (i=0;i<options.length;i++) {
+    for (i = 0; i < options.length; i++) {
         if (options[i].includes(`value="${selected}"`)) {
             foundSelected = true
-            ordered += options[i].replace("option value","option selected value")
+            ordered += options[i].replace("option value", "option selected value")
         } else {
             ordered += options[i]
         }
@@ -889,7 +910,7 @@ function processPopup(title, title_extra, data) {
                               </div>
                             </div>
                           <hr class="horizontal dark">
-                          <button id="delete_feature_btn" class="btn btn-warning btn-sm ms-auto">DELETE FEATURE</button>
+                          <button id="delete_feature_btn" class="btn btn-warning btn-sm ms-auto">UNASSIGN FEATURE</button>
                         </div>
                       </div>
                     <div class="card">
@@ -4128,6 +4149,87 @@ function processPopup(title, title_extra, data) {
                         location.reload();
                     });
                 })
+            }]
+
+        case 'Delete Role':
+            MAKE_REQUEST("GET",role_api_url,"",true, function(response) {
+                if (response instanceof Error) {
+                    console.log(response);
+                } else {
+                    data = response.data;
+                    options = "<option disabled selected value> -- Pilih Role -- </option>"
+                    for (i = 0; i < data.length; i++) {
+                        if (roles[data[i].name] == true) {
+                            continue
+                        }
+                        options += `<option value="${data[i].id}">${data[i].name}</option>`
+                    }
+                    document.getElementById("assign_role_name").innerHTML = options
+                }
+            })
+            MAKE_REQUEST("GET",role_feature_api_url,"",true, function(response) {
+                if (response instanceof Error) {
+                    alert("Update Role failed!")
+                    return
+                }
+                data = response.data;
+                options = "<option disabled selected value> -- Pilih Feature -- </option>"
+                for (i = 0; i < data.length; i++) {
+                    options += `<option value="${data[i].id}">${data[i].id}: [${data[i].tag}] ${data[i].endpoint}</option>`
+                }
+                document.getElementById("assign_feature_list").innerHTML = options
+            })
+            return [`
+                    <span class="close">&times;</span>
+                    <div class="card">
+                        <div class="card-header pb-0">
+                          <div class="d-flex align-items-center">
+                            <p class="mb-0">${title} <b>[${title_extra.name}]</b></p>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <select id="assign_role_name"></select>
+                              </div>
+                            </div>
+                          <hr class="horizontal dark">
+                          <button id="delete_role_btn" class="btn btn-warning btn-sm ms-auto">DELETE ROLE</button>
+                        </div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <select id="assign_feature_list"></select>
+                            </div>
+                          <hr class="horizontal dark">
+                          <button id="delete_feature_btn" class="btn btn-warning btn-sm ms-auto">DELETE FEATURE</button>
+                        </div>
+                    </div>
+                `, function() {
+                document.getElementById("delete_role_btn").addEventListener('click', function (e) {
+                    role_name = document.getElementById("assign_role_name").value
+                    MAKE_REQUEST("DELETE", delete_role_api_url.format(role_name), ``, true, function(response) {
+                        if (response instanceof Error) {
+                            alert("Remove Role from Service failed!")
+                            return false;
+                        }
+                        // Refresh the page
+                        location.reload();
+                    })
+                });
+                document.getElementById("delete_feature_btn").addEventListener('click', function (e) {
+                    feature_name = document.getElementById("assign_feature_list").value
+                    MAKE_REQUEST("DELETE", delete_feature_api_url.format(feature_name), ``, true, function(response) {
+                        if (response instanceof Error) {
+                            alert("Remove Feature from Service failed!")
+                            return false;
+                        }
+                        // Refresh the page
+                        location.reload();
+                    })
+                });
             }]
     }
 }
