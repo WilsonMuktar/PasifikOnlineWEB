@@ -1672,8 +1672,8 @@ function processPopup(title, title_extra, data) {
                           <div class="form-group">
                             <label for="person_category" class="form-control-label">Person Category</label>
                             <select id="person_category" class="form-control">
-                                <option value="Purchase">Reguler</option>
-                                <option value="Sale">PT</option>
+                                <option value="Reguler">Reguler</option>
+                                <option value="PT">PT</option>
                             </select>
                           </div>
                         </div>
@@ -3025,10 +3025,8 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Update Person':
             ordered_person_category = reorderSelectOptions([
-                '<option value="Supplier">Supplier</option>',
-                '<option value="Customer">Customer</option>',
-                '<option value="Captain">Captain</option>',
-                '<option value="Crew">Crew</option>',
+                '<option value="Reguler">Reguler</option>',
+                '<option value="PT">PT</option>',
             ], data.person_category);
 
             return [`
