@@ -649,6 +649,8 @@ function openPopup(title,title_extra,data) {
         myModal.style.display = 'none';
     });
     addModalFormBtnCallback();
+    // apply localization
+    loadLocalization(localStorage.getItem("localization_language"))
 }
 
 function processPopup(title, title_extra, data) {
