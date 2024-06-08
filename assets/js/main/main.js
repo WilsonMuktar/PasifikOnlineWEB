@@ -334,7 +334,7 @@ function processVesselTable(response) {
     for (i = data.length - 1; i >= 0; i--) {
         rows += `
                     <tr>
-                     <td><div class="d-flex px-2"><div><img src="${data[i].vessel_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Product: ${data[i].vessel_name}', '${data[i].vessel_image}');"></div>
+                     <td><div class="d-flex px-2"><div><img src="${data[i].vessel_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Vessel: ${data[i].vessel_name}', '${data[i].vessel_image}');"></div>
                       <div class="my-auto"><h6 class="mb-0 text-sm">${data[i].vessel_name}</h6></div></div></td>
                      <td><p class="text-sm font-weight-bold mb-0">${str(data[i].vessel_type)}</p></td>
                      <td><span class="text-xs font-weight-bold">${str(data[i].registration_number)}</span></td>
