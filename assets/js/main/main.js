@@ -4155,21 +4155,18 @@ function processPopup(title, title_extra, data) {
             MAKE_REQUEST("GET",role_api_url,"",true, function(response) {
                 if (response instanceof Error) {
                     console.log(response);
-                } else {
-                    data = response.data;
-                    options = "<option disabled selected value> -- Pilih Role -- </option>"
-                    for (i = 0; i < data.length; i++) {
-                        if (roles[data[i].name] == true) {
-                            continue
-                        }
-                        options += `<option value="${data[i].id}">${data[i].name}</option>`
-                    }
-                    document.getElementById("assign_role_name").innerHTML = options
+                    return
                 }
+                data = response.data;
+                options = "<option disabled selected value> -- Pilih Role -- </option>"
+                for (i = 0; i < data.length; i++) {
+                    options += `<option value="${data[i].id}">${data[i].name}</option>`
+                }
+                document.getElementById("assign_role_name").innerHTML = options
             })
             MAKE_REQUEST("GET",role_feature_api_url,"",true, function(response) {
                 if (response instanceof Error) {
-                    alert("Update Role failed!")
+                    console.log(response);
                     return
                 }
                 data = response.data;
@@ -4184,27 +4181,30 @@ function processPopup(title, title_extra, data) {
                     <div class="card">
                         <div class="card-header pb-0">
                           <div class="d-flex align-items-center">
-                            <p class="mb-0">${title} <b>[${title_extra.name}]</b></p>
+                            <p class="mb-0">${title}</p>
                           </div>
                         </div>
                         <div class="card-body">
                           <div class="row">
                             <div class="col-md-4">
                               <div class="form-group">
-                                <select id="assign_role_name"></select>
+                                <select id="assign_role_name" class="form-control"></select>
                               </div>
                             </div>
-                          <hr class="horizontal dark">
-                          <button id="delete_role_btn" class="btn btn-warning btn-sm ms-auto">DELETE ROLE</button>
+                            <hr class="horizontal dark">
+                            <button id="delete_role_btn" class="btn btn-warning btn-sm ms-auto">DELETE ROLE</button>
+                          </div>
                         </div>
                         <div class="card-body">
                           <div class="row">
                             <div class="col-md-4">
                               <div class="form-group">
-                                <select id="assign_feature_list"></select>
+                                <select id="assign_feature_list" class="form-control"></select>
+                              </div>
                             </div>
-                          <hr class="horizontal dark">
-                          <button id="delete_feature_btn" class="btn btn-warning btn-sm ms-auto">DELETE FEATURE</button>
+                            <hr class="horizontal dark">
+                            <button id="delete_feature_btn" class="btn btn-warning btn-sm ms-auto">DELETE FEATURE</button>
+                          </div>
                         </div>
                     </div>
                 `, function() {
