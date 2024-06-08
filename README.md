@@ -83,7 +83,7 @@ PasifikOnlineWeb
 - Hosting MySQL Databases mysql-pasifikonline.alwaysdata.net
 - Hosting Golang Application (Backend) using https://app.koyeb.com
 - Hosting Web (Frontend) using https://alwaysdata.net
-<img width="1728" alt="image" src="./assets/img/dev-flow.png">
+<img width="1728" alt="image" src="./assets/img/dev-flows.png">
 
 
 ## Useful Links
