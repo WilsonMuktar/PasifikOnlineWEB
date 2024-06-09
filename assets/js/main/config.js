@@ -33,6 +33,5 @@ const token_auth_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const token_validate_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const register_url = envHost+"/keyauth/v1/members/"
 
-
-const main_page_url= "pages/vessel.html"
+var main_page_url= "pages/vessel.html"
 const login_page_url= "pages/sign-in.html"

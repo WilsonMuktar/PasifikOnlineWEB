@@ -171,6 +171,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
         </ul>
     `
 } else {
+    main_page_url= "pages/profile.html"
     document.getElementById("sidenav-collapse-main").innerHTML = `
         <ul class="navbar-nav">
             <li class="nav-item">
