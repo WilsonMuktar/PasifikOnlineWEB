@@ -220,7 +220,7 @@ function reorderSelectOptions(options, selected) {
     }
 
     if (foundSelected == false) {
-        ordered = `<option value selected>-- None --</option>` + ordered
+        ordered = `<option value selected data-i18n-key="none">-- None --</option>` + ordered
     }
 
     return ordered
@@ -651,13 +651,13 @@ function processPopup(title, title_extra, data) {
             `,function(){}];
         case "User Profile":
             genderOptions = `
-                <option value="m">Male</option>
-                <option value="f">Female</option>
+                <option value="m" data-i18n-key="male">Male</option>
+                <option value="f" data-i18n-key="female">Female</option>
             `
             if (data.gender == "f") {
                 genderOptions = `
-                    <option value="f">Female</option>
-                    <option value="m">Male</option>
+                    <option value="f" data-i18n-key="female">Female</option>
+                    <option value="m" data-i18n-key="male">Male</option>
                 `
             }
             return [`
@@ -908,9 +908,9 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Feature -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_feature\"> -- Select Feature -- </option>"
                 for (i = 0; i < data.length; i++) {
-                    options += `<option value="${data[i].id}">${data[i].id}: [${data[i].tag}] ${data[i].endpoint}</option>`
+                    options += `<option value="${data[i].id}" data-i18n-key="${data[i].id}">${data[i].id}: [${data[i].tag}] ${data[i].endpoint}</option>`
                 }
                 document.getElementById("assign_feature_list").innerHTML = options
             })
@@ -952,7 +952,7 @@ function processPopup(title, title_extra, data) {
                               <div class="form-group">
                                 <label for="example-text-input" class="form-control-label">Features</label>
                                     <select id="assign_feature_list"  name="features" class="form-control">
-                                        <option disabled selected value> -- Pilih Feature -- </option>
+                                        <option disabled selected value data-i18n-key="select_feature"> -- Select Feature -- </option>
                                     </select>
                               </div>
                             </div>
@@ -999,12 +999,12 @@ function processPopup(title, title_extra, data) {
                     console.log(response);
                 } else {
                     data = response.data;
-                    options = "<option disabled selected value> -- Pilih Role -- </option>"
+                    options = "<option disabled selected value data-i18n-key=\"select_role\"> -- Select Role -- </option>"
                     for (i = 0; i < data.length; i++) {
                         if (roles[data[i].name] == true) {
                             continue
                         }
-                        options += `<option value="${data[i].id}">${data[i].name}</option>`
+                        options += `<option value="${data[i].id}" data-i18n-key="${data[i].name}">${data[i].name}</option>`
                     }
                     document.getElementById("bind_role_name").innerHTML = options
                 }
@@ -1061,7 +1061,7 @@ function processPopup(title, title_extra, data) {
         case 'UnBind Role':
             roleOptions = "";
             for(i=0;i<data.roles.length;i++){
-                roleOptions += `<option value='${data.roles[i].id}'>${data.roles[i].name}</option>`
+                roleOptions += `<option value='${data.roles[i].id}' data-i18n-key="${data.roles[i].name}">${data.roles[i].name}</option>`
             }
             return [`
                 <span class="close">&times;</span>
@@ -1287,160 +1287,159 @@ function processPopup(title, title_extra, data) {
                     }
                 });
             }]
-
         case 'Add Vessel':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="vessel_name" class="form-control-label">Vessel Name</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="vessel_name" class="form-control-label" data-i18n-key="vessel_name">Vessel Name</label>
                             <input id="vessel_name" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="vessel_type" class="form-control-label">Vessel Type</label>
-                            <input id="vessel_type" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="registration_number" class="form-control-label">Registration Number</label>
-                            <input id="registration_number" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="owner" class="form-control-label">Owner</label>
-                            <input id="owner" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="home_port" class="form-control-label">Home Port</label>
-                            <input id="home_port" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="flag" class="form-control-label">Flag</label>
-                            <input id="flag" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="length" class="form-control-label">Length</label>
-                            <input id="length" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="gross_tonnage" class="form-control-label">Gross Tonnage</label>
-                            <input id="gross_tonnage" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="year_built" class="form-control-label">Year Built</label>
-                            <input id="year_built" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="capacity" class="form-control-label">Capacity</label>
-                            <input id="capacity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="gear_type" class="form-control-label">Gear Type</label>
-                            <input id="gear_type" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="engine_power" class="form-control-label">Engine Power</label>
-                            <input id="engine_power" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="last_inspection_date" class="form-control-label">Last Inspection Date</label>
-                            <input id="last_inspection_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="insurance_policy_number" class="form-control-label">Insurance Policy Number</label>
-                            <input id="insurance_policy_number" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="insurance_expiration_date" class="form-control-label">Insurance Expiration Date</label>
-                            <input id="insurance_expiration_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="crew_size" class="form-control-label">Crew Size</label>
-                            <input id="crew_size" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="active_status" class="form-control-label">Active Status</label>
-                            <select id="active_status" class="form-control">
-                              <option value="Active">Active</option>
-                              <option value="Inactive">Inactive</option>
-                              <option value="Decommissioned">Decommissioned</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="fisheries_permits" class="form-control-label">Fisheries Permits</label>
-                            <input id="fisheries_permits" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="fisheries_associations" class="form-control-label">Fisheries Associations</label>
-                            <input id="fisheries_associations" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="safety_equipment" class="form-control-label">Safety Equipment</label>
-                            <input id="safety_equipment" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="vessel_image" class="form-control-label">Vessel Image</label>
-                            <input id="vessel_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="notes" class="form-control-label">Notes</label>
-                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="add_vessel_btn" class="btn btn-primary btn-sm ms-auto">ADD VESSEL</button>
                     </div>
-                  </div>
-            `, function (){
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="vessel_type" class="form-control-label" data-i18n-key="vessel_type">Vessel Type</label>
+                            <input id="vessel_type" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="registration_number" class="form-control-label" data-i18n-key="registration_number">Registration Number</label>
+                            <input id="registration_number" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="owner" class="form-control-label" data-i18n-key="owner">Owner</label>
+                            <input id="owner" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="home_port" class="form-control-label" data-i18n-key="home_port">Home Port</label>
+                            <input id="home_port" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="flag" class="form-control-label" data-i18n-key="flag">Flag</label>
+                            <input id="flag" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="length" class="form-control-label" data-i18n-key="length">Length</label>
+                            <input id="length" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="gross_tonnage" class="form-control-label" data-i18n-key="gross_tonnage">Gross Tonnage</label>
+                            <input id="gross_tonnage" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="year_built" class="form-control-label" data-i18n-key="year_built">Year Built</label>
+                            <input id="year_built" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="capacity" class="form-control-label" data-i18n-key="capacity">Capacity</label>
+                            <input id="capacity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="gear_type" class="form-control-label" data-i18n-key="gear_type">Gear Type</label>
+                            <input id="gear_type" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="engine_power" class="form-control-label" data-i18n-key="engine_power">Engine Power</label>
+                            <input id="engine_power" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="last_inspection_date" class="form-control-label" data-i18n-key="last_inspection_date">Last Inspection Date</label>
+                            <input id="last_inspection_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="insurance_policy_number" class="form-control-label" data-i18n-key="insurance_policy_number">Insurance Policy Number</label>
+                            <input id="insurance_policy_number" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="insurance_expiration_date" class="form-control-label" data-i18n-key="insurance_expiration_date">Insurance Expiration Date</label>
+                            <input id="insurance_expiration_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="crew_size" class="form-control-label" data-i18n-key="crew_size">Crew Size</label>
+                            <input id="crew_size" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="active_status" class="form-control-label" data-i18n-key="active_status">Active Status</label>
+                            <select id="active_status" class="form-control" data-i18n-key="active_status">
+                                <option value="Active" data-i18n-key="active">Active</option>
+                                <option value="Inactive" data-i18n-key="inactive">Inactive</option>
+                                <option value="Decommissioned" data-i18n-key="decommissioned">Decommissioned</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fisheries_permits" class="form-control-label" data-i18n-key="fisheries_permits">Fisheries Permits</label>
+                            <input id="fisheries_permits" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fisheries_associations" class="form-control-label" data-i18n-key="fisheries_associations">Fisheries Associations</label>
+                            <input id="fisheries_associations" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="safety_equipment" class="form-control-label" data-i18n-key="safety_equipment">Safety Equipment</label>
+                            <input id="safety_equipment" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="vessel_image" class="form-control-label" data-i18n-key="vessel_image">Vessel Image</label>
+                            <input id="vessel_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <hr class="horizontal dark">
+                <button id="add_vessel_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_vessel_btn">ADD VESSEL</button>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("add_vessel_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let vessel_name = document.getElementById("vessel_name").value;
@@ -1526,9 +1525,9 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Product -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_product\"> -- Select Product -- </option>"
                 for (i = 0; i < data.length; i++) {
-                    options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
+                    options += `<option value="${data[i].product_id}" data-i18n-key="${data[i].product_name}">${data[i].product_name}</option>`
                 }
                 document.getElementById("assign_product_list").innerHTML = options
             })
@@ -1538,105 +1537,105 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Person -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_supplier_list").innerHTML = options
             })
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="product_id" class="form-control-label">Product ID</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
                             <select id="assign_product_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="quantity" class="form-control-label">Quantity</label>
-                            <input id="quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="location" class="form-control-label">Location</label>
-                            <input id="location" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="batch_serial_number" class="form-control-label">Batch/Serial Number</label>
-                            <input id="batch_serial_number" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="expiration_date" class="form-control-label">Expiration Date</label>
-                            <input id="expiration_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="cost_price" class="form-control-label">Cost Price</label>
-                            <input id="cost_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="selling_price" class="form-control-label">Selling Price</label>
-                            <input id="selling_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="supplier_id" class="form-control-label">Supplier ID</label>
-                            <select id="assign_supplier_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="transaction_type" class="form-control-label">Transaction Type</label>
-                            <select id="transaction_type" class="form-control">
-                              <option value="Purchase">Purchase</option>
-                              <option value="Sale">Sale</option>
-                              <option value="Return">Return</option>
-                              <option value="COLDSTORAGE">Cold Storage</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="reference_id" class="form-control-label">Reference ID</label>
-                            <input id="reference_id" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="notes" class="form-control-label">Notes</label>
-                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="stock_image" class="form-control-label">Stock Image</label>
-                            <input id="stock_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="add_stock_btn" class="btn btn-primary btn-sm ms-auto">ADD STOCK</button>
                     </div>
-                  </div>
-            `, function (){
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="quantity" class="form-control-label" data-i18n-key="quantity">Quantity</label>
+                            <input id="quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="location" class="form-control-label" data-i18n-key="location">Location</label>
+                            <input id="location" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="batch_serial_number" class="form-control-label" data-i18n-key="batch_serial_number">Batch/Serial Number</label>
+                            <input id="batch_serial_number" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="expiration_date" class="form-control-label" data-i18n-key="expiration_date">Expiration Date</label>
+                            <input id="expiration_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cost_price" class="form-control-label" data-i18n-key="cost_price">Cost Price</label>
+                            <input id="cost_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="selling_price" class="form-control-label" data-i18n-key="selling_price">Selling Price</label>
+                            <input id="selling_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="supplier_id" class="form-control-label" data-i18n-key="supplier_id">Supplier ID</label>
+                            <select id="assign_supplier_list" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
+                            <select id="transaction_type" class="form-control" data-i18n-key="transaction_type">
+                                <option value="Purchase" data-i18n-key="purchase">Purchase</option>
+                                <option value="Sale" data-i18n-key="sale">Sale</option>
+                                <option value="Return" data-i18n-key="return">Return</option>
+                                <option value="COLDSTORAGE" data-i18n-key="cold_storage">Cold Storage</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="reference_id" class="form-control-label" data-i18n-key="reference_id">Reference ID</label>
+                            <input id="reference_id" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="stock_image" class="form-control-label" data-i18n-key="stock_image">Stock Image</label>
+                            <input id="stock_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                </div>
+                <hr class="horizontal dark">
+                <button id="add_stock_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_stock_btn">ADD STOCK</button>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("add_stock_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let product_id = document.getElementById("assign_product_list").value;
@@ -1697,96 +1696,96 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Add Person':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="first_name" class="form-control-label">First Name</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first_name" class="form-control-label" data-i18n-key="first_name">First Name</label>
                             <input id="first_name" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="last_name" class="form-control-label">Last Name</label>
-                            <input id="last_name" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="person_category" class="form-control-label">Person Category</label>
-                            <select id="person_category" class="form-control">
-                                <option value="Reguler">Reguler</option>
-                                <option value="PT">PT</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="email" class="form-control-label">Email</label>
-                            <input id="email" class="form-control" type="email" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="phone_number" class="form-control-label">Phone Number</label>
-                            <input id="phone_number" class="form-control" type="tel" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="address" class="form-control-label">Address</label>
-                            <input id="address" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="city" class="form-control-label">City</label>
-                            <input id="city" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="state" class="form-control-label">State</label>
-                            <input id="state" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="country" class="form-control-label">Country</label>
-                            <input id="country" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="postal_code" class="form-control-label">Postal Code</label>
-                            <input id="postal_code" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="person_image" class="form-control-label">Person Image</label>
-                            <input id="person_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="notes" class="form-control-label">Notes</label>
-                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="add_person_btn" class="btn btn-primary btn-sm ms-auto">ADD PERSON</button>
                     </div>
-                  </div>
-            `, function (){
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="last_name" class="form-control-label" data-i18n-key="last_name">Last Name</label>
+                            <input id="last_name" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="person_category" class="form-control-label" data-i18n-key="person_category">Person Category</label>
+                            <select id="person_category" class="form-control" data-i18n-key="person_category">
+                                <option value="Reguler" data-i18n-key="reguler">Reguler</option>
+                                <option value="PT" data-i18n-key="pt">PT</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email" class="form-control-label" data-i18n-key="email">Email</label>
+                            <input id="email" class="form-control" type="email" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phone_number" class="form-control-label" data-i18n-key="phone_number">Phone Number</label>
+                            <input id="phone_number" class="form-control" type="tel" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="address" class="form-control-label" data-i18n-key="address">Address</label>
+                            <input id="address" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="city" class="form-control-label" data-i18n-key="city">City</label>
+                            <input id="city" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="state" class="form-control-label" data-i18n-key="state">State</label>
+                            <input id="state" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="country" class="form-control-label" data-i18n-key="country">Country</label>
+                            <input id="country" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="postal_code" class="form-control-label" data-i18n-key="postal_code">Postal Code</label>
+                            <input id="postal_code" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="person_image" class="form-control-label" data-i18n-key="person_image">Person Image</label>
+                            <input id="person_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <hr class="horizontal dark">
+                <button id="add_person_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_person_btn">ADD PERSON</button>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("add_person_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let person_category = document.getElementById("person_category").value;
@@ -1852,7 +1851,7 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Vessel -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_vessel\"> -- Select Vessel -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
                 }
@@ -1864,82 +1863,82 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Person -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_captain_list").innerHTML = options
             })
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="trip_name" class="form-control-label">Trip Name</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="trip_name" class="form-control-label" data-i18n-key="trip_name">Trip Name</label>
                             <input id="trip_name" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="departure_date" class="form-control-label">Departure Date</label>
-                            <input id="departure_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="return_date" class="form-control-label">Return Date</label>
-                            <input id="return_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="departure_port" class="form-control-label">Departure Port</label>
-                            <input id="departure_port" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="destination_port" class="form-control-label">Destination Port</label>
-                            <input id="destination_port" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="captain_id" class="form-control-label">Captain ID</label>
-                            <select id="assign_captain_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="vessel_id" class="form-control-label">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="trip_image" class="form-control-label">Trip Image</label>
-                            <input id="trip_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="notes" class="form-control-label">Notes</label>
-                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="add_trip_btn" class="btn btn-primary btn-sm ms-auto">ADD TRIP</button>
                     </div>
-                  </div>
-            `, function (){
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="departure_date" class="form-control-label" data-i18n-key="departure_date">Departure Date</label>
+                            <input id="departure_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="return_date" class="form-control-label" data-i18n-key="return_date">Return Date</label>
+                            <input id="return_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="departure_port" class="form-control-label" data-i18n-key="departure_port">Departure Port</label>
+                            <input id="departure_port" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="destination_port" class="form-control-label" data-i18n-key="destination_port">Destination Port</label>
+                            <input id="destination_port" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="captain_id" class="form-control-label" data-i18n-key="captain_id">Captain ID</label>
+                            <select id="assign_captain_list" class="form-control" data-i18n-key="captain_id"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
+                            <select id="assign_vessel_list" class="form-control" data-i18n-key="vessel_id"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="trip_image" class="form-control-label" data-i18n-key="trip_image">Trip Image</label>
+                            <input id="trip_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <hr class="horizontal dark">
+                <button id="add_trip_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_trip_btn">ADD TRIP</button>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("add_trip_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let trip_name = document.getElementById("trip_name").value;
@@ -1999,7 +1998,7 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Product -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_product\"> -- Select Product -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
                 }
@@ -2011,7 +2010,7 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Person -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
@@ -2024,7 +2023,7 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option selected value=''> -- Pilih Vessel -- </option>"
+                options = "<option selected value='' data-i18n-key=\"select_vessel\"> -- Select Vessel -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
                 }
@@ -2036,127 +2035,127 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option selected value=''> -- Pilih Trip -- </option>"
+                options = "<option selected value='' data-i18n-key=\"select_trip\"> -- Select Trip -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].trip_id}">${data[i].trip_name}</option>`
                 }
                 document.getElementById("assign_trip_list").innerHTML = options
             })
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="transaction_date" class="form-control-label">Transaction Date</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="transaction_date" class="form-control-label" data-i18n-key="transaction_date">Transaction Date</label>
                             <input id="transaction_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="transaction_type" class="form-control-label">Transaction Type</label>
-                            <select id="transaction_type" class="form-control">
-                                <option value="Purchase">Purchase</option>
-                                <option value="Sale">Sale</option>
-                                <option value="Return">Return</option>
-                                <option value="Debt">Debt</option>
-                                <option value="Tax">Tax</option>
-                                <option value="Salary">Salary</option>
-                                <option value="ColdStorage">Cold Storage</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="product_id" class="form-control-label">product ID</label>
-                            <select id="assign_product_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="quantity" class="form-control-label">Quantity</label>
-                            <input id="quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="unit_price" class="form-control-label">Unit Price</label>
-                            <input id="unit_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="total_price" class="form-control-label">Total Price</label>
-                            <input id="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" readonly>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="seller_id" class="form-control-label">Seller ID</label>
-                            <select id="assign_seller_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="buyer_id" class="form-control-label">Buyer ID</label>
-                            <select id="assign_buyer_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="vessel_id" class="form-control-label">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="trip_id" class="form-control-label">Trip ID</label>
-                            <select id="assign_trip_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="payment_type" class="form-control-label">Payment Type</label>
-                            <select id="payment_type" class="form-control">
-                                <option value="CASH">CASH</option>
-                                <option value="DEBT">DEBT</option>
-                                <option value="GIRO">GIRO</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="payment_status" class="form-control-label">Payment Status</label>
-                            <select id="payment_status" class="form-control">
-                                <option value="0">PENDING</option>
-                                <option value="1">DONE</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="transaction_image" class="form-control-label">Transaction Image</label>
-                            <input id="transaction_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="notes" class="form-control-label">Notes</label>
-                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="add_transaction_btn" class="btn btn-primary btn-sm ms-auto">ADD TRANSACTION</button>
                     </div>
-                  </div>
-            `, function (){
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
+                            <select id="transaction_type" class="form-control" data-i18n-key="transaction_type">
+                                <option value="Purchase" data-i18n-key="purchase">Purchase</option>
+                                <option value="Sale" data-i18n-key="sale">Sale</option>
+                                <option value="Return" data-i18n-key="return">Return</option>
+                                <option value="Debt" data-i18n-key="debt">Debt</option>
+                                <option value="Tax" data-i18n-key="tax">Tax</option>
+                                <option value="Salary" data-i18n-key="salary">Salary</option>
+                                <option value="ColdStorage" data-i18n-key="cold_storage">Cold Storage</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_id" class="form-control-label" data-i18n-key="product_id">product ID</label>
+                            <select id="assign_product_list" class="form-control" data-i18n-key="product_id"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="quantity" class="form-control-label" data-i18n-key="quantity">Quantity</label>
+                            <input id="quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="unit_price" class="form-control-label" data-i18n-key="unit_price">Unit Price</label>
+                            <input id="unit_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="total_price" class="form-control-label" data-i18n-key="total_price">Total Price</label>
+                            <input id="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
+                            <select id="assign_seller_list" class="form-control" data-i18n-key="seller_id"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
+                            <select id="assign_buyer_list" class="form-control" data-i18n-key="buyer_id"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
+                            <select id="assign_vessel_list" class="form-control" data-i18n-key="vessel_id"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
+                            <select id="assign_trip_list" class="form-control" data-i18n-key="trip_id"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="payment_type" class="form-control-label" data-i18n-key="payment_type">Payment Type</label>
+                            <select id="payment_type" class="form-control" data-i18n-key="payment_type">
+                                <option value="CASH" data-i18n-key="cash">CASH</option>
+                                <option value="DEBT" data-i18n-key="debt">DEBT</option>
+                                <option value="GIRO" data-i18n-key="giro">GIRO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="payment_status" class="form-control-label" data-i18n-key="payment_status">Payment Status</label>
+                            <select id="payment_status" class="form-control" data-i18n-key="payment_status">
+                                <option value="0" data-i18n-key="pending">PENDING</option>
+                                <option value="1" data-i18n-key="done">DONE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="transaction_image" class="form-control-label" data-i18n-key="transaction_image">Transaction Image</label>
+                            <input id="transaction_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <hr class="horizontal dark">
+                <button id="add_transaction_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_transaction_btn">ADD TRANSACTION</button>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("add_transaction_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let transaction_date = document.getElementById("transaction_date").value+"T00:00:00Z";
@@ -2224,76 +2223,76 @@ function processPopup(title, title_extra, data) {
                 });
             }]
         case 'Add Maintenance':
-            MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
+            MAKE_REQUEST("GET", vessel_api_url, "", true, function(response) {
                 if (response instanceof Error) {
                     alert("Add Catch get vessel list failed!")
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Vessel -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_vessel\"> -- Pilih Vessel -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
                 }
                 document.getElementById("assign_vessel_list").innerHTML = options
             })
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="maintenance_date" class="form-control-label">Maintenance Date</label>
-                            <input id="maintenance_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="vessel_id" class="form-control-label">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="task_description" class="form-control-label">Task Description</label>
-                            <textarea id="task_description" class="form-control" rows="3" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="parts_used" class="form-control-label">Parts Used</label>
-                            <textarea id="parts_used" class="form-control" rows="3" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="cost" class="form-control-label">Cost</label>
-                            <input id="cost" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="maintenance_image" class="form-control-label">Maintenance Image</label>
-                            <input id="maintenance_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="notes" class="form-control-label">Notes</label>
-                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="add_maintenance_btn" class="btn btn-primary btn-sm ms-auto">ADD MAINTENANCE</button>
-                    </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+              <div class="d-flex align-items-center">
+                <p class="mb-0">${title}</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="maintenance_date" class="form-control-label" data-i18n-key="maintenance_date">Maintenance Date</label>
+                    <input id="maintenance_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
-            `, function (){
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
+                    <select id="assign_vessel_list" class="form-control" data-i18n-key="vessel_id"></select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="task_description" class="form-control-label" data-i18n-key="task_description">Task Description</label>
+                    <textarea id="task_description" class="form-control" rows="3" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="parts_used" class="form-control-label" data-i18n-key="parts_used">Parts Used</label>
+                    <textarea id="parts_used" class="form-control" rows="3" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="cost" class="form-control-label" data-i18n-key="cost">Cost</label>
+                    <input id="cost" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="maintenance_image" class="form-control-label" data-i18n-key="maintenance_image">Maintenance Image</label>
+                    <input id="maintenance_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                    <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                  </div>
+                </div>
+              </div>
+              <hr class="horizontal dark">
+              <button id="add_maintenance_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_maintenance_btn">ADD MAINTENANCE</button>
+            </div>
+          </div>
+    `, function (){
                 document.getElementById("add_maintenance_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let maintenance_date = document.getElementById("maintenance_date").value+"T00:00:00Z";
@@ -2343,106 +2342,106 @@ function processPopup(title, title_extra, data) {
                 });
             }]
         case 'Add Catch':
-            MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
+            MAKE_REQUEST("GET", vessel_api_url, "", true, function(response) {
                 if (response instanceof Error) {
                     alert("Add Catch get vessel list failed!")
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Vessel -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_vessel\"> -- Select Vessel -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
                 }
                 document.getElementById("assign_vessel_list").innerHTML = options
             })
-            MAKE_REQUEST("GET",trip_api_url,"",true, function(response) {
+            MAKE_REQUEST("GET", trip_api_url, "", true, function(response) {
                 if (response instanceof Error) {
                     alert("Add Catch get trip list failed!")
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Trip -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_trip\"> -- Select Trip -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].trip_id}">${data[i].trip_name}</option>`
                 }
                 document.getElementById("assign_trip_list").innerHTML = options
             })
-            MAKE_REQUEST("GET",product_api_url,"",true, function(response) {
+            MAKE_REQUEST("GET", product_api_url, "", true, function(response) {
                 if (response instanceof Error) {
                     alert("Add Catch get product list failed!")
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Product -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_product\"> -- Select Product -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
                 }
                 document.getElementById("assign_product_list").innerHTML = options
             })
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="catch_date" class="form-control-label">Catch Date</label>
-                            <input id="catch_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="product_id" class="form-control-label">Product ID</label>
-                            <select id="assign_product_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="catch_location" class="form-control-label">Catch Location</label>
-                            <input id="catch_location" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="catch_quantity" class="form-control-label">Catch Quantity</label>
-                            <input id="catch_quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="vessel_id" class="form-control-label">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="trip_id" class="form-control-label">Trip ID</label>
-                            <select id="assign_trip_list" class="form-control"></select>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="catch_image" class="form-control-label">Catch Image</label>
-                            <input id="catch_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="notes" class="form-control-label">Notes</label>
-                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="add_catch_btn" class="btn btn-primary btn-sm ms-auto">ADD CATCH</button>
-                    </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+              <div class="d-flex align-items-center">
+                <p class="mb-0">${title}</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="catch_date" class="form-control-label" data-i18n-key="catch_date">Catch Date</label>
+                    <input id="catch_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
-            `, function (){
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
+                    <select id="assign_product_list" class="form-control" data-i18n-key="product_id"></select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="catch_location" class="form-control-label" data-i18n-key="catch_location">Catch Location</label>
+                    <input id="catch_location" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="catch_quantity" class="form-control-label" data-i18n-key="catch_quantity">Catch Quantity</label>
+                    <input id="catch_quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
+                    <select id="assign_vessel_list" class="form-control" data-i18n-key="vessel_id"></select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
+                    <select id="assign_trip_list" class="form-control" data-i18n-key="trip_id"></select>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="catch_image" class="form-control-label" data-i18n-key="catch_image">Catch Image</label>
+                    <input id="catch_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                    <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                  </div>
+                </div>
+              </div>
+              <hr class="horizontal dark">
+              <button id="add_catch_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_catch_btn">ADD CATCH</button>
+            </div>
+          </div>
+    `, function (){
                 document.getElementById("add_catch_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let product_id = document.getElementById("assign_product_list").value;
@@ -2454,11 +2453,11 @@ function processPopup(title, title_extra, data) {
                     let catch_image_file = document.getElementById("catch_image").files[0];
                     let notes = document.getElementById("notes").value;
 
-                     function update() {
-                         blobText = ""
-                         if (catch_image_file != undefined) {
-                             blobText = reader.result
-                         }
+                    function update() {
+                        blobText = ""
+                        if (catch_image_file != undefined) {
+                            blobText = reader.result
+                        }
 
                         // Construct payload
                         let payload = {
@@ -2496,122 +2495,122 @@ function processPopup(title, title_extra, data) {
 
         case 'Update Product':
             ordered_product_category = reorderSelectOptions([
-                '<option value="Material">Material</option>',
-                '<option value="Equipment">Equipment</option>',
-                '<option value="Catch">Catch</option>',
-                '<option value="Other">Other</option>',
+                '<option value="Material" data-i18n-key="material">Material</option>',
+                '<option value="Equipment" data-i18n-key="equipment">Equipment</option>',
+                '<option value="Catch" data-i18n-key="catch">Catch</option>',
+                '<option value="Other" data-i18n-key="other">Other</option>',
             ], data.product_category)
 
             ordered_product_availability_status = reorderSelectOptions([
-                '<option value="In Stock">In Stock</option>',
-                '<option value="Out of Stock">Out of Stock</option>',
-                '<option value="Backordered">Backordered</option>',
-                '<option value="Discontinued">Discontinued</option>',
+                '<option value="In Stock" data-i18n-key="in_stock">In Stock</option>',
+                '<option value="Out of Stock" data-i18n-key="out_of_stock">Out of Stock</option>',
+                '<option value="Backordered" data-i18n-key="backordered">Backordered</option>',
+                '<option value="Discontinued" data-i18n-key="discontinued">Discontinued</option>',
             ], data.availability_status)
 
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Product Name</label>
-                            <input id="update_product_id" class="form-control" type="text" value="${data.product_id}" onfocus="focused(this)" onfocusout="defocused(this)" hidden>
-                            <input id="update_product_name" class="form-control" type="text" value="${data.product_name}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Product Category</label>
-                            <select id="update_product_category" name="product_category" class="form-control" value="${str(data.product_category)}">
-                                ${ordered_product_category}
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Description</label>
-                            <textarea id="update_product_description" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" >${str(data.description)}</textarea>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Category</label>
-                            <input id="update_product_extra_category" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.category)}">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Brand</label>
-                            <input id="update_product_brand" class="form-control" type="text"  onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.brand)}">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Price</label>
-                            <input id="update_product_price" class="form-control" type="number" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.price)}">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Unit of Measurement</label>
-                            <input id="update_product_unit_of_measurement" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.unit_of_measurement)}">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Quantity in Stock</label>
-                            <input id="update_product_quantity_in_stock" class="form-control" type="number" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.quantity_in_stock)}">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Supplier Name</label>
-                            <input id="update_product_supplier_name" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.supplier_name)}">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Supplier Contact</label>
-                            <input id="update_product_supplier_contact" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.supplier_contact)}">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Product Image</label>
-                            <input id="update_product_image_old" class="form-control" type="text" hidden value="${str(data.product_image)}">
-                            <input id="update_product_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Status</label>
-                            <select id="update_product_availability_status" name="availability_status" class="form-control">${ordered_product_availability_status}</select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Keywords</label>
-                            <input id="update_product_keywords" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.keywords)}">
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Notes</label>
-                            <input id="update_product_notes" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.notes)}">
-                          </div>
-                        </div>
-                      <hr class="horizontal dark">
-                      <button id="update_product_btn" class="btn btn-primary btn-sm ms-auto">UPDATE PRODUCT</button>
-                    </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+              <div class="d-flex align-items-center">
+                <p class="mb-0">${title}</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_id" class="form-control-label" data-i18n-key="product_name">Product Name</label>
+                    <input id="update_product_id" class="form-control" type="text" value="${data.product_id}" onfocus="focused(this)" onfocusout="defocused(this)" hidden>
+                    <input id="update_product_name" class="form-control" type="text" value="${data.product_name}" onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
-            `, function (){
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_category" class="form-control-label" data-i18n-key="product_category">Product Category</label>
+                    <select id="update_product_category" name="product_category" class="form-control" value="${str(data.product_category)}">
+                        ${ordered_product_category}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="update_product_description" class="form-control-label" data-i18n-key="description">Description</label>
+                    <textarea id="update_product_description" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" >${str(data.description)}</textarea>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_extra_category" class="form-control-label" data-i18n-key="category">Category</label>
+                    <input id="update_product_extra_category" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.category)}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_brand" class="form-control-label" data-i18n-key="brand">Brand</label>
+                    <input id="update_product_brand" class="form-control" type="text"  onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.brand)}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_price" class="form-control-label" data-i18n-key="price">Price</label>
+                    <input id="update_product_price" class="form-control" type="number" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.price)}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_unit_of_measurement" class="form-control-label" data-i18n-key="unit_of_measurement">Unit of Measurement</label>
+                    <input id="update_product_unit_of_measurement" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.unit_of_measurement)}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_quantity_in_stock" class="form-control-label" data-i18n-key="quantity_in_stock">Quantity in Stock</label>
+                    <input id="update_product_quantity_in_stock" class="form-control" type="number" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.quantity_in_stock)}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_supplier_name" class="form-control-label" data-i18n-key="supplier_name">Supplier Name</label>
+                    <input id="update_product_supplier_name" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.supplier_name)}">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_supplier_contact" class="form-control-label" data-i18n-key="supplier_contact">Supplier Contact</label>
+                    <input id="update_product_supplier_contact" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.supplier_contact)}">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="update_product_image" class="form-control-label" data-i18n-key="product_image">Product Image</label>
+                    <input id="update_product_image_old" class="form-control" type="text" hidden value="${str(data.product_image)}">
+                    <input id="update_product_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_availability_status" class="form-control-label" data-i18n-key="status">Status</label>
+                    <select id="update_product_availability_status" name="availability_status" class="form-control">${ordered_product_availability_status}</select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="update_product_keywords" class="form-control-label" data-i18n-key="keywords">Keywords</label>
+                    <input id="update_product_keywords" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.keywords)}">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="update_product_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                    <input id="update_product_notes" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.notes)}">
+                  </div>
+                </div>
+              <hr class="horizontal dark">
+              <button id="update_product_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="update_product">UPDATE PRODUCT</button>
+            </div>
+          </div>
+    `, function (){
                 document.getElementById("update_product_btn").addEventListener('click', function (e) {
                     product_id = document.getElementById("update_product_id").value;
                     product_name = document.getElementById("update_product_name").value;
@@ -2680,155 +2679,155 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Update Vessel':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Vessel Name</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="update_vessel">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="vessel_name">Vessel Name</label>
                             <input id="update_vessel_id" class="form-control" type="text" value="${data.vessel_id}" onfocus="focused(this)" onfocusout="defocused(this)" hidden>
                             <input id="update_vessel_name" class="form-control" type="text" value="${data.vessel_name}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Vessel Type</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="vessel_type">Vessel Type</label>
                             <input id="update_vessel_type" name="vessel_type" type="text" class="form-control" value="${data.vessel_type}">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Registration Number</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="registration_number">Registration Number</label>
                             <input id="update_vessel_registration_number" class="form-control" type="text" value="${data.registration_number}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Owner</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="owner">Owner</label>
                             <input id="update_vessel_owner" class="form-control" type="text" value="${data.owner}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Home Port</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="home_port">Home Port</label>
                             <input id="update_vessel_home_port" class="form-control" type="text" value="${data.home_port}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Flag</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="flag">Flag</label>
                             <input id="update_vessel_flag" class="form-control" type="text" value="${data.flag}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Length</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="length">Length</label>
                             <input id="update_vessel_length" class="form-control" type="number" value="${data.length}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Gross Tonnage</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="gross_tonnage">Gross Tonnage</label>
                             <input id="update_vessel_gross_tonnage" class="form-control" type="number" value="${data.gross_tonnage}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Year Built</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="year_built">Year Built</label>
                             <input id="update_vessel_year_built" class="form-control" type="number" value="${data.year_built}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Capacity</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="capacity">Capacity</label>
                             <input id="update_vessel_capacity" class="form-control" type="number" value="${data.capacity}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Gear Type</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="gear_type">Gear Type</label>
                             <input id="update_vessel_gear_type" class="form-control" type="text" value="${data.gear_type}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Engine Power</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="engine_power">Engine Power</label>
                             <input id="update_vessel_engine_power" class="form-control" type="number" value="${data.engine_power}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Last Inspection Date</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="last_inspection_date">Last Inspection Date</label>
                             <input id="update_vessel_last_inspection_date" class="form-control" type="date" value="${data.last_inspection_date}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Insurance Policy Number</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="insurance_policy_number">Insurance Policy Number</label>
                             <input id="update_vessel_insurance_policy_number" class="form-control" type="text" value="${data.insurance_policy_number}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Insurance Expiration Date</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="insurance_expiration_date">Insurance Expiration Date</label>
                             <input id="update_vessel_insurance_expiration_date" class="form-control" type="date" value="${data.insurance_expiration_date}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Crew Size</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="crew_size">Crew Size</label>
                             <input id="update_vessel_crew_size" class="form-control" type="number" value="${data.crew_size}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Active Status</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="active_status">Active Status</label>
                             <input id="update_vessel_active_status" name="active_status" type="text" class="form-control" value="${data.active_status}">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Fisheries Permits</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="fisheries_permits">Fisheries Permits</label>
                             <input id="update_vessel_fisheries_permits" class="form-control" type="text" value="${data.fisheries_permits}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Fisheries Associations</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="fisheries_associations">Fisheries Associations</label>
                             <input id="update_vessel_fisheries_associations" class="form-control" type="text" value="${data.fisheries_associations}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Safety Equipment</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="safety_equipment">Safety Equipment</label>
                             <input id="update_vessel_safety_equipment" class="form-control" type="text" value="${data.safety_equipment}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Vessel Image</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="vessel_image">Vessel Image</label>
                             <input id="update_vessel_image_old" class="form-control" type="text" hidden value="${data.vessel_image}">
                             <input id="update_vessel_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Notes</label>
-                            <input id="update_vessel_notes" class="form-control" type="text" value="${data.notes}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="update_vessel_btn" class="btn btn-primary btn-sm ms-auto">UPDATE VESSEL</button>
                     </div>
-                  </div>
-            `, function (){
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="notes">Notes</label>
+                            <input id="update_vessel_notes" class="form-control" type="text" value="${data.notes}" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                </div>
+                <hr class="horizontal dark">
+                <button id="update_vessel_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="update_vessel_btn">UPDATE VESSEL</button>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("update_vessel_btn").addEventListener('click', function (e) {
                     vessel_id = document.getElementById("update_vessel_id").value;
                     vessel_name = document.getElementById("update_vessel_name").value;
@@ -2913,104 +2912,104 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Update Stock':
             ordered_transaction_type = reorderSelectOptions([
-                '<option value="Purchase">Purchase</option>',
-                '<option value="Sale">Sale</option>',
-                '<option value="Return">Return</option>',
-                '<option value="COLDSTORAGE">Cold Storage</option>',
+                '<option value="Purchase" data-i18n-key="purchase">Purchase</option>',
+                '<option value="Sale" data-i18n-key="sale">Sale</option>',
+                '<option value="Return" data-i18n-key="return">Return</option>',
+                '<option value="COLDSTORAGE" data-i18n-key="cold_storage">Cold Storage</option>',
             ], data.transaction_type);
 
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Product ID</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="update_stock">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="product_id">Product ID</label>
                             <input id="update_stock_id" class="form-control" type="text" value="${data.stock_id}" onfocus="focused(this)" onfocusout="defocused(this)" hidden>
                             <input id="update_product_id" class="form-control" type="text" value="${data.product_id}" onfocus="focused(this)" onfocusout="defocused(this)" disabled>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Quantity</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="quantity">Quantity</label>
                             <input id="update_stock_quantity" class="form-control" type="number" value="${data.quantity}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Location</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="location">Location</label>
                             <input id="update_stock_location" class="form-control" type="text" value="${data.location}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Batch/Serial Number</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="batch_serial_number">Batch/Serial Number</label>
                             <input id="update_stock_batch_serial_number" class="form-control" type="text" value="${data.batch_serial_number}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Expiration Date</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="expiration_date">Expiration Date</label>
                             <input id="update_stock_expiration_date" class="form-control" type="date" value="${data.expiration_date.replace("T00:00:00Z","")}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Cost Price</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="cost_price">Cost Price</label>
                             <input id="update_stock_cost_price" class="form-control" type="number" value="${data.cost_price}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Selling Price</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="selling_price">Selling Price</label>
                             <input id="update_stock_selling_price" class="form-control" type="number" value="${data.selling_price}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Supplier ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="supplier_id">Supplier ID</label>
                             <input id="update_stock_supplier_id" class="form-control" type="text" value="${data.supplier_id}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Transaction Type</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
                             <select id="update_stock_transaction_type" name="transaction_type" class="form-control">
                                 ${ordered_transaction_type}
                             </select>
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Reference ID</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="reference_id">Reference ID</label>
                             <input id="update_stock_reference_id" class="form-control" type="text" value="${data.reference_id}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Notes</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="notes">Notes</label>
                             <input id="update_stock_notes" class="form-control" type="text" value="${data.notes}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Stock Image</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="stock_image">Stock Image</label>
                             <input id="update_stock_image_old" class="form-control" type="text" hidden value="${data.stock_image}">
                             <input id="update_stock_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="update_stock_btn" class="btn btn-primary btn-sm ms-auto">UPDATE STOCK</button>
                     </div>
-                  </div>
-            `, function (){
+                </div>
+                <hr class="horizontal dark">
+                <button id="update_stock_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="update_stock_btn">UPDATE STOCK</button>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("update_stock_btn").addEventListener('click', function (e) {
                     stock_id = document.getElementById("update_stock_id").value;
                     product_id = document.getElementById("update_product_id").value;
@@ -3075,99 +3074,100 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Update Person':
             ordered_person_category = reorderSelectOptions([
-                '<option value="Reguler">Reguler</option>',
-                '<option value="PT">PT</option>',
+                '<option value="Reguler" data-i18n-key="reguler">Reguler</option>',
+                '<option value="PT" data-i18n-key="pt">PT</option>',
             ], data.person_category);
 
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">First Name</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="update_person">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="first_name">First Name</label>
                             <input id="update_person_id" class="form-control" type="text" value="${data.person_id}" onfocus="focused(this)" onfocusout="defocused(this)" hidden>
                             <input id="update_person_first_name" class="form-control" type="text" value="${str(data.first_name)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Last Name</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="last_name">Last Name</label>
                             <input id="update_person_last_name" class="form-control" type="text" value="${str(data.last_name)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Category</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="category">Category</label>
                             <select id="update_person_category" class="form-control"> ${ordered_person_category}</select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Email</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="email">Email</label>
                             <input id="update_person_email" class="form-control" type="email" value="${str(data.email)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Phone Number</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="phone_number">Phone Number</label>
                             <input id="update_person_phone_number" class="form-control" type="tel" value="${str(data.phone_number)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Address</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="address">Address</label>
                             <input id="update_person_address" class="form-control" type="text" value="${str(data.address)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">City</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="city">City</label>
                             <input id="update_person_city" class="form-control" type="text" value="${str(data.city)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">State</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="state">State</label>
                             <input id="update_person_state" class="form-control" type="text" value="${str(data.state)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Country</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="country">Country</label>
                             <input id="update_person_country" class="form-control" type="text" value="${str(data.country)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Postal Code</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="postal_code">Postal Code</label>
                             <input id="update_person_postal_code" class="form-control" type="text" value="${str(data.postal_code)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Person Image</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="person_image">Person Image</label>
                             <input id="update_person_image_old" class="form-control" type="text" hidden value="${str(data.person_image)}">
                             <input id="update_person_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="example-text-input" class="form-control-label">Notes</label>
-                            <input id="update_person_notes" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.notes)}">
-                          </div>
-                        </div>
-                      <hr class="horizontal dark">
-                      <button id="update_person_btn" class="btn btn-primary btn-sm ms-auto">UPDATE PERSON</button>
                     </div>
-                  </div>
-            `, function (){
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="example-text-input" class="form-control-label" data-i18n-key="notes">Notes</label>
+                            <input id="update_person_notes" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)" value="${str(data.notes)}">
+                        </div>
+                    </div>
+                    <hr class="horizontal dark">
+                    <button id="update_person_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="update_person_btn">UPDATE PERSON</button>
+                </div>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("update_person_btn").addEventListener('click', function (e) {
                     person_id = document.getElementById("update_person_id").value;
                     person_category = document.getElementById("update_person_category").value;
@@ -3231,108 +3231,108 @@ function processPopup(title, title_extra, data) {
                 });
             }]
         case 'Update Trip':
-            MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
+            MAKE_REQUEST("GET", vessel_api_url, "", true, function(response) {
                 if (response instanceof Error) {
-                    alert("Update Trip get vessel list failed!")
-                    return
+                    alert("Update Trip get vessel list failed!");
+                    return;
                 }
                 ddata = response.data;
-                options = []
+                options = [];
                 for (i = 0; i < ddata.length; i++) {
-                    options[i] = `<option value="${ddata[i].vessel_id}">${ddata[i].vessel_name}</option>`
+                    options[i] = `<option value="${ddata[i].vessel_id}">${ddata[i].vessel_name}</option>`;
                 }
-                document.getElementById("assign_vessel_list").innerHTML = reorderSelectOptions(options, data.vessel_id)
-            })
-            MAKE_REQUEST("GET",people_api_url,"",true, function(response) {
+                document.getElementById("assign_vessel_list").innerHTML = reorderSelectOptions(options, data.vessel_id);
+            });
+            MAKE_REQUEST("GET", people_api_url, "", true, function(response) {
                 if (response instanceof Error) {
-                    alert("Update trip get people list failed!")
-                    return
+                    alert("Update trip get people list failed!");
+                    return;
                 }
                 ddata = response.data;
-                options = []
+                options = [];
                 for (i = 0; i < ddata.length; i++) {
-                    options[i] = `<option value="${ddata[i].person_id}">${str(ddata[i].first_name)} ${str(ddata[i].last_name)}</option>`
+                    options[i] = `<option value="${ddata[i].person_id}">${str(ddata[i].first_name)} ${str(ddata[i].last_name)}</option>`;
                 }
-                document.getElementById("assign_captain_list").innerHTML = reorderSelectOptions(options, data.captain_id)
-            })
+                document.getElementById("assign_captain_list").innerHTML = reorderSelectOptions(options, data.captain_id);
+            });
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_trip_id" class="form-control-label">Trip ID</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="update_trip">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
                             <input id="update_trip_id" class="form-control" type="text" value="${data.trip_id}" onfocus="focused(this)" onfocusout="defocused(this)" hidden>
                             <input class="form-control" type="text" value="${data.trip_id}" readonly>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_trip_name" class="form-control-label">Trip Name</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_trip_name" class="form-control-label" data-i18n-key="trip_name">Trip Name</label>
                             <input id="update_trip_name" class="form-control" type="text" value="${str(data.trip_name)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_departure_date" class="form-control-label">Departure Date</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_departure_date" class="form-control-label" data-i18n-key="departure_date">Departure Date</label>
                             <input id="update_departure_date" class="form-control" type="date" value="${str(data.departure_date).replace("T00:00:00Z","")}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_return_date" class="form-control-label">Return Date</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_return_date" class="form-control-label" data-i18n-key="return_date">Return Date</label>
                             <input id="update_return_date" class="form-control" type="date" value="${str(data.return_date).replace("T00:00:00Z","")}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_departure_port" class="form-control-label">Departure Port</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_departure_port" class="form-control-label" data-i18n-key="departure_port">Departure Port</label>
                             <input id="update_departure_port" class="form-control" type="text" value="${str(data.departure_port)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_destination_port" class="form-control-label">Destination Port</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_destination_port" class="form-control-label" data-i18n-key="destination_port">Destination Port</label>
                             <input id="update_destination_port" class="form-control" type="text" value="${str(data.destination_port)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_captain_id" class="form-control-label">Captain ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_captain_id" class="form-control-label" data-i18n-key="captain_id">Captain ID</label>
                             <select id="assign_captain_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_vessel_id" class="form-control-label">Vessel ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
                             <select id="assign_vessel_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="update_notes" class="form-control-label">Notes</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
                             <input id="update_notes" class="form-control" type="text" value="${str(data.notes)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="update_trip_image_old" class="form-control-label">Trip Image</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_trip_image_old" class="form-control-label" data-i18n-key="trip_image">Trip Image</label>
                             <input id="update_trip_image_old" class="form-control" type="text" hidden value="${str(data.trip_image)}">
                             <input id="update_trip_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="update_trip_btn" class="btn btn-primary btn-sm ms-auto">UPDATE TRIP</button>
                     </div>
-                  </div>
-            `, function (){
+                </div>
+                <hr class="horizontal dark">
+                <button id="update_trip_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="update_trip_btn">UPDATE TRIP</button>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("update_trip_btn").addEventListener('click', function (e) {
                     trip_id = document.getElementById("update_trip_id").value;
                     trip_name = document.getElementById("update_trip_name").value;
@@ -3390,10 +3390,10 @@ function processPopup(title, title_extra, data) {
                 });
             }]
         case 'Update Transaction':
-            MAKE_REQUEST("GET",people_api_url,"",true, function(response) {
+            MAKE_REQUEST("GET", people_api_url, "", true, function(response) {
                 if (response instanceof Error) {
-                    alert("Update transaction get people list failed!")
-                    return
+                    alert("Update transaction get people list failed!");
+                    return;
                 }
                 ddata = response.data;
                 options = []
@@ -3403,10 +3403,10 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("assign_buyer_list").innerHTML = reorderSelectOptions(options, data.buyer_id)
                 document.getElementById("assign_seller_list").innerHTML = reorderSelectOptions(options, data.seller_id)
             })
-            MAKE_REQUEST("GET",product_api_url,"",true, function(response) {
+            MAKE_REQUEST("GET", product_api_url, "", true, function(response) {
                 if (response instanceof Error) {
-                    alert("Update transaction get product list failed!")
-                    return
+                    alert("Update transaction get product list failed!");
+                    return;
                 }
                 ddata = response.data;
                 options = []
@@ -3415,10 +3415,10 @@ function processPopup(title, title_extra, data) {
                 }
                 document.getElementById("assign_product_list").innerHTML = reorderSelectOptions(options, data.product_id)
             })
-            MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
+            MAKE_REQUEST("GET", vessel_api_url, "", true, function(response) {
                 if (response instanceof Error) {
-                    alert("Update transaction get vessel list failed!")
-                    return
+                    alert("Update transaction get vessel list failed!");
+                    return;
                 }
                 ddata = response.data;
                 options = []
@@ -3427,10 +3427,10 @@ function processPopup(title, title_extra, data) {
                 }
                 document.getElementById("assign_vessel_list").innerHTML = reorderSelectOptions(options, data.vessel_id)
             })
-            MAKE_REQUEST("GET",trip_api_url,"",true, function(response) {
+            MAKE_REQUEST("GET", trip_api_url, "", true, function(response) {
                 if (response instanceof Error) {
-                    alert("Update transaction get trip list failed!")
-                    return
+                    alert("Update transaction get trip list failed!");
+                    return;
                 }
                 ddata = response.data;
                 options = []
@@ -3440,131 +3440,131 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("assign_trip_list").innerHTML = reorderSelectOptions(options, data.trip_id)
             })
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_transaction_id" class="form-control-label">Transaction ID</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="update_transaction">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_transaction_id" class="form-control-label" data-i18n-key="transaction_id">Transaction ID</label>
                             <input id="update_transaction_id" class="form-control" type="text" value="${data.transaction_id}" onfocus="focused(this)" onfocusout="defocused(this)" hidden>
                             <input class="form-control" type="text" value="${data.transaction_id}" readonly>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_transaction_date" class="form-control-label">Transaction Date</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_transaction_date" class="form-control-label" data-i18n-key="transaction_date">Transaction Date</label>
                             <input id="update_transaction_date" class="form-control" type="date" value="${str(data.transaction_date).replace("T00:00:00Z","")}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_transaction_type" class="form-control-label">Transaction Type</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
                             <select id="update_transaction_type" class="form-control">
-                                <option value="Purchase" ${data.transaction_type === 'Purchase' ? 'selected' : ''}>Purchase</option>
-                                <option value="Sale" ${data.transaction_type === 'Sale' ? 'selected' : ''}>Sale</option>
-                                <option value="Return" ${data.transaction_type === 'Return' ? 'selected' : ''}>Return</option>
-                                <option value="Debt" ${data.transaction_type === 'Debt' ? 'selected' : ''}>Debt</option>
-                                <option value="Tax" ${data.transaction_type === 'Tax' ? 'selected' : ''}>Tax</option>
-                                <option value="Salary" ${data.transaction_type === 'Salary' ? 'selected' : ''}>Salary</option>
-                                <option value="ColdStorage" ${data.transaction_type === 'ColdStorage' ? 'selected' : ''}>Cold Storage</option>
+                                <option value="Purchase" ${data.transaction_type === 'Purchase' ? 'selected' : ''} data-i18n-key="purchase">Purchase</option>
+                                <option value="Sale" ${data.transaction_type === 'Sale' ? 'selected' : ''} data-i18n-key="sale">Sale</option>
+                                <option value="Return" ${data.transaction_type === 'Return' ? 'selected' : ''} data-i18n-key="return">Return</option>
+                                <option value="Debt" ${data.transaction_type === 'Debt' ? 'selected' : ''} data-i18n-key="debt">Debt</option>
+                                <option value="Tax" ${data.transaction_type === 'Tax' ? 'selected' : ''} data-i18n-key="tax">Tax</option>
+                                <option value="Salary" ${data.transaction_type === 'Salary' ? 'selected' : ''} data-i18n-key="salary">Salary</option>
+                                <option value="ColdStorage" ${data.transaction_type === 'ColdStorage' ? 'selected' : ''} data-i18n-key="cold_storage">Cold Storage</option>
                             </select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_product_id" class="form-control-label">Product ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
                             <select id="assign_product_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_quantity" class="form-control-label">Quantity</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_quantity" class="form-control-label" data-i18n-key="quantity">Quantity</label>
                             <input id="quantity" class="form-control" type="number" value="${str(data.quantity)}" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_unit_price" class="form-control-label">Unit Price</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_unit_price" class="form-control-label" data-i18n-key="unit_price">Unit Price</label>
                             <input id="unit_price" class="form-control" type="number" value="${str(data.unit_price)}" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_total_price" class="form-control-label">Total Price</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_total_price" class="form-control-label" data-i18n-key="total_price">Total Price</label>
                             <input id="total_price" class="form-control" type="number" value="${str(data.total_price)}" onfocus="focused(this)" onfocusout="defocused(this)" readonly>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_seller_id" class="form-control-label">Seller ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
                             <select id="assign_seller_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_buyer_id" class="form-control-label">Buyer ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
                             <select id="assign_buyer_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_vessel_id" class="form-control-label">Vessel ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
                             <select id="assign_vessel_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_trip_id" class="form-control-label">Trip ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
                             <select id="assign_trip_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_payment_type" class="form-control-label">Payment Type</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_payment_type" class="form-control-label" data-i18n-key="payment_type">Payment Type</label>
                             <select id="update_payment_type" class="form-control">
-                                <option value="CASH" ${data.payment_status === 'CASH' ? 'selected' : ''}>CASH</option>
-                                <option value="DEBT" ${data.payment_status === 'DEBT' ? 'selected' : ''}>DEBT</option>
-                                <option value="GIRO" ${data.payment_status === 'GIRO' ? 'selected' : ''}>GIRO</option>
+                                <option value="CASH" ${data.payment_status === 'CASH' ? 'selected' : ''} data-i18n-key="cash">CASH</option>
+                                <option value="DEBT" ${data.payment_status === 'DEBT' ? 'selected' : ''} data-i18n-key="debt">DEBT</option>
+                                <option value="GIRO" ${data.payment_status === 'GIRO' ? 'selected' : ''} data-i18n-key="giro">GIRO</option>
                             </select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_payment_status" class="form-control-label">Payment Status</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_payment_status" class="form-control-label" data-i18n-key="payment_status">Payment Status</label>
                             <select id="update_payment_status" class="form-control">
-                                <option value="0" ${data.payment_status === 0 ? 'selected' : ''}>PENDING</option>
-                                <option value="1" ${data.payment_status === 1 ? 'selected' : ''}>DONE</option>
+                                <option value="0" ${data.payment_status === 0 ? 'selected' : ''} data-i18n-key="pending">PENDING</option>
+                                <option value="1" ${data.payment_status === 1 ? 'selected' : ''} data-i18n-key="done">DONE</option>
                             </select>
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="update_notes" class="form-control-label">Notes</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
                             <input id="update_notes" class="form-control" type="text" value="${str(data.notes)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="update_transaction_image_old" class="form-control-label">Transaction Image</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_transaction_image_old" class="form-control-label" data-i18n-key="transaction_image">Transaction Image</label>
                             <input id="update_transaction_image_old" class="form-control" type="text" hidden value="${str(data.transaction_image)}">
                             <input id="update_transaction_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="update_transaction_btn" class="btn btn-primary btn-sm ms-auto">UPDATE TRANSACTION</button>
                     </div>
-                  </div>
-            `, function (){
-                document.getElementById("update_transaction_btn").addEventListener('click', function (e) {
+                </div>
+                <hr class="horizontal dark">
+                <button id="update_transaction_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="update_transaction_btn">UPDATE TRANSACTION</button>
+            </div>
+        </div>
+    `, function() {
+                document.getElementById("update_transaction_btn").addEventListener('click', function(e) {
                     transaction_id = document.getElementById("update_transaction_id").value;
-                    transaction_date = document.getElementById("update_transaction_date").value+"T00:00:00Z";
+                    transaction_date = document.getElementById("update_transaction_date").value + "T00:00:00Z";
                     transaction_type = document.getElementById("update_transaction_type").value;
                     product_id = document.getElementById("assign_product_list").value;
                     quantity = parseInt(document.getElementById("quantity").value);
@@ -3642,71 +3642,71 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("assign_vessel_list").innerHTML = reorderSelectOptions(options, data.vessel_id)
             })
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_maintenance_id" class="form-control-label">Maintenance ID</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="update_maintenance">Update Maintenance</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_maintenance_id" class="form-control-label" data-i18n-key="maintenance_id">Maintenance ID</label>
                             <input id="update_maintenance_id" class="form-control" type="text" value="${data.maintenance_id}" onfocus="focused(this)" onfocusout="defocused(this)" hidden>
                             <input class="form-control" type="text" value="${data.maintenance_id}" readonly>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_maintenance_date" class="form-control-label">Maintenance Date</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_maintenance_date" class="form-control-label" data-i18n-key="maintenance_date">Maintenance Date</label>
                             <input id="update_maintenance_date" class="form-control" type="date" value="${str(data.maintenance_date).replace("T00:00:00Z","")}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="update_task_description" class="form-control-label">Task Description</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_task_description" class="form-control-label" data-i18n-key="task_description">Task Description</label>
                             <textarea id="update_task_description" class="form-control" rows="3" onfocus="focused(this)" onfocusout="defocused(this)">${str(data.task_description)}</textarea>
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="update_parts_used" class="form-control-label">Parts Used</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_parts_used" class="form-control-label" data-i18n-key="parts_used">Parts Used</label>
                             <textarea id="update_parts_used" class="form-control" rows="3" onfocus="focused(this)" onfocusout="defocused(this)">${str(data.parts_used)}</textarea>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_cost" class="form-control-label">Cost</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_cost" class="form-control-label" data-i18n-key="cost">Cost</label>
                             <input id="update_cost" class="form-control" type="number" value="${str(data.cost)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_vessel_id" class="form-control-label">Vessel ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
                             <select id="assign_vessel_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="update_notes" class="form-control-label">Notes</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
                             <textarea id="update_notes" class="form-control" rows="3" onfocus="focused(this)" onfocusout="defocused(this)">${str(data.notes)}</textarea>
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="update_maintenance_image_old" class="form-control-label">Maintenance Image</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_maintenance_image_old" class="form-control-label" data-i18n-key="maintenance_image">Maintenance Image</label>
                             <input id="update_maintenance_image_old" class="form-control" type="text" hidden value="${str(data.maintenance_image)}">
                             <input id="update_maintenance_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="update_maintenance_btn" class="btn btn-primary btn-sm ms-auto">UPDATE MAINTENANCE</button>
                     </div>
-                  </div>
-            `, function (){
+                </div>
+                <hr class="horizontal dark">
+                <button id="update_maintenance_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="update_maintenance_btn">UPDATE MAINTENANCE</button>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("update_maintenance_btn").addEventListener('click', function (e) {
                     maintenance_id = document.getElementById("update_maintenance_id").value;
                     maintenance_date = document.getElementById("update_maintenance_date").value+"T00:00:00Z";
@@ -3797,77 +3797,77 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("assign_product_list").innerHTML = reorderSelectOptions(options, data.product_id)
             })
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_catch_id" class="form-control-label">Catch ID</label>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="update_catch">Update Catch</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_catch_id" class="form-control-label" data-i18n-key="catch_id">Catch ID</label>
                             <input id="update_catch_id" class="form-control" type="text" value="${data.catch_id}" onfocus="focused(this)" onfocusout="defocused(this)" hidden>
                             <input class="form-control" type="text" value="${data.catch_id}" readonly>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_product_id" class="form-control-label">Product ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
                             <select id="assign_product_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_catch_date" class="form-control-label">Catch Date</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_catch_date" class="form-control-label" data-i18n-key="catch_date">Catch Date</label>
                             <input id="update_catch_date" class="form-control" type="date" value="${str(data.catch_date).replace("T00:00:00Z","")}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_catch_location" class="form-control-label">Catch Location</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_catch_location" class="form-control-label" data-i18n-key="catch_location">Catch Location</label>
                             <input id="update_catch_location" class="form-control" type="text" value="${str(data.catch_location)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_catch_quantity" class="form-control-label">Catch Quantity</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_catch_quantity" class="form-control-label" data-i18n-key="catch_quantity">Catch Quantity</label>
                             <input id="update_catch_quantity" class="form-control" type="number" value="${str(data.catch_quantity)}" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_vessel_id" class="form-control-label">Vessel ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
                             <select id="assign_vessel_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="update_trip_id" class="form-control-label">Trip ID</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="update_trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
                             <select id="assign_trip_list" class="form-control"></select>
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="update_notes" class="form-control-label">Notes</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
                             <textarea id="update_notes" class="form-control" rows="3" onfocus="focused(this)" onfocusout="defocused(this)">${str(data.notes)}</textarea>
-                          </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="update_catch_image_old" class="form-control-label">Catch Image</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_catch_image_old" class="form-control-label" data-i18n-key="catch_image">Catch Image</label>
                             <input id="update_catch_image_old" class="form-control" type="text" hidden value="${str(data.catch_image)}">
                             <input id="update_catch_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                          </div>
                         </div>
-                      </div>
-                      <hr class="horizontal dark">
-                      <button id="update_catch_btn" class="btn btn-primary btn-sm ms-auto">UPDATE CATCH</button>
                     </div>
-                  </div>
-            `, function (){
+                </div>
+                <hr class="horizontal dark">
+                <button id="update_catch_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="update_catch_btn">UPDATE CATCH</button>
+            </div>
+        </div>
+    `, function (){
                 document.getElementById("update_catch_btn").addEventListener('click', function (e) {
                     catch_id = document.getElementById("update_catch_id").value;
                     product_id = document.getElementById("assign_product_list").value;
@@ -3925,25 +3925,25 @@ function processPopup(title, title_extra, data) {
 
         case 'Delete Product':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="delete_product_id" class="form-control-label">Are you sure want to delete Product ${data.product_name} [${data.product_id}] ?</label>
-                          </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="delete_product_title">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="delete_product_id" class="form-control-label" data-i18n-key="delete_product_confirm">Are you sure want to delete Product ${data.product_name} [${data.product_id}] ?</label>
                         </div>
-                      <hr class="horizontal dark">
-                      <button id="delete_product_btn" class="btn btn-warning btn-sm ms-auto">Delete</button>
                     </div>
-                  </div>
-            `, function () {
+                <hr class="horizontal dark">
+                <button id="delete_product_btn" class="btn btn-warning btn-sm ms-auto" data-i18n-key="delete_btn">Delete</button>
+            </div>
+        </div>
+    `, function () {
                 document.getElementById("delete_product_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", product_api_url+data.product_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
@@ -3957,25 +3957,25 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Delete Vessel':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="delete_vessel_id" class="form-control-label">Are you sure want to delete Vessel ${data.vessel_name} [${data.vessel_id}] ?</label>
-                          </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="delete_vessel_title">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="delete_vessel_id" class="form-control-label" data-i18n-key="delete_vessel_confirm">Are you sure want to delete Vessel ${data.vessel_name} [${data.vessel_id}] ?</label>
                         </div>
-                      <hr class="horizontal dark">
-                      <button id="delete_vessel_btn" class="btn btn-warning btn-sm ms-auto">Delete</button>
                     </div>
-                  </div>
-            `, function () {
+                <hr class="horizontal dark">
+                <button id="delete_vessel_btn" class="btn btn-warning btn-sm ms-auto" data-i18n-key="delete_btn">Delete</button>
+            </div>
+        </div>
+    `, function () {
                 document.getElementById("delete_vessel_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", vessel_api_url+data.vessel_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
@@ -3989,25 +3989,25 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Delete Stock':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="delete_vessel_id" class="form-control-label">Are you sure want to delete Stock ${data.product_id} [${data.stock_id}] ?</label>
-                          </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="delete_stock_title">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="delete_stock_id" class="form-control-label" data-i18n-key="delete_stock_confirm">Are you sure want to delete Stock ${data.product_id} [${data.stock_id}] ?</label>
                         </div>
-                      <hr class="horizontal dark">
-                      <button id="delete_stock_btn" class="btn btn-warning btn-sm ms-auto">Delete</button>
                     </div>
-                  </div>
-            `, function () {
+                <hr class="horizontal dark">
+                <button id="delete_stock_btn" class="btn btn-warning btn-sm ms-auto" data-i18n-key="delete_btn">Delete</button>
+            </div>
+        </div>
+    `, function () {
                 document.getElementById("delete_stock_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", stock_api_url+data.stock_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
@@ -4021,25 +4021,25 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Delete Person':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="delete_person_id" class="form-control-label">Are you sure want to delete Person ${str(data.first_name)} ${str(data.last_name)} [${data.person_id}] ?</label>
-                          </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="delete_person_title">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="delete_person_id" class="form-control-label" data-i18n-key="delete_person_confirm">Are you sure want to delete Person ${str(data.first_name)} ${str(data.last_name)} [${data.person_id}] ?</label>
                         </div>
-                      <hr class="horizontal dark">
-                      <button id="delete_person_btn" class="btn btn-warning btn-sm ms-auto">Delete</button>
                     </div>
-                  </div>
-            `, function () {
+                <hr class="horizontal dark">
+                <button id="delete_person_btn" class="btn btn-warning btn-sm ms-auto" data-i18n-key="delete_btn">Delete</button>
+            </div>
+        </div>
+    `, function () {
                 document.getElementById("delete_person_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", people_api_url+data.person_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
@@ -4053,25 +4053,25 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Delete Trip':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="delete_trip_id" class="form-control-label">Are you sure want to delete Trip ${data.trip_name} [${data.trip_id}] ?</label>
-                          </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="delete_trip_title">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="delete_trip_id" class="form-control-label" data-i18n-key="delete_trip_confirm">Are you sure want to delete Trip ${data.trip_name} [${data.trip_id}] ?</label>
                         </div>
-                      <hr class="horizontal dark">
-                      <button id="delete_trip_btn" class="btn btn-warning btn-sm ms-auto">Delete</button>
                     </div>
-                  </div>
-            `, function () {
+                <hr class="horizontal dark">
+                <button id="delete_trip_btn" class="btn btn-warning btn-sm ms-auto" data-i18n-key="delete_btn">Delete</button>
+            </div>
+        </div>
+    `, function () {
                 document.getElementById("delete_trip_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", trip_api_url+data.trip_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
@@ -4085,25 +4085,25 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Delete Transaction':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="delete_transaction_id" class="form-control-label">Are you sure want to delete Transaction ${data.transaction_type} [${data.transaction_id}] ?</label>
-                          </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="delete_transaction_title">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="delete_transaction_id" class="form-control-label" data-i18n-key="delete_transaction_confirm">Are you sure want to delete Transaction ${data.transaction_type} [${data.transaction_id}] ?</label>
                         </div>
-                      <hr class="horizontal dark">
-                      <button id="delete_transaction_btn" class="btn btn-warning btn-sm ms-auto">Delete</button>
                     </div>
-                  </div>
-            `, function () {
+                <hr class="horizontal dark">
+                <button id="delete_transaction_btn" class="btn btn-warning btn-sm ms-auto" data-i18n-key="delete_btn">Delete</button>
+            </div>
+        </div>
+    `, function () {
                 document.getElementById("delete_transaction_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", transaction_api_url+data.transaction_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
@@ -4117,25 +4117,25 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Delete Maintenance':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="delete_maintenance_id" class="form-control-label">Are you sure want to delete Maintenance ${data.maintenance_date} [${data.maintenance_id}] ?</label>
-                          </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="delete_maintenance_title">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="delete_maintenance_id" class="form-control-label" data-i18n-key="delete_maintenance_confirm">Are you sure want to delete Maintenance ${data.maintenance_date} [${data.maintenance_id}] ?</label>
                         </div>
-                      <hr class="horizontal dark">
-                      <button id="delete_maintenance_btn" class="btn btn-warning btn-sm ms-auto">Delete</button>
                     </div>
-                  </div>
-            `, function () {
+                <hr class="horizontal dark">
+                <button id="delete_maintenance_btn" class="btn btn-warning btn-sm ms-auto" data-i18n-key="delete_btn">Delete</button>
+            </div>
+        </div>
+    `, function () {
                 document.getElementById("delete_maintenance_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", maintenance_api_url+data.maintenance_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
@@ -4149,25 +4149,25 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Delete Catch':
             return [`
-                <span class="close">&times;</span>
-                <div class="card">
-                    <div class="card-header pb-0">
-                      <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="delete_catch_id" class="form-control-label">Are you sure want to delete Catch ${data.catch_date} [${data.catch_id}] ?</label>
-                          </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="delete_catch_title">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="delete_catch_id" class="form-control-label" data-i18n-key="delete_catch_confirm">Are you sure want to delete Catch ${data.catch_date} [${data.catch_id}] ?</label>
                         </div>
-                      <hr class="horizontal dark">
-                      <button id="delete_catch_btn" class="btn btn-warning btn-sm ms-auto">Delete</button>
                     </div>
-                  </div>
-            `, function () {
+                <hr class="horizontal dark">
+                <button id="delete_catch_btn" class="btn btn-warning btn-sm ms-auto" data-i18n-key="delete_btn">Delete</button>
+            </div>
+        </div>
+    `, function () {
                 document.getElementById("delete_catch_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", catch_api_url+data.catch_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
@@ -4181,83 +4181,83 @@ function processPopup(title, title_extra, data) {
             }]
 
         case 'Delete Role':
-            MAKE_REQUEST("GET",role_api_url,"",true, function(response) {
+            MAKE_REQUEST("GET", role_api_url, "", true, function(response) {
                 if (response instanceof Error) {
                     console.log(response);
-                    return
+                    return;
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Role -- </option>"
+                options = "<option disabled selected value data-i18n-key='select_role'> -- Select Role -- </option>";
                 for (i = 0; i < data.length; i++) {
-                    options += `<option value="${data[i].id}">${data[i].name}</option>`
+                    options += `<option value="${data[i].id}">${data[i].name}</option>`;
                 }
-                document.getElementById("assign_role_name").innerHTML = options
-            })
-            MAKE_REQUEST("GET",role_feature_api_url,"",true, function(response) {
+                document.getElementById("assign_role_name").innerHTML = options;
+            });
+            MAKE_REQUEST("GET", role_feature_api_url, "", true, function(response) {
                 if (response instanceof Error) {
                     console.log(response);
-                    return
+                    return;
                 }
                 data = response.data;
-                options = "<option disabled selected value> -- Pilih Feature -- </option>"
+                options = "<option disabled selected value data-i18n-key='select_feature'> -- Select Feature -- </option>";
                 for (i = 0; i < data.length; i++) {
-                    options += `<option value="${data[i].id}">${data[i].id}: [${data[i].tag}] ${data[i].endpoint}</option>`
+                    options += `<option value="${data[i].id}">${data[i].id}: [${data[i].tag}] ${data[i].endpoint}</option>`;
                 }
-                document.getElementById("assign_feature_list").innerHTML = options
-            })
+                document.getElementById("assign_feature_list").innerHTML = options;
+            });
             return [`
-                    <span class="close">&times;</span>
-                    <div class="card">
-                        <div class="card-header pb-0">
-                          <div class="d-flex align-items-center">
-                            <p class="mb-0">${title}</p>
-                          </div>
-                        </div>
-                        <div class="card-body">
-                          <div class="row">
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                <select id="assign_role_name" class="form-control"></select>
-                              </div>
-                            </div>
-                            <hr class="horizontal dark">
-                            <button id="delete_role_btn" class="btn btn-warning btn-sm ms-auto">DELETE ROLE</button>
-                          </div>
-                        </div>
-                        <div class="card-body">
-                          <div class="row">
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                <select id="assign_feature_list" class="form-control"></select>
-                              </div>
-                            </div>
-                            <hr class="horizontal dark">
-                            <button id="delete_feature_btn" class="btn btn-warning btn-sm ms-auto">DELETE FEATURE</button>
-                          </div>
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="delete_role_title">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select id="assign_role_name" class="form-control"></select>
                         </div>
                     </div>
-                `, function() {
+                    <hr class="horizontal dark">
+                    <button id="delete_role_btn" class="btn btn-warning btn-sm ms-auto" data-i18n-key="delete_role_btn">DELETE ROLE</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select id="assign_feature_list" class="form-control"></select>
+                        </div>
+                    </div>
+                    <hr class="horizontal dark">
+                    <button id="delete_feature_btn" class="btn btn-warning btn-sm ms-auto" data-i18n-key="delete_feature_btn">DELETE FEATURE</button>
+                </div>
+            </div>
+        </div>
+    `, function() {
                 document.getElementById("delete_role_btn").addEventListener('click', function (e) {
-                    role_name = document.getElementById("assign_role_name").value
+                    role_name = document.getElementById("assign_role_name").value;
                     MAKE_REQUEST("DELETE", delete_role_api_url.format(role_name), ``, true, function(response) {
                         if (response instanceof Error) {
-                            alert("Remove Role from Service failed!")
+                            alert("Remove Role from Service failed!");
                             return false;
                         }
                         // Refresh the page
                         location.reload();
-                    })
+                    });
                 });
                 document.getElementById("delete_feature_btn").addEventListener('click', function (e) {
-                    feature_name = document.getElementById("assign_feature_list").value
+                    feature_name = document.getElementById("assign_feature_list").value;
                     MAKE_REQUEST("DELETE", delete_feature_api_url.format(feature_name), ``, true, function(response) {
                         if (response instanceof Error) {
-                            alert("Remove Feature from Service failed!")
+                            alert("Remove Feature from Service failed!");
                             return false;
                         }
                         // Refresh the page
                         location.reload();
-                    })
+                    });
                 });
             }]
     }
