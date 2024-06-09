@@ -1312,7 +1312,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("POST", product_api_url, JSON.stringify(payload), true, function (response) {
                             if (response instanceof Error) {
-                                alert("Failed to add new product!");
+                                alert("No Permission to add new product!");
                                 return false;
                             }
                             // Refresh the page
@@ -1543,7 +1543,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("POST", vessel_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to add new vessel!");
+                                alert("No Permission to add new vessel!");
                                 return false;
                             }
                             // Refresh the page or perform other actions
@@ -1719,7 +1719,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("POST", stock_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to add new stock entry!");
+                                alert("No Permission to add new stock entry!");
                                 return false;
                             }
                             // Refresh the page or perform other actions
@@ -1869,7 +1869,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("POST", people_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to add new person!");
+                                alert("No Permission to add new person!");
                                 return false;
                             }
                             // Refresh the page or perform other actions
@@ -2016,7 +2016,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("POST", trip_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to add new trip!");
+                                alert("No Permission to add new trip!");
                                 return false;
                             }
                             // Refresh the page or perform other actions
@@ -2247,7 +2247,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to add new transaction!");
+                                alert("No Permission to add new transaction!");
                                 return false;
                             }
                             // Refresh the page or perform other actions
@@ -2366,7 +2366,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("POST", maintenance_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to add new maintenance!");
+                                alert("No Permission to add new maintenance!");
                                 return false;
                             }
                             // Refresh the page or perform other actions
@@ -2517,7 +2517,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("POST", catch_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to add new catch!");
+                                alert("No Permission to add new catch!");
                                 return false;
                             }
                             // Refresh the page or perform other actions
@@ -2702,7 +2702,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("PUT", product_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to add new product!");
+                                alert("No Permission to add new product!");
                                 return false;
                             }
                             // Refresh the page
@@ -2935,7 +2935,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("PUT", vessel_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to update vessel!");
+                                alert("No Permission to update vessel!");
                                 return false;
                             }
                             // Refresh the page
@@ -3097,7 +3097,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("PUT", stock_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to update stock entry!");
+                                alert("No Permission to update stock entry!");
                                 return false;
                             }
                             // Refresh the page
@@ -3255,7 +3255,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("PUT", people_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to update person!");
+                                alert("No Permission to update person!");
                                 return false;
                             }
                             // Refresh the page
@@ -3414,7 +3414,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("PUT", trip_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to update trip!");
+                                alert("No Permission to update trip!");
                                 return false;
                             }
                             // Refresh the page
@@ -3653,7 +3653,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("PUT", transaction_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to update transaction!");
+                                alert("No Permission to update transaction!");
                                 return false;
                             }
                             // Refresh the page
@@ -3784,7 +3784,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("PUT", maintenance_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to update maintenance task!");
+                                alert("No Permission to update maintenance task!");
                                 return false;
                             }
                             // Refresh the page
@@ -3947,7 +3947,7 @@ function processPopup(title, title_extra, data) {
                         // Send payload to server
                         MAKE_REQUEST("PUT", catch_api_url, JSON.stringify(payload), true, function(response) {
                             if (response instanceof Error) {
-                                alert("Failed to update catch information!");
+                                alert("No Permission to update catch information!");
                                 return false;
                             }
                             // Refresh the page
@@ -3990,7 +3990,7 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("delete_product_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", product_api_url+data.product_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
-                            alert("Failed to delete product!");
+                            alert("No Permission to delete product!");
                             return false;
                         }
                         // Refresh the page
@@ -4022,7 +4022,7 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("delete_vessel_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", vessel_api_url+data.vessel_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
-                            alert("Failed to delete vessel!");
+                            alert("No Permission to delete vessel!");
                             return false;
                         }
                         // Refresh the page
@@ -4054,7 +4054,7 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("delete_stock_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", stock_api_url+data.stock_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
-                            alert("Failed to delete stock!");
+                            alert("No Permission to delete stock!");
                             return false;
                         }
                         // Refresh the page
@@ -4086,7 +4086,7 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("delete_person_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", people_api_url+data.person_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
-                            alert("Failed to delete person!");
+                            alert("No Permission to delete person!");
                             return false;
                         }
                         // Refresh the page
@@ -4118,7 +4118,7 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("delete_trip_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", trip_api_url+data.trip_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
-                            alert("Failed to delete trip!");
+                            alert("No Permission to delete trip!");
                             return false;
                         }
                         // Refresh the page
@@ -4150,7 +4150,7 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("delete_transaction_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", transaction_api_url+data.transaction_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
-                            alert("Failed to delete transaction!");
+                            alert("No Permission to delete transaction!");
                             return false;
                         }
                         // Refresh the page
@@ -4182,7 +4182,7 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("delete_maintenance_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", maintenance_api_url+data.maintenance_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
-                            alert("Failed to delete maintenance!");
+                            alert("No Permission to delete maintenance!");
                             return false;
                         }
                         // Refresh the page
@@ -4214,7 +4214,7 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("delete_catch_btn").addEventListener("click", function (){
                     MAKE_REQUEST("DELETE", catch_api_url+data.catch_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
-                            alert("Failed to delete catch!");
+                            alert("No Permission to delete catch!");
                             return false;
                         }
                         // Refresh the page
