@@ -164,7 +164,7 @@
   MAKE_REQUEST("GET", user_api_url, "", true,function(resp){
     if (resp instanceof Error) {
       console.log(resp);
-    } else {
+    } else if (resp != undefined) {
       prosesUserTable(resp)
     }
   })

@@ -50,7 +50,8 @@ document.getElementsByClassName("fixed-plugin-button")[0].addEventListener("clic
     }*/
 })
 // navigation sidebar update
-document.getElementById("sidenav-collapse-main").innerHTML = `
+if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem('user_roles') == "domain_admin") {
+    document.getElementById("sidenav-collapse-main").innerHTML = `
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link " href="../pages/vessel.html">
@@ -144,7 +145,45 @@ document.getElementById("sidenav-collapse-main").innerHTML = `
                 </a>
             </li>
         </ul>
-`
+    `
+} else if (localStorage.getItem('user_roles') == "member") {
+    document.getElementById("sidenav-collapse-main").innerHTML = `
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link " href="../pages/vessel.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-ship text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_vessel">Vessels</span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6" data-i18n-key="breadcrumb_account_pages">Account pages</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/profile.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_profile">Profile</span>
+                </a>
+            </li>
+        </ul>
+    `
+} else {
+    document.getElementById("sidenav-collapse-main").innerHTML = `
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="../pages/profile.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_profile">Profile</span>
+                </a>
+            </li>
+        </ul>
+    `
+}
 
 function showLoader() {
     var loaderElement = document.createElement('div');
@@ -192,14 +231,8 @@ async function MAKE_REQUEST(method,url,payload,needToken,callback) {
             hideLoader();
             return
         }
-        try {
-            const result = await response.json()
-            hideLoader();
-            callback(result)
-        } catch (ex) {
-            hideLoader();
-            callback("")
-        }
+        const result = await response.json()
+        callback(result)
     } catch (ex) {
         hideLoader();
         callback(new Error(`not enough permission to open [${method}]${url}`))
@@ -324,16 +357,20 @@ function prosesUserTable(response) {
         }
         // process roles
         roles = "";
-        for(j=0;j<data[i].roles.length;j++){
-            if (roles == "") { roles+= data[i].roles[j].name} else {
-                roles += ","+data[i].roles[j].name
+        if (data[i].roles != undefined) {
+            for (j = 0; j < data[i].roles.length; j++) {
+                if (roles == "") {
+                    roles += data[i].roles[j].name
+                } else {
+                    roles += "," + data[i].roles[j].name
+                }
             }
         }
         rows += `
             <tr>
                 <td><div class="d-flex px-2 py-1"><div><img src="${data[i].avatar}"class="avatar avatar-sm me-3" alt="user1"></div>
                     <div class="d-flex flex-column justify-content-center"><h6 class="mb-0 text-sm">${data[i].account}</h6>
-                    <p class="text-xs text-secondary mb-0">${data[i].email}</p></div></div></td>
+                    <p class="text-xs text-secondary mb-0">${str(data[i].email)}</p></div></div></td>
                 <td><p class="text-xs font-weight-bold mb-0">${roles}</p>
                     <p class="text-xs text-secondary mb-0">${data[i].department.name}</p></td>
                 <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-success">Online</span></td>
@@ -2229,7 +2266,7 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value data-i18n-key=\"select_vessel\"> -- Pilih Vessel -- </option>"
+                options = "<option disabled selected value data-i18n-key=\"select_vessel\"> -- Select Vessel -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
                 }
@@ -2240,7 +2277,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
               <div class="d-flex align-items-center">
-                <p class="mb-0">${title}</p>
+                <p class="mb-0" >${title}</p>
               </div>
             </div>
             <div class="card-body">
