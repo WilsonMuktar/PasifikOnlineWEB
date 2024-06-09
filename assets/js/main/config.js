@@ -6,7 +6,7 @@ var web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
 // check rather running in local
 if (window.location.href.indexOf("file:///") > -1) {
     envHost = "http://localhost:8080"
-    web_service_id = "54311ba1-353d-4c28-a142-4eb465dcf1c1"
+    web_service_id = "d5e17e06-308a-4907-9e55-9e4d2c87158b"
     web_client_id = "ECo4LyNiJVOGxOQwUVaiv8B1"
     web_client_secret = "dxWIpr8qgLq2Udu3dTKRnTYUV4hqwjtX"
 }
@@ -27,7 +27,7 @@ const role_feature_api_url = envHost+`/keyauth/v1/services/${web_service_id}/fea
 const role_user_bind = envHost+`/keyauth/v1/users/{0}/bind/roles/{1}/{2}/`
 const role_user_unbind = envHost+`/keyauth/v1/users/{0}/unbind/roles/{1}/{2}/`
 const feature_api_url = envHost+`/keyauth/v1/features/`
-const delete_feature_api_url = envHost+`/keyauth/v1/features/${web_service_id}/{1}/`
+const delete_feature_api_url = envHost+`/keyauth/v1/features/${web_service_id}/{0}/`
 const assign_feature_api_url = envHost+`/keyauth/v1/roles/{0}/features/`
 const token_auth_url = envHost+"/keyauth/v1/oauth2/tokens/"
 const token_validate_url = envHost+"/keyauth/v1/oauth2/tokens/"

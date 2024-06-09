@@ -201,10 +201,10 @@
       return
     }
     response = response.data;
-    document.getElementById("update_user_account").value = response.account;
-    document.getElementById("update_user_email").value = response.email;
-    document.getElementById("update_user_realname").value = response.real_name;
-    document.getElementById("update_user_nickname").value = response.nick_name;
+    document.getElementById("update_user_account").value = str(response.account);
+    document.getElementById("update_user_email").value = str(response.email);
+    document.getElementById("update_user_realname").value = str(response.real_name);
+    document.getElementById("update_user_nickname").value = str(response.nick_name);
     genderOptions = `
         <option value="m">Male</option>
         <option value="f">Female</option>
@@ -216,11 +216,11 @@
         `
     }
     document.getElementById("update_user_gender").innerHTML = genderOptions;
-    document.getElementById("update_user_address").value = response.address;
-    document.getElementById("update_user_city").value = response.city;
-    document.getElementById("update_user_province").value = response.province;
-    document.getElementById("update_user_mobile").value = response.mobile;
-    document.getElementById("update_user_phone").value = response.phone;
+    document.getElementById("update_user_address").value = str(response.address);
+    document.getElementById("update_user_city").value = str(response.city);
+    document.getElementById("update_user_province").value = str(response.province);
+    document.getElementById("update_user_mobile").value = str(response.mobile);
+    document.getElementById("update_user_phone").value = str(response.phone);
 
     // onclick UPDATE
     document.getElementById("update_profile_btn").addEventListener('click', function (e) {

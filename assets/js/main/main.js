@@ -288,10 +288,15 @@ String.prototype.format = String.prototype.format || function () {
             var args = ("string" === t || "number" === t) ?
                 Array.prototype.slice.call(arguments)
                 : arguments[0];
-
+            console.log(arguments)
+            console.log(arguments[0])
+            console.log(args)
+            console.log(str)
             for (key in args) {
                 str = str.replace(new RegExp("\\{" + key + "\\}", "gi"), args[key]);
+                console.log(str)
             }
+            console.log(str)
         }
 
         return str;
@@ -799,7 +804,7 @@ function processPopup(title, title_extra, data) {
                             alert("Update User failed!")
                             return false;
                         }
-                        alert("success")
+                        // alert("success")
                         // Refresh the page
                         location.reload();
                     })
@@ -1018,10 +1023,10 @@ function processPopup(title, title_extra, data) {
                         role_name = title_extra.id
                         feature_name = document.getElementById("delete_feature_id").textContent
                         MAKE_REQUEST("DELETE", assign_feature_api_url.format(role_name), `["${feature_name}"]`, true, function(response) {
-                            if (response instanceof Error) {
+                            /*if (response instanceof Error) {
                                 alert("Remove Feature from Role failed!")
                                 return false;
-                            }
+                            }*/
                             // Refresh the page
                             location.reload();
                         })
@@ -1141,10 +1146,10 @@ function processPopup(title, title_extra, data) {
                     role_id = roleObj.value
                     role_name = roleObj.options[roleObj.selectedIndex].text
                     MAKE_REQUEST("POST", role_user_unbind.format(user_id,role_id,role_name), "", true, function(response) {
-                        if (response instanceof Error) {
+                        /*if (response instanceof Error) {
                             alert("UnBind Role to User failed!")
                             return false;
-                        }
+                        }*/
                         // Refresh the page
                         location.reload();
                     })
@@ -4288,11 +4293,12 @@ function processPopup(title, title_extra, data) {
                 });
                 document.getElementById("delete_feature_btn").addEventListener('click', function (e) {
                     feature_name = document.getElementById("assign_feature_list").value;
+                    console.log(feature_name, "assign_feature_list")
                     MAKE_REQUEST("DELETE", delete_feature_api_url.format(feature_name), ``, true, function(response) {
-                        if (response instanceof Error) {
+                        /*if (response instanceof Error) {
                             alert("Remove Feature from Service failed!");
                             return false;
-                        }
+                        }*/
                         // Refresh the page
                         location.reload();
                     });
