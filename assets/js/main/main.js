@@ -2885,9 +2885,9 @@ function processPopup(title, title_extra, data) {
                     capacity = parseFloat(document.getElementById("update_vessel_capacity").value);
                     gear_type = document.getElementById("update_vessel_gear_type").value;
                     engine_power = parseFloat(document.getElementById("update_vessel_engine_power").value);
-                    last_inspection_date = document.getElementById("update_vessel_last_inspection_date").value;
+                    last_inspection_date = document.getElementById("update_vessel_last_inspection_date").value +"T00:00:00Z";
                     insurance_policy_number = document.getElementById("update_vessel_insurance_policy_number").value;
-                    insurance_expiration_date = document.getElementById("update_vessel_insurance_expiration_date").value;
+                    insurance_expiration_date = document.getElementById("update_vessel_insurance_expiration_date").value+"T00:00:00Z";
                     crew_size = parseInt(document.getElementById("update_vessel_crew_size").value);
                     active_status = document.getElementById("update_vessel_active_status").value;
                     fisheries_permits = document.getElementById("update_vessel_fisheries_permits").value;
