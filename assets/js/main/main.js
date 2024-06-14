@@ -2807,7 +2807,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label" data-i18n-key="last_inspection_date">Last Inspection Date</label>
-                            <input id="update_vessel_last_inspection_date" class="form-control" type="date" value="${data.last_inspection_date}" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="update_vessel_last_inspection_date" class="form-control" type="date" value="${data.last_inspection_date.replace("T00:00:00Z","")}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -2819,7 +2819,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label" data-i18n-key="insurance_expiration_date">Insurance Expiration Date</label>
-                            <input id="update_vessel_insurance_expiration_date" class="form-control" type="date" value="${data.insurance_expiration_date}" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="update_vessel_insurance_expiration_date" class="form-control" type="date" value="${data.insurance_expiration_date.replace("T00:00:00Z","")}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
