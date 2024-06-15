@@ -665,23 +665,33 @@ function processCatchTable(response) {
     var rows = "";
     var table = document.getElementById("catch_table");
 
+    var current_trip_name = ""
+    var current_trip_total_catch = 0
     for (var i = data.length - 1; i >= 0; i--) {
+        if (current_trip_name != data[i].trip_name) {
+            if (current_trip_name != "") {
+                rows += `<tr><td></td><td></td><td></td><td><span class="text-xs font-weight-bold">TOTAL:</span></td><td><span class="text-xs font-weight-bold">${current_trip_total_catch}</span></td></tr>`
+            }
+            rows += `<tr><td><center><span class="text-xs font-weight-bold text-center">${data[i].trip_name}</span></center></td></tr>`
+            current_trip_total_catch = 0
+            current_trip_name = data[i].trip_name
+        }
         rows += `
         <tr>
+            <td></td>
             <td>
                 <div class="d-flex px-2">
                     <div>
                         <img src="${data[i].catch_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Catch: ${data[i].product_id}', '${data[i].catch_image}');">
                     </div>
                     <div class="my-auto">
-                        <h6 class="mb-0 text-sm">${data[i].product_id}</h6>
+                        <h6 class="mb-0 text-sm">${data[i].product_name}</h6>
                     </div>
                 </div>
             </td>
             <td><span class="text-xs font-weight-bold">${data[i].catch_date}</span></td>
+            <td><span class="text-xs font-weight-bold">${data[i].vessel_name}</span></td>
             <td><span class="text-xs font-weight-bold">${data[i].catch_quantity}</span></td>
-            <td><span class="text-xs font-weight-bold">${data[i].vessel_id}</span></td>
-            <td><span class="text-xs font-weight-bold">${data[i].trip_id}</span></td>
             <td class="align-middle text-center">
                 <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Catch","",${JSON.stringify(data[i])})'>
                     <i class="fa fa-ellipsis-v text-xs"></i>
@@ -690,8 +700,11 @@ function processCatchTable(response) {
             </td>
         </tr>
     `;
+        current_trip_total_catch += data[i].catch_quantity
     }
-
+    if (current_trip_total_catch != "") {
+        rows += `<tr><td></td><td></td><td></td><td><span class="text-xs font-weight-bold">TOTAL:</span></td><td><span class="text-xs font-weight-bold">${current_trip_total_catch}</span></td></tr>`
+    }
     table.tBodies[0].innerHTML = rows;
 }
 
