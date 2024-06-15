@@ -2313,9 +2313,9 @@ function processPopup(title, title_extra, data) {
                     /*let product_id = document.getElementById("assign_product_list").value;
                     let quantity = parseInt(document.getElementById("quantity").value);
                     let unit_price = parseFloat(document.getElementById("unit_price").value);
-                    let total_price = parseFloat(document.getElementById("total_price").value);*/
+                    let total_price = parseFloat(document.getElementById("total_price").value);
+                    let buyer_id = document.getElementById("assign_buyer_list").value;*/
                     let seller_id = document.getElementById("assign_seller_list").value;
-                    let buyer_id = document.getElementById("assign_buyer_list").value;
                     let vessel_id = document.getElementById("assign_vessel_list").value;
                     let trip_id = document.getElementById("assign_trip_list").value;
                     let payment_type = document.getElementById("payment_type").value;
