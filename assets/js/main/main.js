@@ -87,6 +87,9 @@ function redirectPage(url) {
     }
 }
 function updateTotalPrice() {
+    if (document.getElementById("total_price") == undefined) return;
+    if (document.getElementById("quantity") == undefined) return;
+    if (document.getElementById("unit_price") == undefined) return;
     document.getElementById("total_price").value = document.getElementById("quantity").value * document.getElementById("unit_price").value;
 }
 function getTodayDate() {
@@ -2132,7 +2135,7 @@ function processPopup(title, title_extra, data) {
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
                 }
-                document.getElementById("assign_product_list").innerHTML = options
+                document.querySelector('select[name="assign_product_list"]').innerHTML = options
             })
             MAKE_REQUEST("GET",people_api_url,"",true, function(response) {
                 if (response instanceof Error) {
@@ -2203,30 +2206,6 @@ function processPopup(title, title_extra, data) {
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="product_id" class="form-control-label" data-i18n-key="product_id">product ID</label>
-                            <select id="assign_product_list" class="form-control" data-toggle="select" data-i18n-key="product_id"></select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="quantity" class="form-control-label" data-i18n-key="quantity">Quantity</label>
-                            <input id="quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="unit_price" class="form-control-label" data-i18n-key="unit_price">Unit Price</label>
-                            <input id="unit_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="total_price" class="form-control-label" data-i18n-key="total_price">Total Price</label>
-                            <input id="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
                             <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
                             <select id="assign_seller_list" class="form-control" data-toggle="select" data-i18n-key="seller_id"></select>
                         </div>
@@ -2268,6 +2247,40 @@ function processPopup(title, title_extra, data) {
                             </select>
                         </div>
                     </div>
+                    <div class="row" style="margin:auto;">
+                        <div class="col-md-12 text-center text-bg-success" style="margin:auto;" onclick="document.getElementById('multiple_product_transaction').append(document.getElementById('multiple_product_transaction').getElementsByClassName('row')[0].cloneNode(true))">&plus;</div>
+                    </div>
+                    <div id="multiple_product_transaction">
+                        <div class="row" style="background: lightgrey">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="product_id" class="form-control-label" data-i18n-key="product_id">product ID</label>
+                                    <select name="assign_product_list" class="form-control" data-toggle="select" data-i18n-key="product_id"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="quantity" class="form-control-label" data-i18n-key="quantity">Quantity</label>
+                                    <input name="quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="unit_price" class="form-control-label" data-i18n-key="unit_price">Unit Price</label>
+                                    <input name="unit_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
+                                </div>
+                            </div>
+                            <div class="col-md-6" hidden>
+                                <div class="form-group">
+                                    <label for="total_price" class="form-control-label" data-i18n-key="total_price">Total Price</label>
+                                    <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-1 justify-content-xxl-center content-center text-center text-bg-warning" style="margin:auto;" onclick="if(document.getElementById('multiple_product_transaction').getElementsByClassName('row').length > 1){this.parentElement.remove()}">
+                                &minus;
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="transaction_image" class="form-control-label" data-i18n-key="transaction_image">Transaction Image</label>
@@ -2287,7 +2300,7 @@ function processPopup(title, title_extra, data) {
         </div>
     `, function (){
                 $(document).ready(function() {
-                    $('#assign_product_list').select2({dropdownParent: $('#myModal')});
+                    //$('#assign_product_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_buyer_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_seller_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
@@ -2297,10 +2310,10 @@ function processPopup(title, title_extra, data) {
                     // Retrieve input values
                     let transaction_date = document.getElementById("transaction_date").value+"T00:00:00Z";
                     let transaction_type = document.getElementById("transaction_type").value;
-                    let product_id = document.getElementById("assign_product_list").value;
+                    /*let product_id = document.getElementById("assign_product_list").value;
                     let quantity = parseInt(document.getElementById("quantity").value);
                     let unit_price = parseFloat(document.getElementById("unit_price").value);
-                    let total_price = parseFloat(document.getElementById("total_price").value);
+                    let total_price = parseFloat(document.getElementById("total_price").value);*/
                     let seller_id = document.getElementById("assign_seller_list").value;
                     let buyer_id = document.getElementById("assign_buyer_list").value;
                     let vessel_id = document.getElementById("assign_vessel_list").value;
@@ -2310,43 +2323,48 @@ function processPopup(title, title_extra, data) {
                     let transaction_image_file = document.getElementById("transaction_image").files[0];
                     let notes = document.getElementById("notes").value;
 
-                    // Calculate total price
-                    total_price = parseFloat(quantity) * parseFloat(unit_price);
-                    document.getElementById("total_price").value = total_price;
-
                     function update() {
                         blobText = ""
                         if (transaction_image_file != undefined) {
                             blobText = reader.result
                         }
 
-                        // Construct payload
-                        let payload = {
-                            "transaction_date": transaction_date,
-                            "transaction_type": transaction_type,
-                            "product_id": product_id,
-                            "quantity": quantity,
-                            "unit_price": unit_price,
-                            "total_price": total_price,
-                            "seller_id": seller_id,
-                            "buyer_id": buyer_id,
-                            "vessel_id": vessel_id,
-                            "trip_id": trip_id,
-                            "payment_type": payment_type,
-                            "payment_status": payment_status,
-                            "transaction_image": blobText,
-                            "notes": notes
-                        };
+                        // multiple call for all product
+                        rows = document.getElementById("multiple_product_transaction").getElementsByClassName("row")
+                        for(i=0;i<rows.length;i++) {
+                            if (rows[i].querySelector('select[name="assign_product_list"]').length == 0) {continue;}
+                            if (rows[i].querySelector('input[name="quantity"]').length == 0) {continue;}
+                            if (rows[i].querySelector('input[name="unit_price"]').length == 0) {continue;}
+                            if (rows[i].querySelector('input[name="total_price"]').length == 0) {continue;}
 
-                        // Send payload to server
-                        MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(payload), true, function(response) {
-                            if (response instanceof Error) {
-                                alert("Failed to add new transaction! \nerror:" + response.message);
-                                return false;
-                            }
-                            // Refresh the page or perform other actions
-                            location.reload();
-                        });
+                            // Construct payload
+                            let payload = {
+                                "transaction_date": transaction_date,
+                                "transaction_type": transaction_type,
+                                "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
+                                "quantity": parseInt(rows[i].querySelector('input[name="quantity"]').value),
+                                "unit_price": parseFloat(rows[i].querySelector('input[name="unit_price"]').value),
+                                "total_price": parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value)),
+                                "seller_id": seller_id,
+                                "buyer_id": buyer_id,
+                                "vessel_id": vessel_id,
+                                "trip_id": trip_id,
+                                "payment_type": payment_type,
+                                "payment_status": payment_status,
+                                "transaction_image": blobText,
+                                "notes": notes
+                            };
+
+                            // Send payload to server
+                            MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(payload), true, function (response) {
+                                if (response instanceof Error) {
+                                    alert("Failed to add new transaction! \nerror:" + response.message);
+                                    return false;
+                                }
+                                // Refresh the page or perform other actions
+                                location.reload();
+                            });
+                        }
                     }
 
                     if (transaction_image_file != undefined) {
@@ -2593,7 +2611,7 @@ function processPopup(title, title_extra, data) {
           </div>
     `, function (){
                 $(document).ready(function() {
-                    $('#assign_product_list').select2({dropdownParent: $('#myModal')});
+                    //$('#assign_product_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
                 });
