@@ -42,7 +42,14 @@ function getTodayDate() {
     // Set the value of the input to today's date
     return yyyy + '-' + mm + '-' + dd;
 }
-
+function convertPaymentStatus(input) {
+    if (input == 0) {
+        return "PENDING"
+    } else if(input == 1) {
+        return "DONE"
+    }
+    return "?"
+}
 // Assign username and roles in nav
 account_name = document.getElementById("account_name");
 account_roles = document.getElementById("account_roles");
@@ -79,7 +86,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
             <li class="nav-item">
                 <a class="nav-link " href="../pages/dashboard.html">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-ship text-primary text-sm opacity-10"></i>
+                        <i class="fa fa-bar-chart text-secondary text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_dashboard">Dashboard</span>
                 </a>
@@ -263,8 +270,12 @@ async function MAKE_REQUEST(method,url,payload,needToken,callback) {
             hideLoader();
             return
         }
-        const result = await response.json()
-        callback(result)
+        try {
+            const result = await response.json()
+            callback(result)
+        } catch(ex) {
+            callback("success")
+        }
     } catch (ex) {
         hideLoader();
         callback(new Error(`not enough permission to open [${method}]${url} \nwith error ${ex}`))
@@ -2553,7 +2564,7 @@ function processPopup(title, title_extra, data) {
                             // Construct payload
                             let payload = {
                                 "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
-                                "catch_quantity": rows[i].querySelector('input[name="catch_quantity"]').value,
+                                "catch_quantity": parseInt(rows[i].querySelector('input[name="catch_quantity"]').value),
                                 "catch_date": catch_date,
                                 "catch_location": catch_location,
                                 "vessel_id": vessel_id,

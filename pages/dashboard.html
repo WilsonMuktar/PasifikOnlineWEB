@@ -196,14 +196,17 @@
               <table class="table align-items-center" id="dashboard_top10_transactions">
                 <thead>
                 <tr>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="number">No</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="number"> No </th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="product_name">Product Name</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="product_category">Category</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="product_subcategory">SubCategory</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="payment_type">Payment Type</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="payment_status">Payment Status</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="transaction_type">Transaction Type</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="transaction_date">Transaction Date</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="total">Total</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="buyer">Buyer</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="seller">Seller</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="payment_status">Payment Status</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="trip_name">Trip Name</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="vessel_name">Vessel Name</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -397,7 +400,7 @@
     endYear = currentYear+"-12-31"
     MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear, "", true, function(response){
       if (response instanceof Error) {
-          alert("Failed to get transaction List")
+          alert("Failed to get transaction List \n"+ response)
           return
       }
       else {
@@ -406,22 +409,27 @@
 
         data = response.data;
         // group all transaction to monthly basis
-        monthlyTransactionTotal = {}
-        for(i=0;i<data.length();i++) {
+        monthlyTransactionTotal = {'01':0,'02':0,'03':0,'04':0,'05':0,'06':0,'07':0,'08':0,'09':0,'10':0,'11':0,'12':0}
+        for(i=0;i<data.length;i++) {
           transaction = data[i]
-          month = transaction["transaction_date"].split("/")[1]
+          month = transaction["transaction_date"].split("-")[1]
           // accumulate
+          console.log(month, transaction["total_price"])
           monthlyTransactionTotal[month] += transaction["total_price"]
 
           if (i < 10) {
             rows += `
                   <td><div class="text-center"><h6 class="text-sm mb-0">${i}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction[""])}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">Ikan</h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">Rp.288.000.000,00</h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">PT.BUYER</h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0"></h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0 text-bg-info">GIRO</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["product_name"])}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0 text-bg-info">${str(transaction["payment_type"])}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0 text-bg-info">${convertPaymentStatus(transaction["payment_status"])}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_type"])}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_date"])}</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0 text-bg-success">${str(transaction["total_price"])}</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["buyer_first_name"] + " " + transaction["buyer_last_name"])}</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["seller_first_name"] + " " + transaction["seller_last_name"])}</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["trip_name"])}</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["vessel_name"])}</h6></div></td>
             `
           }
         }
@@ -440,10 +448,16 @@
           data: {
             labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             datasets: [{
-              label: "Mobile apps", tension: 0.4, pointRadius: 0, borderColor: "#5e72e4", backgroundColor: gradientStroke1, borderWidth: 3, fill: true,
-              data: [monthlyTransactionTotal["01"],monthlyTransactionTotal["02"],monthlyTransactionTotal["03"],monthlyTransactionTotal["04"],
-                monthlyTransactionTotal["05"],monthlyTransactionTotal["06"],monthlyTransactionTotal["07"],monthlyTransactionTotal["08"],
-                monthlyTransactionTotal["09"],monthlyTransactionTotal["10"],monthlyTransactionTotal["11"],monthlyTransactionTotal["12"]],
+              label: "Mobile apps",
+              tension: 0.4,
+              pointRadius: 0,
+              borderColor: "#5e72e4",
+              backgroundColor: gradientStroke1,
+              borderWidth: 3,
+              fill: true,
+              data: [monthlyTransactionTotal["01"], monthlyTransactionTotal["02"], monthlyTransactionTotal["03"], monthlyTransactionTotal["04"],
+                monthlyTransactionTotal["05"], monthlyTransactionTotal["06"], monthlyTransactionTotal["07"], monthlyTransactionTotal["08"],
+                monthlyTransactionTotal["09"], monthlyTransactionTotal["10"], monthlyTransactionTotal["11"],monthlyTransactionTotal["12"]],
               maxBarThickness: 6
             }],
           },
