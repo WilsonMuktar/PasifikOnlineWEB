@@ -205,6 +205,7 @@
   "table_heading_registration_number": "Nomor Registrasi",
   "table_heading_type": "Jenis",
   "table_heading_vessel": "Kapal",
+  "table_heading_owner": "Pemilik",
   "task_description": "Deskripsi Tugas",
   "tax": "Pajak",
   "total": "Total",
@@ -272,5 +273,7 @@
   "dasboard_table_departure":"Tanggal Keberangkatan",
   "dasboard_table_return":"Tanggal Pulang",
   "dasboard_table_cost":"Harga",
-  "dasboard_table_captain":"Kapten"
+  "dasboard_table_captain":"Kapten",
+  "dashboard_total_debt":"Total Utang",
+  "dashboard_total_debt_change": "sejak bulan lalu",
 }

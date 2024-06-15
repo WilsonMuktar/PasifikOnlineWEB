@@ -22,6 +22,73 @@ function loadLocalization(language) {
 // apply localization
 loadLocalization(localStorage.getItem("localization_language"))
 
+// Assign username and roles in nav
+account_name = document.getElementById("account_name");
+account_roles = document.getElementById("account_roles");
+if (account_name != undefined) {
+    account_name.innerHTML = localStorage.getItem('user_name')
+}
+if (account_roles != undefined) {
+    account_roles.innerHTML = localStorage.getItem('user_roles')
+}
+
+// UTILS //
+function showLoader() {
+    var loaderElement = document.createElement('div');
+    loaderElement.style.cssText = 'display: block; position: absolute; height: 100px; width: 100px; top: 50%; left: 50%; margin-left: -50px; margin-top: -50px; background: url("../assets/img/loader1.gif"); background-size: 100%; z-index: 999999999999999999999; border-radius: 50%;'
+    loaderElement.id = 'loaderElement';
+    document.body.appendChild(loaderElement)
+}
+function hideLoader() {
+    loaderElement = document.getElementById("loaderElement");
+    if (loaderElement != undefined) {
+        document.body.removeChild(loaderElement);
+    }
+}
+function reorderSelectOptions(options, selected) {
+    ordered = ""
+    foundSelected = false
+    for (i = 0; i < options.length; i++) {
+        if (options[i].includes(`value="${selected}"`)) {
+            foundSelected = true
+            ordered += options[i].replace("option value", "option selected value")
+        } else {
+            ordered += options[i]
+        }
+    }
+
+    if (foundSelected == false) {
+        ordered = `<option value selected data-i18n-key="none">-- None --</option>` + ordered
+    }
+
+    return ordered
+}
+function str(data) {
+    try {
+        if (data == undefined) {
+            return ""
+        }
+    } catch (exc) {
+        return ""
+    }
+    return data
+}
+function img(data) {
+    if (data == undefined) {
+        return "../assets/img/nodata.jpg"
+    }
+    return data
+}
+function redirectPage(url) {
+    if (origin.includes("page")) {
+        window.location.replace("../" + url);
+    } else {
+        window.location.replace(url);
+    }
+}
+function updateTotalPrice() {
+    document.getElementById("total_price").value = document.getElementById("quantity").value * document.getElementById("unit_price").value;
+}
 function getTodayDate() {
     // Get today's date
     const today = new Date();
@@ -49,19 +116,6 @@ function convertPaymentStatus(input) {
         return "DONE"
     }
     return "?"
-}
-// Assign username and roles in nav
-account_name = document.getElementById("account_name");
-account_roles = document.getElementById("account_roles");
-if (account_name != undefined) {
-    account_name.innerHTML = localStorage.getItem('user_name')
-}
-if (account_roles != undefined) {
-    account_roles.innerHTML = localStorage.getItem('user_roles')
-}
-
-function updateTotalPrice() {
-    document.getElementById("total_price").value = document.getElementById("quantity").value * document.getElementById("unit_price").value;
 }
 
 ////////////////////
@@ -224,20 +278,6 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
     `
 }
 
-function showLoader() {
-    var loaderElement = document.createElement('div');
-    loaderElement.style.cssText = 'display: block; position: absolute; height: 100px; width: 100px; top: 50%; left: 50%; margin-left: -50px; margin-top: -50px; background: url("../assets/img/loader1.gif"); background-size: 100%; z-index: 999999999999999999999; border-radius: 50%;'
-    loaderElement.id = 'loaderElement';
-    document.body.appendChild(loaderElement)
-}
-
-function hideLoader() {
-    loaderElement = document.getElementById("loaderElement");
-    if (loaderElement != undefined) {
-        document.body.removeChild(loaderElement);
-    }
-}
-
 // Main logic //
 async function MAKE_REQUEST(method,url,payload,needToken,callback) {
     showLoader();
@@ -281,44 +321,6 @@ async function MAKE_REQUEST(method,url,payload,needToken,callback) {
         callback(new Error(`not enough permission to open [${method}]${url} \nwith error ${ex}`))
     }
     hideLoader();
-}
-
-function reorderSelectOptions(options, selected) {
-    ordered = ""
-    foundSelected = false
-    for (i = 0; i < options.length; i++) {
-        if (options[i].includes(`value="${selected}"`)) {
-            foundSelected = true
-            ordered += options[i].replace("option value", "option selected value")
-        } else {
-            ordered += options[i]
-        }
-    }
-
-    if (foundSelected == false) {
-        ordered = `<option value selected data-i18n-key="none">-- None --</option>` + ordered
-    }
-
-    return ordered
-}
-
-function str(data) {
-    try {
-        if (data == undefined) {
-            return ""
-        }
-    } catch (exc) {
-        return ""
-    }
-    return data
-}
-
-function redirectPage(url) {
-    if (origin.includes("page")) {
-        window.location.replace("../" + url);
-    } else {
-        window.location.replace(url);
-    }
 }
 
 String.prototype.format = String.prototype.format || function () {
@@ -416,7 +418,7 @@ function prosesUserTable(response) {
         }
         rows += `
             <tr>
-                <td><div class="d-flex px-2 py-1"><div><img src="${data[i].avatar}"class="avatar avatar-sm me-3" alt="user1"></div>
+                <td><div class="d-flex px-2 py-1"><div><img src="${img(data[i].avatar)}"class="avatar avatar-sm me-3" alt="user1"></div>
                     <div class="d-flex flex-column justify-content-center"><h6 class="mb-0 text-sm">${data[i].account}</h6>
                     <p class="text-xs text-secondary mb-0">${str(data[i].email)}</p></div></div></td>
                 <td><p class="text-xs font-weight-bold mb-0">${roles}</p>
@@ -440,7 +442,7 @@ function processProductTable(response) {
     for (i = data.length - 1; i >= 0; i--) {
         rows += `
                     <tr>
-                     <td><div class="d-flex px-2"><div><img src="${data[i].product_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Product: ${data[i].product_name}', '${data[i].product_image}');"></div>
+                     <td><div class="d-flex px-2"><div><img src="${img(data[i].product_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Product: ${data[i].product_name}', '${data[i].product_image}');"></div>
                       <div class="my-auto"><h6 class="mb-0 text-sm">${data[i].product_name}</h6></div></div></td>
                      <td><p class="text-sm font-weight-bold mb-0">${str(data[i].product_category)}</p></td>
                      <td><span class="text-xs font-weight-bold">${str(data[i].brand)}</span></td>
@@ -465,11 +467,11 @@ function processVesselTable(response) {
     for (i = data.length - 1; i >= 0; i--) {
         rows += `
                     <tr>
-                     <td><div class="d-flex px-2"><div><img src="${data[i].vessel_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Vessel: ${data[i].vessel_name}', '${data[i].vessel_image}');"></div>
+                     <td><div class="d-flex px-2"><div><img src="${img(data[i].vessel_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Vessel: ${data[i].vessel_name}', '${data[i].vessel_image}');"></div>
                       <div class="my-auto"><h6 class="mb-0 text-sm">${data[i].vessel_name}</h6></div></div></td>
                      <td><p class="text-sm font-weight-bold mb-0">${str(data[i].vessel_type)}</p></td>
                      <td><span class="text-xs font-weight-bold">${str(data[i].registration_number)}</span></td>
-                     <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-secondary">${str(data[i].year_built)}</span></td>
+                     <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-secondary">${str(data[i].owner)}</span></td>
                      <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-secondary">${str(data[i].fisheries_permits)}</span></td>
                      <td class="align-middle text-center">
                         <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Vessel","",${JSON.stringify(data[i])})'><i class="fa fa-ellipsis-v text-xs"></i></button>
@@ -492,7 +494,7 @@ function processStockTable(response) {
             <td>
                 <div class="d-flex px-2">
                     <div>
-                        <img src="${data[i].stock_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Stock: ${data[i].product_id}', '${data[i].stock_image}');">
+                        <img src="${img(data[i].stock_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Stock: ${data[i].product_id}', '${data[i].stock_image}');">
                     </div>
                     <div class="my-auto">
                         <h6 class="mb-0 text-sm">${data[i].product_id}</h6>
@@ -528,7 +530,7 @@ function processPeopleTable(response) {
             <td>
                 <div class="d-flex px-2">
                     <div>
-                        <img src="${data[i].person_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Person: ${str(data[i].first_name)} ${str(data[i].last_name)}', '${data[i].person_image}');">
+                        <img src="${img(data[i].person_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Person: ${str(data[i].first_name)} ${str(data[i].last_name)}', '${data[i].person_image}');">
                     </div>
                     <div class="my-auto">
                         <h6 class="mb-0 text-sm">${str(data[i].first_name)} ${str(data[i].last_name)}</h6>
@@ -563,17 +565,17 @@ function processTripTable(response) {
             <td>
                 <div class="d-flex px-2">
                     <div>
-                        <img src="${data[i].trip_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Trip: ${data[i].trip_name}', '${data[i].trip_image}');">
+                        <img src="${img(data[i].trip_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Trip: ${data[i].trip_name}', '${data[i].trip_image}');">
                     </div>
                     <div class="my-auto">
                         <h6 class="mb-0 text-sm">${data[i].trip_name}</h6>
                     </div>
                 </div>
             </td>
-            <td><span class="text-xs font-weight-bold">${data[i].departure_date}</span></td>
-            <td><span class="text-xs font-weight-bold">${data[i].return_date}</span></td>
-            <td><span class="text-xs font-weight-bold">${data[i].vessel_id}</span></td>
-            <td><span class="text-xs font-weight-bold">${data[i].captain_id}</span></td>
+            <td><span class="text-xs font-weight-bold">${data[i].departure_date.replace("T00:00:00Z","")}</span></td>
+            <td><span class="text-xs font-weight-bold">${data[i].return_date.replace("T00:00:00Z","")}</span></td>
+            <td><span class="text-xs font-weight-bold">${data[i].vessel_name}</span></td>
+            <td><span class="text-xs font-weight-bold">${data[i].captain_first_name+" "+data[i].captain_last_name}</span></td>
             <td class="align-middle text-center">
                 <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Trip","",${JSON.stringify(data[i])})'>
                     <i class="fa fa-ellipsis-v text-xs"></i>
@@ -598,7 +600,7 @@ function processTransactionTable(response) {
             <td>
                 <div class="d-flex px-2">
                     <div>
-                        <img src="${data[i].transaction_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Transaction: ${data[i].transaction_date}', '${data[i].transaction_image}');">
+                        <img src="${img(data[i].transaction_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Transaction: ${data[i].transaction_date}', '${data[i].transaction_image}');">
                     </div>
                     <div class="my-auto">
                         <h6 class="mb-0 text-sm">${str(data[i].transaction_id)}</h6>
@@ -637,14 +639,14 @@ function processMaintenanceTable(response) {
             <td>
                 <div class="d-flex px-2">
                     <div>
-                        <img src="${data[i].maintenance_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Maintenance: ${data[i].vessel_id}', '${data[i].maintenance_image}');">
+                        <img src="${img(data[i].maintenance_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Maintenance: ${data[i].vessel_id}', '${data[i].maintenance_image}');">
                     </div>
                     <div class="my-auto">
                         <h6 class="mb-0 text-sm">${data[i].vessel_id}</h6>
                     </div>
                 </div>
             </td>
-            <td><span class="text-xs font-weight-bold">${data[i].maintenance_date}</span></td>
+            <td><span class="text-xs font-weight-bold">${data[i].maintenance_date.replace("T00:00:00Z","")}</span></td>
             <td><span class="text-xs font-weight-bold">${data[i].cost}</span></td>
             <td><span class="text-xs font-weight-bold">${data[i].task_description}</span></td>
             <td class="align-middle text-center">
@@ -667,43 +669,58 @@ function processCatchTable(response) {
 
     var current_trip_name = ""
     var current_trip_total_catch = 0
+    var newrows = ""
     for (var i = data.length - 1; i >= 0; i--) {
         if (current_trip_name != data[i].trip_name) {
             if (current_trip_name != "") {
-                rows += `<tr><td></td><td></td><td></td><td><span class="text-xs font-weight-bold">TOTAL:</span></td><td><span class="text-xs font-weight-bold">${current_trip_total_catch}</span></td></tr>`
+                rows += `<tr>
+                    <td><center><span class="text-xs font-weight-bold text-center">${current_trip_name}</span></center></td><td colspan="3"></td>
+                    <td colspan=1></td>
+                    <td class="text-center">
+                        <span class="text-xs font-weight-bold">TOTAL:${current_trip_total_catch}(KG)</span>
+                        <button class="btn btn-link text-secondary mb-0" onclick="var rows=document.querySelectorAll('.${current_trip_name.replaceAll(' ','')}'); rows.forEach(function(element) { if (element.style.display == 'none') { element.style.display = 'table-row'  } else { element.style.display = 'none'}});"><i class="fa fa-expand text-xs"></i></button>
+                    </td>
+                </tr>`
+                rows += newrows
             }
-            rows += `<tr><td><center><span class="text-xs font-weight-bold text-center">${data[i].trip_name}</span></center></td></tr>`
-            current_trip_total_catch = 0
             current_trip_name = data[i].trip_name
+            //reset
+            newrows = ""
+            current_trip_total_catch = 0
         }
-        rows += `
-        <tr>
-            <td></td>
-            <td>
-                <div class="d-flex px-2">
-                    <div>
-                        <img src="${data[i].catch_image}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Catch: ${data[i].product_id}', '${data[i].catch_image}');">
+        newrows += `
+            <tr class="${current_trip_name.replaceAll(' ','')}" style="display: none">
+                <td></td>
+                <td>
+                    <div class="d-flex px-2">
+                        <div class="my-auto">
+                            <h6 class="mb-0 text-sm">${data[i].product_name}</h6>
+                        </div>
                     </div>
-                    <div class="my-auto">
-                        <h6 class="mb-0 text-sm">${data[i].product_name}</h6>
-                    </div>
-                </div>
-            </td>
-            <td><span class="text-xs font-weight-bold">${data[i].catch_date}</span></td>
-            <td><span class="text-xs font-weight-bold">${data[i].vessel_name}</span></td>
-            <td><span class="text-xs font-weight-bold">${data[i].catch_quantity}</span></td>
-            <td class="align-middle text-center">
-                <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Catch","",${JSON.stringify(data[i])})'>
-                    <i class="fa fa-ellipsis-v text-xs"></i>
-                </button>
-                <button class="btn btn-link text-warning mb-0" onclick='openPopup("Delete Catch","",${JSON.stringify(data[i])})'><i class="fa fa-ban text-xs"></i></button>
-            </td>
-        </tr>
-    `;
+                </td>
+                <td><span class="text-xs font-weight-bold">${data[i].catch_date.replace("T00:00:00Z","")}</span></td>
+                <td><span class="text-xs font-weight-bold">${data[i].vessel_name}</span></td>
+                <td><span class="text-xs font-weight-bold">${data[i].catch_quantity}</span></td>
+                <td class="align-middle text-center">
+                    <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Catch","",${JSON.stringify(data[i])})'>
+                        <i class="fa fa-ellipsis-v text-xs"></i>
+                    </button>
+                    <button class="btn btn-link text-warning mb-0" onclick='openPopup("Delete Catch","",${JSON.stringify(data[i])})'><i class="fa fa-ban text-xs"></i></button>
+                </td>
+            </tr>
+        `;
         current_trip_total_catch += data[i].catch_quantity
     }
-    if (current_trip_total_catch != "") {
-        rows += `<tr><td></td><td></td><td></td><td><span class="text-xs font-weight-bold">TOTAL:</span></td><td><span class="text-xs font-weight-bold">${current_trip_total_catch}</span></td></tr>`
+    if (current_trip_total_catch != 0) {
+        rows += `<tr>
+                <td><center><span class="text-xs font-weight-bold text-center">${current_trip_name}</span></center></td><td colspan="3"></td>
+                <td colspan=1></td>
+                <td class="text-center">
+                    <span class="text-xs font-weight-bold">TOTAL:${current_trip_total_catch}(KG)</span>
+                    <button class="btn btn-link text-secondary mb-0" onclick="var rows=document.querySelectorAll('.${current_trip_name.replaceAll(' ','')}'); rows.forEach(function(element) { if (element.style.display == 'none') { element.style.display = 'table-row'  } else { element.style.display = 'none'}});"><i class="fa fa-expand text-xs"></i></button>
+                </td>
+            </tr>`
+        rows += newrows
     }
     table.tBodies[0].innerHTML = rows;
 }
@@ -739,7 +756,7 @@ function processPopup(title, title_extra, data) {
                     <div class="card-body">
                         <div class="col-md-12">
                           <div class="form-group">
-                            <img src="${data}" class="form-control"></img>
+                            <img src="${img(data)}" class="form-control"></img>
                           </div>
                         </div>
                       </div>
