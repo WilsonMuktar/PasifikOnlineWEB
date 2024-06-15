@@ -2450,7 +2450,7 @@ function processPopup(title, title_extra, data) {
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
                 }
-                document.getElementById("assign_product_list").innerHTML = options
+                document.querySelector('select[name="assign_product_list"]').innerHTML = options
             })
             return [`
         <span class="close">&times;</span>
@@ -2486,28 +2486,27 @@ function processPopup(title, title_extra, data) {
                     <input id="catch_location" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
-                <!--div class="row">
-                    <div class="col-md-11"><div class="form-group"></div></div>
-                    <div class="col-md-1 text-center text-bg-success"  style="margin:auto;">&plus;</div>
+                <div class="row" style="margin:auto;">
+                    <div class="col-md-12 text-center text-bg-success" style="margin:auto;" onclick="document.getElementById('multiple_product_catch').append(document.getElementById('multiple_product_catch').getElementsByClassName('row')[0].cloneNode(true))">&plus;</div>
                 </div>
                 <div id="multiple_product_catch">
-                    <div class="row" style="background: lightgrey"-->
+                    <div class="row" style="background: lightgrey">
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
-                            <select id="assign_product_list" class="form-control" data-i18n-key="product_id"></select>
+                            <select name="assign_product_list" class="form-control" data-i18n-key="product_id"></select>
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                           <div class="form-group">
                             <label for="catch_quantity" class="form-control-label" data-i18n-key="catch_quantity">Catch Quantity</label>
-                            <input id="catch_quantity" class="form-control" type="number" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input name="catch_quantity" class="form-control" type="number" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
                           </div>
                         </div>
-                        <!--div class="col-md-1 justify-content-xxl-center content-center text-center text-bg-warning" style="margin:auto;">
+                        <div class="col-md-1 justify-content-xxl-center content-center text-center text-bg-warning" style="margin:auto;" onclick="if(document.getElementById('multiple_product_catch').getElementsByClassName('row').length > 1){this.parentElement.remove()}">
                             &minus;
                         </div>
-                    </div-->
+                    </div>
                 </div>
                 <div class="col-md-12">
                    <div class="form-group">
@@ -2529,10 +2528,11 @@ function processPopup(title, title_extra, data) {
     `, function (){
                 document.getElementById("add_catch_btn").addEventListener('click', function (e) {
                     // Retrieve input values
-                    let product_id = document.getElementById("assign_product_list").value;
+                    //let product_id = document.getElementById("assign_product_list").value;
+                    //let catch_quantity = parseInt(document.getElementById("catch_quantity").value);
+
                     let catch_date = document.getElementById("catch_date").value+"T00:00:00Z";
                     let catch_location = document.getElementById("catch_location").value;
-                    let catch_quantity = parseInt(document.getElementById("catch_quantity").value);
                     let vessel_id = document.getElementById("assign_vessel_list").value;
                     let trip_id = document.getElementById("assign_trip_list").value;
                     let catch_image_file = document.getElementById("catch_image").files[0];
@@ -2544,27 +2544,34 @@ function processPopup(title, title_extra, data) {
                             blobText = reader.result
                         }
 
-                        // Construct payload
-                        let payload = {
-                            "product_id": product_id,
-                            "catch_date": catch_date,
-                            "catch_location": catch_location,
-                            "catch_quantity": catch_quantity,
-                            "vessel_id": vessel_id,
-                            "trip_id": trip_id,
-                            "catch_image": blobText,
-                            "notes": notes
-                        };
+                        // multiple call for all product
+                        rows = document.getElementById("multiple_product_catch").getElementsByClassName("row")
+                        for(i=0;i<rows.length;i++) {
+                            if (rows[i].querySelector('select[name="assign_product_list"]').length == 0) {continue;}
+                            if (rows[i].querySelector('input[name="catch_quantity"]').length == 0) {continue;}
 
-                        // Send payload to server
-                        MAKE_REQUEST("POST", catch_api_url, JSON.stringify(payload), true, function(response) {
-                            if (response instanceof Error) {
-                                alert("Failed to add new catch! \nerror:" + response.message);
-                                return false;
-                            }
-                            // Refresh the page or perform other actions
-                            location.reload();
-                        });
+                            // Construct payload
+                            let payload = {
+                                "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
+                                "catch_quantity": rows[i].querySelector('input[name="catch_quantity"]').value,
+                                "catch_date": catch_date,
+                                "catch_location": catch_location,
+                                "vessel_id": vessel_id,
+                                "trip_id": trip_id,
+                                "catch_image": blobText,
+                                "notes": notes
+                            };
+
+                            // Send payload to server
+                            MAKE_REQUEST("POST", catch_api_url, JSON.stringify(payload), true, function (response) {
+                                if (response instanceof Error) {
+                                    alert("Failed to add new catch! \nerror:" + response.message);
+                                    return false;
+                                }
+                                // Refresh the page or perform other actions
+                                location.reload();
+                            });
+                        }
                     }
 
                     if (catch_image_file != undefined) {
