@@ -5,10 +5,10 @@ var web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
 
 // check rather running in local
 if (window.location.href.indexOf("file:///") > -1) {
-    envHost = "http://localhost:8080"
-    web_service_id = "d5e17e06-308a-4907-9e55-9e4d2c87158b"
-    web_client_id = "ECo4LyNiJVOGxOQwUVaiv8B1"
-    web_client_secret = "dxWIpr8qgLq2Udu3dTKRnTYUV4hqwjtX"
+    envHost = "https://pasifikonline-yenwie-c0344cc5.koyeb.app" //"http://localhost:8080"
+    web_service_id = "54311ba1-353d-4c28-a142-4eb465dcf1c1"// "d5e17e06-308a-4907-9e55-9e4d2c87158b"
+    web_client_id = "jRqOOEBeGle1L4D31cCXai1h"// "ECo4LyNiJVOGxOQwUVaiv8B1"
+    web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"// "dxWIpr8qgLq2Udu3dTKRnTYUV4hqwjtX"
 }
 
 const user_api_url = envHost+"/keyauth/v1/members/"

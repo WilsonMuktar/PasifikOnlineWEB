@@ -104,9 +104,9 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_transaction">Total Transaction</p>
-                      <h5 class="font-weight-bolder" id="dashboard_total_transaction">Rp.1.000.000.000,00</h5>
+                      <h5 class="font-weight-bolder" id="dashboard_total_transaction">Rp.-,00</h5>
                     <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder" id="dashboard_total_transaction_change">+20%</span>
+                      <span class="text-success text-sm font-weight-bolder" id="dashboard_total_transaction_change">+0%</span>
                       <span data-i18n-key="dashboard_total_transaction_change">since last month</span>
                     </p>
                   </div>
@@ -127,9 +127,9 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_income">Total Income</p>
-                    <h5 class="font-weight-bolder" id="dashboard_total_income">Rp.800.000.000,00</h5>
+                    <h5 class="font-weight-bolder" id="dashboard_total_income">Rp.-,00</h5>
                     <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder" id="dashboard_total_income_change">+32%</span>
+                      <span class="text-success text-sm font-weight-bolder" id="dashboard_total_income_change">+0%</span>
                       <span data-i18n-key="dashboard_total_income_change">since last month</span>
                     </p>
                   </div>
@@ -150,9 +150,9 @@
                 <div class="col-8">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_expense">Total Expense</p>
-                    <h5 class="font-weight-bolder" id="dashboard_total_expense">Rp.200.000.000,00</h5>
+                    <h5 class="font-weight-bolder" id="dashboard_total_expense">Rp.-,00</h5>
                     <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder" id="dashboard_total_expense_change">-12%</span>
+                      <span class="text-success text-sm font-weight-bolder" id="dashboard_total_expense_change">-0%</span>
                       <span data-i18n-key="dashboard_total_expense_change">since last month</span>
                     </p>
                   </div>
@@ -167,10 +167,11 @@
         <div class="col-lg-12 mb-lg-0 mb-4">
           <div class="card z-index-2 h-100">
             <div class="card-header pb-0 pt-3 bg-transparent">
-              <h6 class="text-capitalize" data-i18n-key="dashboard_overview_transaction">Transaction overview in 2024</h6>
+              <h6 class="text-capitalize" data-i18n-key="dashboard_overview_transaction">Transaction overview in </h6>
+              <h6><script>document.write(new Date().getFullYear())</script></h6>
               <p class="text-sm mb-0">
                 <i class="fa fa-arrow-up text-success"></i>
-                <span class="font-weight-bold" id="dashboard_overview_transaction_change">4% more</span>
+                <span class="font-weight-bold" id="dashboard_overview_transaction_change">0% more</span>
                 <span data-i18n-key="dashboard_overview_transaction_change">since last year</span>
               </p>
             </div>
@@ -192,7 +193,7 @@
               </div>
             </div>
             <div class="table-responsive">
-              <table class="table align-items-center ">
+              <table class="table align-items-center" id="dashboard_top10_transactions">
                 <thead>
                 <tr>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="number">No</th>
@@ -206,14 +207,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">Cakalang</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">Materi</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">Ikan</h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">Rp.288.000.000,00</h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">PT.BUYER</h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0"></h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0 text-bg-info">GIRO</h6></div></td>
+                <tr class="datagrid__row vertical-animation">
+                  <td><span><div class="datagrid__loader" style="width: 90%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 80%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
                 </tr>
                 </tbody>
               </table>
@@ -390,85 +392,73 @@
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/chartjs.min.js"></script>
   <script>
-    var ctx1 = document.getElementById("chart-line").getContext("2d");
+    currentYear = new Date().getFullYear()
+    startYear = currentYear+"-01-01"
+    endYear = currentYear+"-12-31"
+    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear, "", true, function(response){
+      if (response instanceof Error) {
+          alert("Failed to get transaction List")
+          return
+      }
+      else {
+        top10TransactionTable = document.getElementById("dashboard_top10_transactions")
+        rows = ""
 
-    var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+        data = response.data;
+        // group all transaction to monthly basis
+        monthlyTransactionTotal = {}
+        for(i=0;i<data.length();i++) {
+          transaction = data[i]
+          month = transaction["transaction_date"].split("/")[1]
+          // accumulate
+          monthlyTransactionTotal[month] += transaction["total_price"]
 
-    gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
-    gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
-    gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
-    new Chart(ctx1, {
-      type: "line",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-          label: "Mobile apps",
-          tension: 0.4,
-          pointRadius: 0,
-          borderColor: "#5e72e4",
-          backgroundColor: gradientStroke1,
-          borderWidth: 3,
-          fill: true,
-          data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-          maxBarThickness: 6
-
-        }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
+          if (i < 10) {
+            rows += `
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${i}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction[""])}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">Ikan</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">Rp.288.000.000,00</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">PT.BUYER</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0"></h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0 text-bg-info">GIRO</h6></div></td>
+            `
           }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5]
-            },
-            ticks: {
-              display: true,
-              padding: 10,
-              color: '#fbfbfb',
-              font: {
-                size: 11,
-                family: "Open Sans",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
+        }
+
+        // update top10 Transaction Table
+        top10TransactionTable.tBodies[0].innerHTML = rows;
+
+        // update transaction chart
+        var ctx1 = document.getElementById("chart-line").getContext("2d");
+        var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+        gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
+        gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
+        gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
+        new Chart(ctx1, {
+          type: "line",
+          data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+              label: "Mobile apps", tension: 0.4, pointRadius: 0, borderColor: "#5e72e4", backgroundColor: gradientStroke1, borderWidth: 3, fill: true,
+              data: [monthlyTransactionTotal["01"],monthlyTransactionTotal["02"],monthlyTransactionTotal["03"],monthlyTransactionTotal["04"],
+                monthlyTransactionTotal["05"],monthlyTransactionTotal["06"],monthlyTransactionTotal["07"],monthlyTransactionTotal["08"],
+                monthlyTransactionTotal["09"],monthlyTransactionTotal["10"],monthlyTransactionTotal["11"],monthlyTransactionTotal["12"]],
+              maxBarThickness: 6
+            }],
           },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              borderDash: [5, 5]
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false, } },
+            interaction: { intersect: false, mode: 'index', },
+            scales: {
+              y: { grid: { drawBorder: false, display: true, drawOnChartArea: true, drawTicks: false, borderDash: [5, 5] },
+                ticks: { display: true, padding: 10, color: '#fbfbfb', font: { size: 11, family: "Open Sans", style: 'normal', lineHeight: 2 }, } },
+              x: { grid: { drawBorder: false, display: false, drawOnChartArea: false, drawTicks: false, borderDash: [5, 5] },
+                ticks: { display: true, color: '#ccc', padding: 20, font: { size: 11, family: "Open Sans", style: 'normal', lineHeight: 2 }, } },
             },
-            ticks: {
-              display: true,
-              color: '#ccc',
-              padding: 20,
-              font: {
-                size: 11,
-                family: "Open Sans",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
           },
-        },
-      },
+        })
+      }
     });
   </script>
   <script>

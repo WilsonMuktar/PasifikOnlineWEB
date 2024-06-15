@@ -22,9 +22,30 @@ function loadLocalization(language) {
 // apply localization
 loadLocalization(localStorage.getItem("localization_language"))
 
+function getTodayDate() {
+    // Get today's date
+    const today = new Date();
+
+    // Format date to 'YYYY-MM-DD' (required by input type="date")
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // getMonth() is zero-based
+    let dd = today.getDate();
+
+    // Ensure mm and dd are two digits (padding with zero if necessary)
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+
+    // Set the value of the input to today's date
+    return yyyy + '-' + mm + '-' + dd;
+}
+
 // Assign username and roles in nav
 account_name = document.getElementById("account_name");
-account_roles= document.getElementById("account_roles");
+account_roles = document.getElementById("account_roles");
 if (account_name != undefined) {
     account_name.innerHTML = localStorage.getItem('user_name')
 }
@@ -32,7 +53,9 @@ if (account_roles != undefined) {
     account_roles.innerHTML = localStorage.getItem('user_roles')
 }
 
-function updateTotalPrice() { document.getElementById("total_price").value =  document.getElementById("quantity").value * document.getElementById("unit_price").value;}
+function updateTotalPrice() {
+    document.getElementById("total_price").value = document.getElementById("quantity").value * document.getElementById("unit_price").value;
+}
 
 ////////////////////
 // NavBar sidebar //
@@ -53,6 +76,14 @@ document.getElementsByClassName("fixed-plugin-button")[0].addEventListener("clic
 if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem('user_roles') == "domain_admin") {
     document.getElementById("sidenav-collapse-main").innerHTML = `
         <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link " href="../pages/dashboard.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-ship text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_dashboard">Dashboard</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link " href="../pages/vessel.html">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -566,9 +597,9 @@ function processTransactionTable(response) {
             <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].transaction_type)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].total_price)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].vessel_id)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].buyer_id)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].seller_id)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].buyer_first_name+" "+data[i].buyer_last_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].seller_first_name+" "+data[i].seller_last_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].payment_type)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].payment_status)}</span></td>
             <td class="align-middle text-center">
@@ -1416,7 +1447,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="last_inspection_date" class="form-control-label" data-i18n-key="last_inspection_date">Last Inspection Date</label>
-                            <input id="last_inspection_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="last_inspection_date" class="form-control" type="date" value="${getTodayDate()}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -1428,7 +1459,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="insurance_expiration_date" class="form-control-label" data-i18n-key="insurance_expiration_date">Insurance Expiration Date</label>
-                            <input id="insurance_expiration_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="insurance_expiration_date" class="form-control" type="date" value="${getTodayDate()}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -1623,7 +1654,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="expiration_date" class="form-control-label" data-i18n-key="expiration_date">Expiration Date</label>
-                            <input id="expiration_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="expiration_date" class="form-control" type="date" value="${getTodayDate()}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -1931,13 +1962,13 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="departure_date" class="form-control-label" data-i18n-key="departure_date">Departure Date</label>
-                            <input id="departure_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="departure_date" class="form-control" type="date" value="${getTodayDate()}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="return_date" class="form-control-label" data-i18n-key="return_date">Return Date</label>
-                            <input id="return_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="return_date" class="form-control" type="date" value="${getTodayDate()}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -2097,7 +2128,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="transaction_date" class="form-control-label" data-i18n-key="transaction_date">Transaction Date</label>
-                            <input id="transaction_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="transaction_date" class="form-control" type="date" value="${getTodayDate()}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -2291,7 +2322,7 @@ function processPopup(title, title_extra, data) {
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="maintenance_date" class="form-control-label" data-i18n-key="maintenance_date">Maintenance Date</label>
-                    <input id="maintenance_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                    <input id="maintenance_date" class="form-control" type="date" value="${getTodayDate()}" onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -2432,15 +2463,21 @@ function processPopup(title, title_extra, data) {
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="catch_date" class="form-control-label" data-i18n-key="catch_date">Catch Date</label>
-                    <input id="catch_date" class="form-control" type="date" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                  </div>
+                   <div class="form-group">
+                      <label for="trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
+                      <select id="assign_trip_list" class="form-control" data-i18n-key="trip_id"></select>
+                   </div>
+                </div>
+                <div class="col-md-6">
+                   <div class="form-group">
+                      <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
+                      <select id="assign_vessel_list" class="form-control" data-i18n-key="vessel_id"></select>
+                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
-                    <select id="assign_product_list" class="form-control" data-i18n-key="product_id"></select>
+                    <label for="catch_date" class="form-control-label" data-i18n-key="catch_date">Catch Date</label>
+                    <input id="catch_date" class="form-control" type="date" value="${getTodayDate()}" onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -2449,29 +2486,34 @@ function processPopup(title, title_extra, data) {
                     <input id="catch_location" class="form-control" type="text" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="catch_quantity" class="form-control-label" data-i18n-key="catch_quantity">Catch Quantity</label>
-                    <input id="catch_quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
-                  </div>
+                <!--div class="row">
+                    <div class="col-md-11"><div class="form-group"></div></div>
+                    <div class="col-md-1 text-center text-bg-success"  style="margin:auto;">&plus;</div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                    <select id="assign_vessel_list" class="form-control" data-i18n-key="vessel_id"></select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
-                    <select id="assign_trip_list" class="form-control" data-i18n-key="trip_id"></select>
-                  </div>
+                <div id="multiple_product_catch">
+                    <div class="row" style="background: lightgrey"-->
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
+                            <select id="assign_product_list" class="form-control" data-i18n-key="product_id"></select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="catch_quantity" class="form-control-label" data-i18n-key="catch_quantity">Catch Quantity</label>
+                            <input id="catch_quantity" class="form-control" type="number" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
+                          </div>
+                        </div>
+                        <!--div class="col-md-1 justify-content-xxl-center content-center text-center text-bg-warning" style="margin:auto;">
+                            &minus;
+                        </div>
+                    </div-->
                 </div>
                 <div class="col-md-12">
-                  <div class="form-group">
-                    <label for="catch_image" class="form-control-label" data-i18n-key="catch_image">Catch Image</label>
-                    <input id="catch_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                  </div>
+                   <div class="form-group">
+                     <label for="catch_image" class="form-control-label" data-i18n-key="catch_image">Catch Image</label>
+                     <input id="catch_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                   </div>
                 </div>
                 <div class="col-md-12">
                   <div class="form-group">
