@@ -1066,7 +1066,7 @@ function processPopup(title, title_extra, data) {
                             <div class="col-md-12">
                               <div class="form-group">
                                 <label for="example-text-input" class="form-control-label">Features</label>
-                                    <select id="assign_feature_list"  name="features" class="form-control">
+                                    <select id="assign_feature_list"  name="features" class="form-control" data-toggle="select">
                                         <option disabled selected value data-i18n-key="select_feature"> -- Select Feature -- </option>
                                     </select>
                               </div>
@@ -1076,6 +1076,9 @@ function processPopup(title, title_extra, data) {
                         </div>
                       </div>
                 `, function() {
+                    $(document).ready(function() {
+                        $('#assign_feature_list').select2({dropdownParent: $('#myModal')});
+                    });
                     document.getElementById("assign_feature_btn").addEventListener('click', function (e) {
                         role_name = title_extra.id
                         feature_name = document.getElementById("assign_feature_list").value
@@ -1671,7 +1674,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
-                            <select id="assign_product_list" class="form-control"></select>
+                            <select id="assign_product_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -1751,6 +1754,11 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    $('#assign_product_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_supplier_list').select2({dropdownParent: $('#myModal')});
+                    $('#transaction_type').select2({dropdownParent: $('#myModal')});
+                });
                 document.getElementById("add_stock_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let product_id = document.getElementById("assign_product_list").value;
@@ -1835,10 +1843,12 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="person_category" class="form-control-label" data-i18n-key="person_category">Person Category</label>
-                            <select id="person_category" class="form-control" data-i18n-key="person_category">
-                                <option value="PT" data-i18n-key="pt">PT</option>
-                                <option value="Reguler" data-i18n-key="reguler">Reguler</option>
-                                <option value="Captain" data-i18n-key="captain">Captain</option>
+                            <select id="person_category" data-i18n-key="person_category" class="form-control">
+                                    <option value="PT" data-i18n-key="pt">PT</option>
+                                    <option value="Reguler" data-i18n-key="reguler">Perorangan</option>
+                                    <option value="Captain" data-i18n-key="captain">Tekong</option>
+                                    <option value="Store" data-i18n-key="store">Toko</option>
+                                    <option value="Garage" data-i18n-key="garage">Bengkel</option>
                             </select>
                         </div>
                     </div>
@@ -2028,13 +2038,13 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="captain_id" class="form-control-label" data-i18n-key="captain_id">Captain ID</label>
-                            <select id="assign_captain_list" class="form-control" data-i18n-key="captain_id"></select>
+                            <select id="assign_captain_list" class="form-control" data-toggle="select" data-i18n-key="captain_id"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control" data-i18n-key="vessel_id"></select>
+                            <select id="assign_vessel_list" class="form-control" data-toggle="select" data-i18n-key="vessel_id"></select>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -2055,6 +2065,10 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    $('#assign_captain_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                });
                 document.getElementById("add_trip_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let trip_name = document.getElementById("trip_name").value;
@@ -2176,7 +2190,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
-                            <select id="transaction_type" class="form-control" data-i18n-key="transaction_type">
+                            <select id="transaction_type" class="form-control" data-toggle="select" data-i18n-key="transaction_type">
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
                                 <option value="Return" data-i18n-key="return">Return</option>
@@ -2190,7 +2204,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="product_id" class="form-control-label" data-i18n-key="product_id">product ID</label>
-                            <select id="assign_product_list" class="form-control" data-i18n-key="product_id"></select>
+                            <select id="assign_product_list" class="form-control" data-toggle="select" data-i18n-key="product_id"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -2214,31 +2228,31 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
-                            <select id="assign_seller_list" class="form-control" data-i18n-key="seller_id"></select>
+                            <select id="assign_seller_list" class="form-control" data-toggle="select" data-i18n-key="seller_id"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
-                            <select id="assign_buyer_list" class="form-control" data-i18n-key="buyer_id"></select>
+                            <select id="assign_buyer_list" class="form-control" data-toggle="select" data-i18n-key="buyer_id"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control" data-i18n-key="vessel_id"></select>
+                            <select id="assign_vessel_list" class="form-control" data-toggle="select" data-i18n-key="vessel_id"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
-                            <select id="assign_trip_list" class="form-control" data-i18n-key="trip_id"></select>
+                            <select id="assign_trip_list" class="form-control" data-toggle="select" data-i18n-key="trip_id"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="payment_type" class="form-control-label" data-i18n-key="payment_type">Payment Type</label>
-                            <select id="payment_type" class="form-control" data-i18n-key="payment_type">
+                            <select id="payment_type" class="form-control" data-toggle="select" data-i18n-key="payment_type">
                                 <option value="CASH" data-i18n-key="cash">CASH</option>
                                 <option value="DEBT" data-i18n-key="debt">DEBT</option>
                                 <option value="GIRO" data-i18n-key="giro">GIRO</option>
@@ -2248,7 +2262,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="payment_status" class="form-control-label" data-i18n-key="payment_status">Payment Status</label>
-                            <select id="payment_status" class="form-control" data-i18n-key="payment_status">
+                            <select id="payment_status" class="form-control" data-toggle="select" data-i18n-key="payment_status">
                                 <option value="0" data-i18n-key="pending">PENDING</option>
                                 <option value="1" data-i18n-key="done">DONE</option>
                             </select>
@@ -2272,6 +2286,13 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    $('#assign_product_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_buyer_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_seller_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                });
                 document.getElementById("add_transaction_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let transaction_date = document.getElementById("transaction_date").value+"T00:00:00Z";
@@ -2370,7 +2391,7 @@ function processPopup(title, title_extra, data) {
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                    <select id="assign_vessel_list" class="form-control" data-i18n-key="vessel_id"></select>
+                    <select id="assign_vessel_list" class="form-control" data-toggle="select" data-i18n-key="vessel_id"></select>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -2409,6 +2430,9 @@ function processPopup(title, title_extra, data) {
             </div>
           </div>
     `, function (){
+                $(document).ready(function() {
+                    $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                });
                 document.getElementById("add_maintenance_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let maintenance_date = document.getElementById("maintenance_date").value+"T00:00:00Z";
@@ -2507,13 +2531,13 @@ function processPopup(title, title_extra, data) {
                 <div class="col-md-6">
                    <div class="form-group">
                       <label for="trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
-                      <select id="assign_trip_list" class="form-control" data-i18n-key="trip_id"></select>
+                      <select id="assign_trip_list" class="form-control" data-toggle="select" data-i18n-key="trip_id"></select>
                    </div>
                 </div>
                 <div class="col-md-6">
                    <div class="form-group">
                       <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                      <select id="assign_vessel_list" class="form-control" data-i18n-key="vessel_id"></select>
+                      <select id="assign_vessel_list" class="form-control" data-toggle="select" data-i18n-key="vessel_id"></select>
                    </div>
                 </div>
                 <div class="col-md-6">
@@ -2536,7 +2560,7 @@ function processPopup(title, title_extra, data) {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
-                            <select name="assign_product_list" class="form-control" data-i18n-key="product_id"></select>
+                            <select name="assign_product_list" class="form-control" data-toggle="select" data-i18n-key="product_id"></select>
                           </div>
                         </div>
                         <div class="col-md-5">
@@ -2568,6 +2592,11 @@ function processPopup(title, title_extra, data) {
             </div>
           </div>
     `, function (){
+                $(document).ready(function() {
+                    $('#assign_product_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                });
                 document.getElementById("add_catch_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     //let product_id = document.getElementById("assign_product_list").value;
@@ -2662,7 +2691,7 @@ function processPopup(title, title_extra, data) {
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="update_product_category" class="form-control-label" data-i18n-key="product_category">Product Category</label>
-                    <select id="update_product_category" name="product_category" class="form-control" value="${str(data.product_category)}">
+                    <select id="update_product_category" name="product_category" data-toggle="select" class="form-control" value="${str(data.product_category)}">
                         ${ordered_product_category}
                     </select>
                   </div>
@@ -2725,7 +2754,7 @@ function processPopup(title, title_extra, data) {
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="update_product_availability_status" class="form-control-label" data-i18n-key="status">Status</label>
-                    <select id="update_product_availability_status" name="availability_status" class="form-control">${ordered_product_availability_status}</select>
+                    <select id="update_product_availability_status" name="availability_status" class="form-control" data-toggle="select">${ordered_product_availability_status}</select>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -3114,7 +3143,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
-                            <select id="update_stock_transaction_type" name="transaction_type" class="form-control">
+                            <select id="update_stock_transaction_type" name="transaction_type" class="form-control" data-toggle="select">
                                 ${ordered_transaction_type}
                             </select>
                         </div>
@@ -3209,8 +3238,10 @@ function processPopup(title, title_extra, data) {
         case 'Update Person':
             ordered_person_category = reorderSelectOptions([
                 '<option value="PT" data-i18n-key="pt">PT</option>',
-                '<option value="Reguler" data-i18n-key="reguler">Reguler</option>',
-                '<option value="Captain" data-i18n-key="captain">Captain</option>',
+                '<option value="Reguler" data-i18n-key="reguler">Perorangan</option>',
+                '<option value="Captain" data-i18n-key="captain">Tekong</option>',
+                '<option value="Store" data-i18n-key="store">Toko</option>',
+                '<option value="Garage" data-i18n-key="garage">Bengkel</option>',
             ], data.person_category);
 
             return [`
@@ -3239,7 +3270,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label" data-i18n-key="category">Category</label>
-                            <select id="update_person_category" class="form-control"> ${ordered_person_category}</select>
+                            <select id="update_person_category" class="form-control" data-toggle="select"> ${ordered_person_category}</select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -3386,6 +3417,9 @@ function processPopup(title, title_extra, data) {
                 ddata = response.data;
                 options = [];
                 for (i = 0; i < ddata.length; i++) {
+                    if (ddata[i].person_category != "Captain") { //only show Captain
+                        continue
+                    }
                     options[i] = `<option value="${ddata[i].person_id}">${str(ddata[i].first_name)} ${str(ddata[i].last_name)}</option>`;
                 }
                 document.getElementById("assign_captain_list").innerHTML = reorderSelectOptions(options, data.captain_id);
@@ -3440,13 +3474,13 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_captain_id" class="form-control-label" data-i18n-key="captain_id">Captain ID</label>
-                            <select id="assign_captain_list" class="form-control"></select>
+                            <select id="assign_captain_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control"></select>
+                            <select id="assign_vessel_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -3468,6 +3502,10 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    $('#assign_captain_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                });
                 document.getElementById("update_trip_btn").addEventListener('click', function (e) {
                     trip_id = document.getElementById("update_trip_id").value;
                     trip_name = document.getElementById("update_trip_name").value;
@@ -3614,7 +3652,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
-                            <select id="assign_product_list" class="form-control"></select>
+                            <select id="assign_product_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -3638,25 +3676,25 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
-                            <select id="assign_seller_list" class="form-control"></select>
+                            <select id="assign_seller_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
-                            <select id="assign_buyer_list" class="form-control"></select>
+                            <select id="assign_buyer_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control"></select>
+                            <select id="assign_vessel_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
-                            <select id="assign_trip_list" class="form-control"></select>
+                            <select id="assign_trip_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -3697,6 +3735,13 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function() {
+                $(document).ready(function() {
+                    $('#assign_product_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_buyer_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_seller_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                });
                 document.getElementById("update_transaction_btn").addEventListener('click', function(e) {
                     transaction_id = document.getElementById("update_transaction_id").value;
                     transaction_date = document.getElementById("update_transaction_date").value + "T00:00:00Z";
@@ -3820,7 +3865,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control"></select>
+                            <select id="assign_vessel_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -3842,6 +3887,9 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                });
                 document.getElementById("update_maintenance_btn").addEventListener('click', function (e) {
                     maintenance_id = document.getElementById("update_maintenance_id").value;
                     maintenance_date = document.getElementById("update_maintenance_date").value+"T00:00:00Z";
@@ -3951,7 +3999,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
-                            <select id="assign_product_list" class="form-control"></select>
+                            <select id="assign_product_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -3975,13 +4023,13 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control"></select>
+                            <select id="assign_vessel_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
-                            <select id="assign_trip_list" class="form-control"></select>
+                            <select id="assign_trip_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -4003,6 +4051,11 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    $('#assign_product_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                });
                 document.getElementById("update_catch_btn").addEventListener('click', function (e) {
                     catch_id = document.getElementById("update_catch_id").value;
                     product_id = document.getElementById("assign_product_list").value;
@@ -4352,7 +4405,7 @@ function processPopup(title, title_extra, data) {
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <select id="assign_role_name" class="form-control"></select>
+                            <select id="assign_role_name" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <hr class="horizontal dark">
@@ -4363,7 +4416,7 @@ function processPopup(title, title_extra, data) {
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <select id="assign_feature_list" class="form-control"></select>
+                            <select id="assign_feature_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <hr class="horizontal dark">
@@ -4372,6 +4425,10 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function() {
+                $(document).ready(function() {
+                    $('#assign_role_name').select2({dropdownParent: $('#myModal')});
+                    $('#assign_feature_list').select2({dropdownParent: $('#myModal')});
+                });
                 document.getElementById("delete_role_btn").addEventListener('click', function (e) {
                     role_name = document.getElementById("assign_role_name").value;
                     MAKE_REQUEST("DELETE", delete_role_api_url.format(role_name), ``, true, function(response) {
