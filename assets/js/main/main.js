@@ -442,7 +442,7 @@ function processProductTable(response) {
     for (i = data.length - 1; i >= 0; i--) {
         rows += `
                     <tr>
-                     <td><div class="d-flex px-2"><div><img src="${img(data[i].product_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Product: ${data[i].product_name}', '${data[i].product_image}');"></div>
+                     <td><div class="d-flex px-2"><div><img src="${img(data[i].product_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Product: ${data[i].product_name}', '${img(data[i].product_image)}');"></div>
                       <div class="my-auto"><h6 class="mb-0 text-sm">${data[i].product_name}</h6></div></div></td>
                      <td><p class="text-sm font-weight-bold mb-0">${str(data[i].product_category)}</p></td>
                      <td><span class="text-xs font-weight-bold">${str(data[i].brand)}</span></td>
@@ -467,7 +467,7 @@ function processVesselTable(response) {
     for (i = data.length - 1; i >= 0; i--) {
         rows += `
                     <tr>
-                     <td><div class="d-flex px-2"><div><img src="${img(data[i].vessel_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Vessel: ${data[i].vessel_name}', '${data[i].vessel_image}');"></div>
+                     <td><div class="d-flex px-2"><div><img src="${img(data[i].vessel_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Vessel: ${data[i].vessel_name}', '${img(data[i].vessel_image)}');"></div>
                       <div class="my-auto"><h6 class="mb-0 text-sm">${data[i].vessel_name}</h6></div></div></td>
                      <td><p class="text-sm font-weight-bold mb-0">${str(data[i].vessel_type)}</p></td>
                      <td><span class="text-xs font-weight-bold">${str(data[i].registration_number)}</span></td>
@@ -494,7 +494,7 @@ function processStockTable(response) {
             <td>
                 <div class="d-flex px-2">
                     <div>
-                        <img src="${img(data[i].stock_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Stock: ${data[i].product_id}', '${data[i].stock_image}');">
+                        <img src="${img(data[i].stock_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Stock: ${data[i].product_id}', '${img(data[i].stock_image)}');">
                     </div>
                     <div class="my-auto">
                         <h6 class="mb-0 text-sm">${data[i].product_id}</h6>
@@ -530,7 +530,7 @@ function processPeopleTable(response) {
             <td>
                 <div class="d-flex px-2">
                     <div>
-                        <img src="${img(data[i].person_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Person: ${str(data[i].first_name)} ${str(data[i].last_name)}', '${data[i].person_image}');">
+                        <img src="${img(data[i].person_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Person: ${str(data[i].first_name)} ${str(data[i].last_name)}', '${img(data[i].person_image)}');">
                     </div>
                     <div class="my-auto">
                         <h6 class="mb-0 text-sm">${str(data[i].first_name)} ${str(data[i].last_name)}</h6>
@@ -565,7 +565,7 @@ function processTripTable(response) {
             <td>
                 <div class="d-flex px-2">
                     <div>
-                        <img src="${img(data[i].trip_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Trip: ${data[i].trip_name}', '${data[i].trip_image}');">
+                        <img src="${img(data[i].trip_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Trip: ${data[i].trip_name}', '${img(data[i].trip_image)}');">
                     </div>
                     <div class="my-auto">
                         <h6 class="mb-0 text-sm">${data[i].trip_name}</h6>
@@ -600,14 +600,14 @@ function processTransactionTable(response) {
             <td>
                 <div class="d-flex px-2">
                     <div>
-                        <img src="${img(data[i].transaction_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Transaction: ${data[i].transaction_date}', '${data[i].transaction_image}');">
+                        <img src="${img(data[i].transaction_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Transaction: ${data[i].transaction_date}', '${img(data[i].transaction_image)}');">
                     </div>
                     <div class="my-auto">
                         <h6 class="mb-0 text-sm">${str(data[i].transaction_id)}</h6>
                     </div>
                 </div>
             </td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date).replace("T00:00:00Z","")}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].transaction_type)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].total_price)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
@@ -639,7 +639,7 @@ function processMaintenanceTable(response) {
             <td>
                 <div class="d-flex px-2">
                     <div>
-                        <img src="${img(data[i].maintenance_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Maintenance: ${data[i].vessel_id}', '${data[i].maintenance_image}');">
+                        <img src="${img(data[i].maintenance_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Maintenance: ${data[i].vessel_id}', '${img(data[i].maintenance_image)}');">
                     </div>
                     <div class="my-auto">
                         <h6 class="mb-0 text-sm">${data[i].vessel_id}</h6>
