@@ -2147,7 +2147,7 @@ function processPopup(title, title_extra, data) {
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
-                document.getElementById("assign_buyer_list").innerHTML = options
+                document.querySelector('select[name="assign_buyer_list"]').innerHTML = options
                 document.getElementById("assign_seller_list").innerHTML = options
             })
             MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
@@ -2212,12 +2212,6 @@ function processPopup(title, title_extra, data) {
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
-                            <select id="assign_buyer_list" class="form-control" data-toggle="select" data-i18n-key="buyer_id"></select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
                             <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
                             <select id="assign_vessel_list" class="form-control" data-toggle="select" data-i18n-key="vessel_id"></select>
                         </div>
@@ -2252,19 +2246,25 @@ function processPopup(title, title_extra, data) {
                     </div>
                     <div id="multiple_product_transaction">
                         <div class="row" style="background: lightgrey">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
+                                    <select name="assign_buyer_list" class="form-control" data-toggle="select" data-i18n-key="buyer_id"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="product_id" class="form-control-label" data-i18n-key="product_id">product ID</label>
                                     <select name="assign_product_list" class="form-control" data-toggle="select" data-i18n-key="product_id"></select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="quantity" class="form-control-label" data-i18n-key="quantity">Quantity</label>
                                     <input name="quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="unit_price" class="form-control-label" data-i18n-key="unit_price">Unit Price</label>
                                     <input name="unit_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
@@ -2301,7 +2301,7 @@ function processPopup(title, title_extra, data) {
     `, function (){
                 $(document).ready(function() {
                     //$('#assign_product_list').select2({dropdownParent: $('#myModal')});
-                    $('#assign_buyer_list').select2({dropdownParent: $('#myModal')});
+                    //$('#assign_buyer_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_seller_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
@@ -2332,6 +2332,7 @@ function processPopup(title, title_extra, data) {
                         // multiple call for all product
                         rows = document.getElementById("multiple_product_transaction").getElementsByClassName("row")
                         for(i=0;i<rows.length;i++) {
+                            if (rows[i].querySelector('select[name="assign_buyer_list"]').length == 0) {continue;}
                             if (rows[i].querySelector('select[name="assign_product_list"]').length == 0) {continue;}
                             if (rows[i].querySelector('input[name="quantity"]').length == 0) {continue;}
                             if (rows[i].querySelector('input[name="unit_price"]').length == 0) {continue;}
@@ -2346,7 +2347,7 @@ function processPopup(title, title_extra, data) {
                                 "unit_price": parseFloat(rows[i].querySelector('input[name="unit_price"]').value),
                                 "total_price": parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value)),
                                 "seller_id": seller_id,
-                                "buyer_id": buyer_id,
+                                "buyer_id": rows[i].querySelector('select[name="assign_buyer_list"]').value,
                                 "vessel_id": vessel_id,
                                 "trip_id": trip_id,
                                 "payment_type": payment_type,
