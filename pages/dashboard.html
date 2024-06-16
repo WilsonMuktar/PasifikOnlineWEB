@@ -512,7 +512,7 @@
           }
         }
         document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction) // not include debt_collect
-        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income) // not include debt_collect
+        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income-total_yearly_debt+total_yearly_debt_collect) // not include debt
         document.getElementById("dashboard_total_expense").innerHTML = currency(total_yearly_expense)
         document.getElementById("dashboard_total_debt").innerHTML = currency(total_yearly_debt-total_yearly_debt_collect) // debt - debt_collect
 
