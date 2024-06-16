@@ -281,6 +281,6 @@
   "dasboard_table_captain":"Kapten",
   "dasboard_table_date":"Tanggal",
   "dasboard_table_task":"Pengerjaan",
-  "dashboard_total_debt":"Total Utang",
+  "dashboard_total_debt":"Total Belum Bayar",
   "dashboard_total_debt_change": "sejak bulan lalu"
 }
