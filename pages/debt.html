@@ -230,7 +230,7 @@
                           <td><div><h6 class="text-sm mb-0">${BuyerDEBT[bid]["buyer_name"]}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${BuyerDEBT[bid]["quantity"].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
-                          <td><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
+                          <td class="bg-gradient-success"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
                           <td class="bg-gradient-warning"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
                           <td class="text-center">
                               <div><div class="d-flex">
