@@ -281,7 +281,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-4" style="height:500px;overflow: hidden;overflow-y: scroll;">
           <div class="card">
             <div class="card-header pb-0 p-3">
               <h6 class="mb-0" data-i18n-key="dashboard_catch_product">Catch Products</h6>
@@ -618,6 +618,7 @@
         top10CatchTable = document.getElementById("dashboard_top10_catch")
         rows = ""
         for (const mt in TripCatchTransactions) { // by tripName
+          console.log(mt)
             rows += `
                   <td><div class="text-center"><h6 class="text-sm mb-0">${mt}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['income'])}</h6></div></td>
@@ -631,7 +632,7 @@
                   </div></td>
               `
         }
-        top10CatchTable.tripCatchTable.tBodies[0].innerHTML = rows;
+        top10CatchTable.tBodies[0].innerHTML = rows;
 
         // 5. Hasil Jenis Ikan
         productTotal = {}
@@ -649,6 +650,18 @@
             }
           }
         }
+        // sorting
+        // Convert the object to an array of objects
+        let dataArray = Object.keys(productTotal).map(key => ({ key, ...productTotal[key] }));
+        // Sort the array of objects by the "total" key
+        dataArray.sort((a, b) => b.total - a.total);
+        // Convert sorted array back to an object
+        let sortedData = {};
+        dataArray.forEach(item => {
+          sortedData[item.key] = { sold: item.sold, total: item.total };
+        });
+        productTotal = sortedData
+
         // update table
         catchProductsTable = document.getElementById("dashboard_catchproducts")
         rows = ""
