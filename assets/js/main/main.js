@@ -1740,7 +1740,10 @@ function processPopup(title, title_extra, data) {
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
                                 <option value="Return" data-i18n-key="return">Return</option>
-                                <option value="COLDSTORAGE" data-i18n-key="cold_storage">Cold Storage</option>
+                                <option value="Debt" data-i18n-key="debt">Debt</option>
+                                <option value="Tax" data-i18n-key="tax">Tax</option>
+                                <option value="Salary" data-i18n-key="salary">Salary</option>
+                                <option value="ColdStorage" data-i18n-key="cold_storage">Cold Storage</option>
                             </select>
                         </div>
                     </div>
@@ -3108,6 +3111,9 @@ function processPopup(title, title_extra, data) {
                 '<option value="Purchase" data-i18n-key="purchase">Purchase</option>',
                 '<option value="Sale" data-i18n-key="sale">Sale</option>',
                 '<option value="Return" data-i18n-key="return">Return</option>',
+                '<option value="Debt" data-i18n-key="debt">Debt</option>',
+                '<option value="Tax" data-i18n-key="tax">Tax</option>',
+                '<option value="Salary" data-i18n-key="salary">Salary</option>',
                 '<option value="COLDSTORAGE" data-i18n-key="cold_storage">Cold Storage</option>',
             ], data.transaction_type);
 

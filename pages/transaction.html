@@ -91,7 +91,33 @@
         <div class="card mb-4">
           <div class="card-header pb-0">
             <h6 data-i18n-key="transaction_table">Transaction table</h6>
+            <div id="filters" style="display: none;">
+              <select class="form-control" name="filter_transaction_type">
+                <option disabled selected value="">--Select TransactionType--</option>
+                <option value="Purchase" data-i18n-key="purchase">Purchase</option>
+                <option value="Sale" data-i18n-key="sale">Sale</option>
+                <option value="Return" data-i18n-key="return">Return</option>
+                <option value="Debt" data-i18n-key="debt">Debt</option>
+                <option value="Tax" data-i18n-key="tax">Tax</option>
+                <option value="Salary" data-i18n-key="salary">Salary</option>
+                <option value="ColdStorage" data-i18n-key="cold_storage">Cold Storage</option>
+              </select>
+              <select class="form-control" name="filter_payment_type">
+                <option disabled selected value="">--Select PaymentType--</option>
+                <option value="CASH">CASH</option>
+                <option value="DEBT">DEBT</option>
+              </select>
+              <select class="form-control" name="filter_buyer"></select>
+              <select class="form-control" name="filter_seller"></select>
+              <select class="form-control" name="filter_vessel"></select>
+              <select class="form-control" name="filter_trip"></select>
+              <select class="form-control" name="filter_product"></select>
+              <button class="form-control" onclick="applyTransactionFilters()">APPLY</button>
+            </div>
             <ul class="nav-list">
+              <div style="display: flex;">
+                <h id="filter_button">filter</h>
+              </div>
               <li><span onclick="openPopup('Add Transaction','')" >&plus;</span></li>
             </ul>
           </div>
@@ -173,8 +199,131 @@
 <script src="../assets/js/main/main.js"></script>
 <script src="../assets/js/main/auth/login.js"></script>
 <script>
+  function applyTransactionFilters(){
+    newURL = window.location.href.split("?")[0]+"?a="
+    filter_transaction_type = document.querySelector('select[name="filter_transaction_type"]')
+    filter_payment_type = document.querySelector('select[name="filter_payment_type"]')
+    filter_buyer = document.querySelector('select[name="filter_buyer"]')
+    filter_seller = document.querySelector('select[name="filter_seller"]')
+    filter_product = document.querySelector('select[name="filter_product"]')
+    filter_trip = document.querySelector('select[name="filter_trip"]')
+    filter_vessel = document.querySelector('select[name=filter_vessel]')
+
+    if (filter_transaction_type.value != ""){
+      newURL += "&transaction_type="+filter_transaction_type.value
+    }
+    if (filter_payment_type.value!=""){
+      newURL += "&payment_type="+filter_payment_type.value
+    }
+    if (filter_buyer.value!=""){
+      newURL += "&buyer_id="+filter_buyer.value
+    }
+    if (filter_seller.value!=""){
+      newURL += "&seller_id="+filter_seller.value
+    }
+    if (filter_product.value!=""){
+      newURL += "&product_id="+filter_product.value
+    }
+    if (filter_trip.value!=""){
+      newURL += "&trip_id="+filter_trip.value
+    }
+    if (filter_vessel.value != ""){
+      newURL += "&vessel_id="+filter_vessel.value
+    }
+    window.location.replace(newURL)
+  }
+
+  $("#filter_button").click(function(){
+      if ( $("#filters").css("display") == "flex"){
+        return
+      }
+      $("#filters").css("display","flex");
+      MAKE_REQUEST("GET", vessel_api_url, "", true, function(response) {
+        if (response instanceof Error) {
+          alert("Add Catch get vessel list failed!")
+          return
+        }
+        data = response.data;
+        options = "<option disabled selected value data-i18n-key=\"select_vessel\"> -- Select Vessel -- </option>"
+        for (i = 0; i < data.length; i++) {
+          options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
+        }
+        document.querySelector('select[name="filter_vessel"]').innerHTML = options
+      })
+      MAKE_REQUEST("GET", trip_api_url, "", true, function(response) {
+        if (response instanceof Error) {
+          alert("Add Catch get trip list failed!")
+          return
+        }
+        data = response.data;
+        options = "<option disabled selected value data-i18n-key=\"select_trip\"> -- Select Trip -- </option>"
+        for (i = 0; i < data.length; i++) {
+          options += `<option value="${data[i].trip_id}">${data[i].trip_name}</option>`
+        }
+        document.querySelector('select[name="filter_trip"]').innerHTML = options
+      })
+      MAKE_REQUEST("GET", product_api_url, "", true, function(response) {
+        if (response instanceof Error) {
+          alert("Add Catch get product list failed!")
+          return
+        }
+        data = response.data;
+        options = "<option disabled selected value data-i18n-key=\"select_product\"> -- Select Product -- </option>"
+        for (i = 0; i < data.length; i++) {
+          options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
+        }
+        document.querySelector('select[name="filter_product"]').innerHTML = options
+      })
+      MAKE_REQUEST("GET", people_api_url, "", true, function(response) {
+        if (response instanceof Error) {
+          alert("Update trip get people list failed!");
+          return;
+        }
+        ddata = response.data;
+        options = "<option disabled selected value data-i18n-key=\"select_product\"> -- Select Person -- </option>"
+        for (i = 0; i < ddata.length; i++) {
+          options += `<option value="${ddata[i].person_id}">${str(ddata[i].first_name)} ${str(ddata[i].last_name)}</option>`;
+        }
+        document.querySelector('select[name="filter_buyer"]').innerHTML = reorderSelectOptions(options, data.captain_id);
+        document.querySelector('select[name="filter_seller"]').innerHTML = reorderSelectOptions(options, data.captain_id);
+      });
+      $(document).ready(function() {
+        $('#filter_vessel').select2();
+        $('#filter_trip').select2();
+        $('#filter_product').select2();
+        $('#filter_buyer').select2();
+        $('#filter_seller').select2();
+      });
+  });
+
+
+  // Get the query string part of the URL
+  // ?transaction_date_from=&transaction_date_to=&transaction_type=&product_id=&seller_id=&buyer_id=&vessel_id=&trip_id=&payment_type=
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  var extraParams = ""
+  urlParams.forEach((value, key) => {
+    if (value != "") {
+      if (extraParams == "") {
+        extraParams += `?${key}=${value}`
+      } else {
+        extraParams += `&${key}=${value}`
+      }
+    }
+  });
+  currentYear = new Date().getFullYear()
+  startYear = currentYear+"-01-01"
+  endYear = currentYear+"-12-31"
+  if (queryString.includes("transaction_date_from") || queryString.includes("transaction_date_to")) {} else {
+    if (extraParams == "") {
+      extraParams += `?transaction_date_from=${startYear}&transaction_date_to=${endYear}`
+    } else {
+      extraParams += `&transaction_date_from=${startYear}&transaction_date_to=${endYear}`
+    }
+  }
+
   // retrieve Transaction table
-  MAKE_REQUEST("GET", transaction_api_url, "", true,function(resp){
+  MAKE_REQUEST("GET", transaction_api_url+extraParams, "", true,function(resp){
     if (resp instanceof Error) {
       console.log(resp);
     } else {
