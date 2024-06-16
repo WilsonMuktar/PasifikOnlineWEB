@@ -609,6 +609,7 @@ function processTransactionTable(response) {
     var table = document.getElementById("transaction_table");
 
     total_price_page = 0
+    total_quantity = 0
     for (var i = data.length - 1; i >= 0; i--) {
         rows += `
         <tr>
@@ -622,11 +623,14 @@ function processTransactionTable(response) {
                     </div>
                 </div>
             </td>
+            <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].product_name)}</span></td>
             <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].buyer_first_name)+" "+str(data[i].buyer_last_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].seller_first_name)+" "+str(data[i].seller_last_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date).replace("T00:00:00Z","")}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].transaction_type)}</span></td>
             <td><span class="text-xs font-weight-bold">${currency(str(data[i].total_price))}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].quantity)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].unit_price)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].payment_type)}</span></td>
@@ -640,12 +644,14 @@ function processTransactionTable(response) {
         </tr>
     `;
         total_price_page+=data[i].total_price
+        total_quantity+=data[i].quantity
     }
     // adding total below
-    rows += "<tr style='background-color: lightgrey;'><td colspan='3'></td>" +
+    rows += "<tr style='background-color: lightgrey;'><td colspan='4'></td>" +
         "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
         "<td><span class='text-xs font-weight-bold'>"+currency(total_price_page)+"</span></td>" +
-        "<td colspan='5'></td></tr>"
+        "<td class='text-center'><span class='text-xs font-weight-bold'>"+str(total_quantity)+"</span></td>"+
+        "<td colspan='6'></td></tr>"
 
     table.tBodies[0].innerHTML = rows;
 }
