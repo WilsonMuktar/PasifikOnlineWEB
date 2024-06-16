@@ -251,7 +251,7 @@
       </div>
       <hr class="horizontal dark">
       <div class="row mt-4">
-        <div class="col-lg-8 mb-lg-0 mb-4">
+        <div class="col-lg-12 mb-lg-0 mb-4">
           <div class="card ">
             <div class="card-header pb-0 p-3">
               <div class="d-flex justify-content-between">
@@ -281,13 +281,37 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="row mt-4">
         <div class="col-lg-4" style="max-height:500px;overflow: hidden;overflow-y: scroll;">
           <div class="card">
             <div class="card-header pb-0 p-3">
               <h6 class="mb-0" data-i18n-key="dashboard_catch_product">Catch Products</h6>
             </div>
             <div class="card-body p-3">
-              <ul class="list-group" id="dashboard_catchproducts">
+              <ul class="list-group" id="dashboard_catch_products">
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4" style="max-height:500px;overflow: hidden;overflow-y: scroll;">
+          <div class="card">
+            <div class="card-header pb-0 p-3">
+              <h6 class="mb-0" data-i18n-key="dashboard_catch_captain">Catch Captains</h6>
+            </div>
+            <div class="card-body p-3">
+              <ul class="list-group" id="dashboard_catch_captains">
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4" style="max-height:500px;overflow: hidden;overflow-y: scroll;">
+          <div class="card">
+            <div class="card-header pb-0 p-3">
+              <h6 class="mb-0" data-i18n-key="dashboard_catch_monthly">Catch Monthly</h6>
+            </div>
+            <div class="card-body p-3">
+              <ul class="list-group" id="dashboard_catch_monthly">
               </ul>
             </div>
           </div>
@@ -408,7 +432,6 @@
         // group all transaction to monthly basis
         monthlyTransactionByFishAndTransactionType = {}
         monthlyTransactionByTripNameAndTransactionType = {}
-        monthlyTransactionByTripNameAndTransactionTypeUTANG = {}
         monthlyTransactionByTransactionType = {}
         monthlyTransactionByPaymentType = {}
         // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
@@ -418,8 +441,23 @@
           transaction = data[i]
           month = transaction["transaction_date"].split("-")[1]
           transactionType = transaction["transaction_type"]
+          captainName = str(transaction["captain_first_name"]) + " " + str(transaction["captain_last_name"])
           if (monthlyTransactionByTransactionType[transactionType] == undefined) { //initiate monthly
-            monthlyTransactionByTransactionType[transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
+            monthlyTransactionByTransactionType[transactionType] = {
+              'captain': captainName,
+              '01': 0,
+              '02': 0,
+              '03': 0,
+              '04': 0,
+              '05': 0,
+              '06': 0,
+              '07': 0,
+              '08': 0,
+              '09': 0,
+              '10': 0,
+              '11': 0,
+              '12': 0
+            }
           }
           // accumulate by category and month groupind
           monthlyTransactionByTransactionType[transactionType][month] += transaction["total_price"]
@@ -427,29 +465,68 @@
           // --> group by paymentType as DEBT price
           paymentType = transaction["payment_type"]
           if (monthlyTransactionByPaymentType[paymentType] == undefined) { //initiate monthly
-            monthlyTransactionByPaymentType[paymentType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
+            monthlyTransactionByPaymentType[paymentType] = {
+              'captain': captainName,
+              '01': 0,
+              '02': 0,
+              '03': 0,
+              '04': 0,
+              '05': 0,
+              '06': 0,
+              '07': 0,
+              '08': 0,
+              '09': 0,
+              '10': 0,
+              '11': 0,
+              '12': 0
+            }
           }
           // accumulate by category and month groupind
           monthlyTransactionByPaymentType[paymentType][month] += transaction["total_price"]
-
 
           // --> group total price by tripName
           tripName = transaction["trip_name"]
           if (monthlyTransactionByTripNameAndTransactionType[tripName] == undefined) {
             monthlyTransactionByTripNameAndTransactionType[tripName] = {}
-            monthlyTransactionByTripNameAndTransactionTypeUTANG[tripName] = {}
           }
           if (tripName != undefined && monthlyTransactionByTripNameAndTransactionType[tripName][transactionType] == undefined) { //initiate tripName
-            monthlyTransactionByTripNameAndTransactionType[tripName][transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
-            monthlyTransactionByTripNameAndTransactionTypeUTANG[tripName][transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
+            monthlyTransactionByTripNameAndTransactionType[tripName][transactionType] = {
+              'captain': captainName,
+              '01': 0,
+              '02': 0,
+              '03': 0,
+              '04': 0,
+              '05': 0,
+              '06': 0,
+              '07': 0,
+              '08': 0,
+              '09': 0,
+              '10': 0,
+              '11': 0,
+              '12': 0
+            }
+            monthlyTransactionByTripNameAndTransactionType[tripName]['Debt'] = {
+              'captain': captainName,
+              '01': 0,
+              '02': 0,
+              '03': 0,
+              '04': 0,
+              '05': 0,
+              '06': 0,
+              '07': 0,
+              '08': 0,
+              '09': 0,
+              '10': 0,
+              '11': 0,
+              '12': 0
+            }
           }
           // accumulate by tripName
           if (tripName != undefined) {
             monthlyTransactionByTripNameAndTransactionType[tripName][transactionType][month] += transaction["total_price"]
-
             //only check paymentStatus is DEBT
             if (transaction["payment_type"] == "DEBT") {
-              monthlyTransactionByTripNameAndTransactionTypeUTANG[tripName][transactionType][month] += transaction["total_price"]
+              monthlyTransactionByTripNameAndTransactionType[tripName]['Debt'][month] += transaction["total_price"]
             }
           }
 
@@ -462,13 +539,12 @@
             monthlyTransactionByFishAndTransactionType[productName][transactionType] = 0
           }
           monthlyTransactionByFishAndTransactionType[productName][transactionType] += transaction["quantity"]
-
           // 1. TOP10 TRANSACTION OVERVIEW
           // update top10 Transaction Table
           if (i < 10) {
             rows += `
                 <tr>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${i+1}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${i + 1}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["product_name"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0 ${transaction["payment_type"] === 'DEBT' ? 'text-bg-warning' : 'text-bg-success'}">${currency(str(transaction["total_price"]))}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0 ${transaction["payment_type"] === 'DEBT' ? 'text-bg-warning' : 'text-bg-success'}">${str(transaction["payment_type"])}</h6></div></td>
@@ -476,7 +552,7 @@
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["seller_first_name"]) + " " + str(transaction["seller_last_name"])}</h6></div></td>
                   <!--td><div class="text-center"><h6 class="text-sm mb-0 text-bg-info">${convertPaymentStatus(transaction["payment_status"])}</h6></div></td-->
                   <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_type"])}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_date"].replace("T00:00:00Z",""))}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_date"].replace("T00:00:00Z", ""))}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["trip_name"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["vessel_name"])}</h6></div></td>
                 </tr>`
@@ -492,29 +568,31 @@
         var total_yearly_debt = 0
         var total_yearly_debt_collect = 0
         for (const mt in monthlyTransactionByTransactionType) {
-            for (const mtt in monthlyTransactionByTransactionType[mt]) {
-              total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
-              // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
-              if (mt == "Sale" || mt == "ColdStorage") {
-                total_yearly_income += monthlyTransactionByTransactionType[mt][mtt]
-              } else if (mt == "DebtCollect") {
-                total_yearly_debt_collect += monthlyTransactionByTransactionType[mt][mtt]
-              } else {
-                total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
-              }
+          for (const mtt in monthlyTransactionByTransactionType[mt]) {
+            if(mtt == 'captain'){continue}
+            total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
+            // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
+            if (mt == "Sale" || mt == "ColdStorage") {
+              total_yearly_income += monthlyTransactionByTransactionType[mt][mtt]
+            } else if (mt == "DebtCollect") {
+              total_yearly_debt_collect += monthlyTransactionByTransactionType[mt][mtt]
+            } else {
+              total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
             }
+          }
         }
         for (const pType in monthlyTransactionByPaymentType) {
           for (const m in monthlyTransactionByPaymentType[pType]) {
+            if(m == 'captain'){continue}
             if (pType == "DEBT") {
               total_yearly_debt += monthlyTransactionByPaymentType[pType][m]
             }
           }
         }
         document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction) // not include debt_collect
-        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income-total_yearly_debt+total_yearly_debt_collect) // not include debt
+        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income - total_yearly_debt + total_yearly_debt_collect) // not include debt
         document.getElementById("dashboard_total_expense").innerHTML = currency(total_yearly_expense)
-        document.getElementById("dashboard_total_debt").innerHTML = currency(total_yearly_debt-total_yearly_debt_collect) // debt - debt_collect
+        document.getElementById("dashboard_total_debt").innerHTML = currency(total_yearly_debt - total_yearly_debt_collect) // debt - debt_collect
 
         // 3. CHART TRANSACTION OVERVIEW
         // process monthlyDatasets for Chart
@@ -539,8 +617,8 @@
           if (pType == "DEBT") {
             var ctx = document.getElementById("chart-line").getContext("2d");
             var gradientRED = ctx.createLinearGradient(0, 0, 0, 400)
-              gradientRED.addColorStop(0, 'rgba(229, 239, 255, 1)')
-              gradientRED.addColorStop(1, '#f53c3c')
+            gradientRED.addColorStop(0, 'rgba(229, 239, 255, 1)')
+            gradientRED.addColorStop(1, '#f53c3c')
             monthlyTransactionTotal = monthlyTransactionByPaymentType[pType] // all monthly from each category
             monthlyDatasets.push({
               label: "Payment-" + pType,
@@ -571,12 +649,12 @@
           },
           options: {
             layout: {
-                padding: {
-                  left: -150,
-                  right: 0,
-                  top: 10,
-                  bottom: 10
-                }
+              padding: {
+                left: -150,
+                right: 0,
+                top: 10,
+                bottom: 10
+              }
             },
             responsive: true, maintainAspectRatio: false,
             plugins: {legend: {display: true,}},
@@ -606,14 +684,15 @@
 
         // 4. CATCH TRANSACTION OVERVIEW
         TripCatchTransactions = {}
-        TripCatchTransactionsUTANG = {}
         for (const mt in monthlyTransactionByTripNameAndTransactionType) { // by tripName
           if (TripCatchTransactions[mt] == undefined) {
             TripCatchTransactions[mt] = {'income': 0, 'expense': 0, 'debt': 0} // init
-            TripCatchTransactionsUTANG[mt] = 0;
           }
           for (const mttype in monthlyTransactionByTripNameAndTransactionType[mt]) { // by transactionType
             for (const mtmonth in monthlyTransactionByTripNameAndTransactionType[mt][mttype]) { // by monthly basis
+              if (mtmonth == 'captain') {
+                continue
+              }
               // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
               if (mttype == "Sale" || mttype == "ColdStorage" || mttype == "DebtCollect") {
                 TripCatchTransactions[mt]['income'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
@@ -622,9 +701,6 @@
               } else {
                 TripCatchTransactions[mt]['expense'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
               }
-
-              // accumulate UTANG
-              TripCatchTransactionsUTANG[mt] += monthlyTransactionByTripNameAndTransactionTypeUTANG[mt][mttype][mtmonth]
             }
           }
         }
@@ -632,19 +708,18 @@
         top10CatchTable = document.getElementById("dashboard_top10_catch")
         rows = ""
         for (const mt in TripCatchTransactions) { // by tripName
-          console.log(mt)
-            rows += `
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${mt}</h6></div></td>
+          rows += `
+                  <tr><td><div class="text-center"><h6 class="text-sm mb-0">${mt}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['income'])}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['expense'])}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${currency((TripCatchTransactions[mt]['income'] - TripCatchTransactions[mt]['expense']))}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactionsUTANG[mt])}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['debt'])}</h6></div></td>
                   <!--td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['debt'])}</h6></div></td-->
                   <td><div class="text-center">
                     <div class="d-flex">
                       <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto" onclick="redirectPage('./pages/transaction.html?trip_name=${mt}')"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
                     </div>
-                  </div></td>
+                  </div></td></tr>
               `
         }
         top10CatchTable.tBodies[0].innerHTML = rows;
@@ -660,29 +735,28 @@
               }
             }
             productTotal[mp]["total"] += monthlyTransactionByFishAndTransactionType[mp][mpt]
-            if (mpt == "Sale" || mpt == "ColdStorage") {
+            if (mpt == "Sale") {
               productTotal[mp]["sold"] += monthlyTransactionByFishAndTransactionType[mp][mpt]
             }
           }
         }
         // sorting
-        let dataArray = Object.keys(productTotal).map(key => ({ key, ...productTotal[key] }));
+        let dataArray = Object.keys(productTotal).map(key => ({key, ...productTotal[key]}));
         dataArray.sort((a, b) => b.total - a.total);
         let sortedData = {};
         dataArray.forEach(item => {
-          sortedData[item.key] = { sold: item.sold, total: item.total };
+          sortedData[item.key] = {sold: item.sold, total: item.total};
         });
         productTotal = sortedData
-
         // update table
-        catchProductsTable = document.getElementById("dashboard_catchproducts")
+        catchProductsTable = document.getElementById("dashboard_catch_products")
         rows = ""
         for (const pt in productTotal) {
           rows += `
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
                       <div class="icon icon-shape icon-sm me-3 bg-gradient-primary shadow text-center rounded-circle">
-                        <i class="fa fa-fish text-white opacity-10"></i>
+                        <i class="fa fa-fish text-white opacity-10" style="font-size: 1rem"></i>
                       </div>
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">${pt}</h6>
@@ -696,8 +770,114 @@
           `
           catchProductsTable.innerHTML = rows
         }
+
+        // 6. Hasil Ikan By Captains
+        TripCatchTransactions = {}
+        for (const mt in monthlyTransactionByTripNameAndTransactionType) { // by tripName
+          for (const mttype in monthlyTransactionByTripNameAndTransactionType[mt]) { // by transactionType
+            if (mttype != "Sale") {
+              continue
+            }
+            for (const mtmonth in monthlyTransactionByTripNameAndTransactionType[mt][mttype]) { // by monthly basis
+              if (mtmonth != 'captain') {
+                continue
+              }
+              captainName = monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
+              TripCatchTransactions[captainName] = (
+                      monthlyTransactionByTripNameAndTransactionType[mt][mttype]["01"] + monthlyTransactionByTripNameAndTransactionType[mt][mttype]["02"] +
+                      monthlyTransactionByTripNameAndTransactionType[mt][mttype]["03"] + monthlyTransactionByTripNameAndTransactionType[mt][mttype]["04"] +
+                      monthlyTransactionByTripNameAndTransactionType[mt][mttype]["05"] + monthlyTransactionByTripNameAndTransactionType[mt][mttype]["06"] +
+                      monthlyTransactionByTripNameAndTransactionType[mt][mttype]["07"] + monthlyTransactionByTripNameAndTransactionType[mt][mttype]["08"] +
+                      monthlyTransactionByTripNameAndTransactionType[mt][mttype]["09"] + monthlyTransactionByTripNameAndTransactionType[mt][mttype]["10"] +
+                      monthlyTransactionByTripNameAndTransactionType[mt][mttype]["11"] + monthlyTransactionByTripNameAndTransactionType[mt][mttype]["12"])
+            }
+          }
+        }
+        // sorting
+        let entries = Object.entries(TripCatchTransactions);
+        entries.sort((a, b) => b[0].localeCompare(a[0]));
+        let sortedObj = Object.fromEntries(entries);
+        TripCatchTransactions = sortedObj
+        // update table
+        CatchCaptainsTable = document.getElementById("dashboard_catch_captains")
+        rows = ""
+        for (const captain in TripCatchTransactions) { // by captainName
+          rows += `
+                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                    <div class="d-flex align-items-center">
+                      <div class="icon icon-shape icon-sm me-3 bg-gradient-info shadow text-center ">
+                        <i class="fa fa-anchor text-white opacity-10" style="font-size: 1rem"></i>
+                      </div>
+                      <div class="d-flex flex-column">
+                        <h6 class="mb-1 text-dark text-sm">${captain}</h6>
+                        <span class="text-xs">Penghasilan kapal: ${currency(TripCatchTransactions[captain])}</span>
+                      </div>
+                    </div>
+                    <div class="d-flex">
+                      <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto" onclick="redirectPage('./pages/transaction.html?captain_name=${captain}')"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
+                    </div>
+                  </li>
+              `
+        }
+        CatchCaptainsTable.innerHTML = rows;
+
+        // 6. Hasil Ikan By Monthly
+        TripCatchTransactions = {}
+        for (const mt in monthlyTransactionByTripNameAndTransactionType) { // by tripName
+          for (const mttype in monthlyTransactionByTripNameAndTransactionType[mt]) { // by transactionType
+            if (mttype != "Sale") {
+              continue
+            }
+            for (const month in monthlyTransactionByTripNameAndTransactionType[mt][mttype]) { // by monthly basis
+              if (month == 'captain') {
+                continue
+              }
+              if (TripCatchTransactions[month] == undefined) {
+                TripCatchTransactions[month] = 0
+              }
+              TripCatchTransactions[month] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][month]
+            }
+          }
+        }
+        let keys = Object.keys(TripCatchTransactions);
+        keys.sort();
+        // update table
+        CatchMontlyTable = document.getElementById("dashboard_catch_monthly")
+        rows = ""
+        for (const i in keys) { // by captainName
+          monthStr = keys[i]
+          // Get Date of the month
+          let currentYear = new Date().getFullYear();
+          let monthIndex = parseInt(monthStr, 10);
+          let firstDay = new Date(currentYear, monthIndex-1, 1);
+          let lastDay = new Date(currentYear, monthIndex, 0);
+          const months = ["January", "February", "March", "April","May", "June", "July", "August","September", "October", "November", "December"];
+          let month = months[monthIndex - 1];
+          startDate = `${firstDay.getFullYear()}-${padZeroes(firstDay.getMonth() + 1)}-${padZeroes(firstDay.getDate())}`;
+          endDate = `${lastDay.getFullYear()}-${padZeroes(lastDay.getMonth() + 1)}-${padZeroes(lastDay.getDate())}`;
+          rows += `
+                  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                    <div class="d-flex align-items-center">
+                      <div class="icon icon-shape icon-sm me-3 bg-gradient-success shadow text-center ">
+                        <i class="fa fa-calendar-check-o text-white opacity-10" style="font-size: 1rem"></i>
+                      </div>
+                      <div class="d-flex flex-column">
+                        <h6 class="mb-1 text-dark text-sm">${month}</h6>
+                        <span class="text-xs">Penghasilan kapal: ${currency(TripCatchTransactions[monthStr])}</span>
+                      </div>
+                    </div>
+                    <div class="d-flex">
+                      <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto" onclick="redirectPage('./pages/transaction.html?transaction_date_from=${startDate}&transaction_date_to=${endDate}')"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
+                    </div>
+                  </li>
+              `
+        }
+        CatchMontlyTable.innerHTML = rows;
       }
     });
+    function padZeroes(num) {
+      return num.toString().padStart(2, '0');
+    }
 
     MAKE_REQUEST("GET", trip_api_url+"?start_date="+startYear+"&end_date="+endYear, "", true, function(response) {
       if (response instanceof Error) {

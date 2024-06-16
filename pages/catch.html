@@ -101,6 +101,7 @@
                                 <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center" data-i18n-key="trip_id">TripID</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center" data-i18n-key="captain">Captain</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="income">Income</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="expense">Expense</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="profit">Profit</th>
@@ -179,71 +180,67 @@
     currentYear = new Date().getFullYear()
     startYear = currentYear+"-01-01"
     endYear = currentYear+"-12-31"
-    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear, "", true, function(response){
+    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&order_by=transaction_date&order_type=DESC", "", true, function(response){
         if (response instanceof Error) {
             alert("Failed to get transaction List \n"+ response)
             return
         }
         else {
             data = response.data;
-            monthlyTransactionByTripNameAndTransactionType = {}
-            monthlyTransactionByTripNameAndTransactionTypeUTANG = {}
-            monthlyCatchQuantityByTripNameAndTransactionType = {}
+            TransactionByTripNameAndTransactionType = {}
             // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
             for (i = 0; i < data.length; i++) {
                 // --> group total price by tripName
                 transaction = data[i]
                 tripName = transaction["trip_name"]
-                month = transaction["transaction_date"].split("-")[1]
+                captainName = str(transaction["captain_first_name"])+" "+str(transaction["captain_last_name"])
                 transactionType = transaction["transaction_type"]
-                if (monthlyTransactionByTripNameAndTransactionType[tripName] == undefined) {
-                    monthlyTransactionByTripNameAndTransactionType[tripName] = {}
-                    monthlyTransactionByTripNameAndTransactionTypeUTANG[tripName] = {}
-                    monthlyCatchQuantityByTripNameAndTransactionType[tripName] = {}
+                if (TransactionByTripNameAndTransactionType[tripName] == undefined) {
+                    TransactionByTripNameAndTransactionType[tripName] = {}
                 }
-                if (tripName != undefined && monthlyTransactionByTripNameAndTransactionType[tripName][transactionType] == undefined) { //initiate tripName
-                    monthlyTransactionByTripNameAndTransactionType[tripName][transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
-                    monthlyTransactionByTripNameAndTransactionTypeUTANG[tripName][transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
-                    monthlyCatchQuantityByTripNameAndTransactionType[tripName][transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
+                if (tripName != undefined && TransactionByTripNameAndTransactionType[tripName][transactionType] == undefined) { //initiate tripName
+                    TransactionByTripNameAndTransactionType[tripName][transactionType] = {
+                        "total": 0,
+                        "quantity": 0,
+                        "debt": 0,
+                        "captain": captainName,
+                    }
                 }
                 // accumulate by tripName
                 if (tripName != undefined) {
-                    monthlyTransactionByTripNameAndTransactionType[tripName][transactionType][month] += transaction["total_price"]
-                    monthlyCatchQuantityByTripNameAndTransactionType[tripName][transactionType][month] += transaction["quantity"]
+                    TransactionByTripNameAndTransactionType[tripName][transactionType]["total"] += transaction["total_price"]
+                    TransactionByTripNameAndTransactionType[tripName][transactionType]["quantity"] += transaction["quantity"]
 
                     //only check paymentStatus is DEBT
                     if (transaction["payment_type"] == "DEBT") {
-                        monthlyTransactionByTripNameAndTransactionTypeUTANG[tripName][transactionType][month] += transaction["total_price"]
+                        TransactionByTripNameAndTransactionType[tripName][transactionType]["debt"] += transaction["total_price"]
                     }
                 }
             }
             // CATCH TRANSACTION OVERVIEW
             TripCatchTransactions = {}
-            TripCatchTransactionsUTANG = {}
-            TripCatchQuantity = {}
-            for (const mt in monthlyTransactionByTripNameAndTransactionType) { // by tripName
+            for (const mt in TransactionByTripNameAndTransactionType) { // by tripName
                 if (TripCatchTransactions[mt] == undefined) {
-                    TripCatchTransactions[mt] = {'income': 0, 'expense': 0, 'debt': 0} // init
-                    TripCatchTransactionsUTANG[mt] = 0;
-                    TripCatchQuantity[mt] = 0
+                    TripCatchTransactions[mt] = {'income': 0, 'expense': 0, 'debt': 0, 'quantity': 0, 'captain': ""} // init
                 }
-                for (const mttype in monthlyTransactionByTripNameAndTransactionType[mt]) { // by transactionType
-                    for (const mtmonth in monthlyTransactionByTripNameAndTransactionType[mt][mttype]) { // by monthly basis
-                        // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
-                        if (mttype == "Sale" || mttype == "ColdStorage") {
-                            TripCatchTransactions[mt]['income'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
-                        } else if (mttype == "Debt") {
-                            TripCatchTransactions[mt]['debt'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
-                        } else {
-                            TripCatchTransactions[mt]['expense'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
-                        }
+                for (const mttype in TransactionByTripNameAndTransactionType[mt]) { // by transactionType
+                    // captain
+                    TripCatchTransactions[mt]['captain'] += TransactionByTripNameAndTransactionType[mt][mttype]["captain"]
 
-                        // accumulate quantity
-                        TripCatchQuantity[mt] += monthlyCatchQuantityByTripNameAndTransactionType[mt][mttype][mtmonth]
-
-                        // accumulate UTANG
-                        TripCatchTransactionsUTANG[mt] += monthlyTransactionByTripNameAndTransactionTypeUTANG[mt][mttype][mtmonth]
+                    // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
+                    if (mttype == "Sale" || mttype == "ColdStorage") {
+                        TripCatchTransactions[mt]['income'] += TransactionByTripNameAndTransactionType[mt][mttype]["total"]
+                    } else if (mttype == "Debt") {
+                        TripCatchTransactions[mt]['debt'] += TransactionByTripNameAndTransactionType[mt][mttype]["total"]
+                    } else {
+                        TripCatchTransactions[mt]['expense'] += TransactionByTripNameAndTransactionType[mt][mttype]["total"]
                     }
+
+                    // accumulate quantity
+                    TripCatchTransactions[mt]["quantity"] += TransactionByTripNameAndTransactionType[mt][mttype]["quantity"]
+
+                    // accumulate UTANG
+                    TripCatchTransactions[mt]["debt"] += TransactionByTripNameAndTransactionType[mt][mttype]["debt"]
                 }
             }
             // update dashboard_top10_catch table
@@ -252,11 +249,12 @@
             for (const mt in TripCatchTransactions) { // by tripName
                 rows += `
                   <td><div class="text-center"><h6 class="text-sm mb-0">${mt}</h6></div></td>
+                  <td><div><h6 class="text-sm mb-0">${str(TripCatchTransactions[mt]['captain'])}</h6></div></td>
                   <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['income'])}</h6></div></td>
                   <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['expense'])}</h6></div></td>
                   <td><div><h6 class="text-sm mb-0">${currency((TripCatchTransactions[mt]['income'] - TripCatchTransactions[mt]['expense']))}</h6></div></td>
-                  <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactionsUTANG[mt])}</h6></div></td>
-                  <td><div><h6 class="text-sm mb-0">${TripCatchQuantity[mt].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
+                  <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['debt'])}</h6></div></td>
+                  <td><div><h6 class="text-sm mb-0">${TripCatchTransactions[mt]['quantity'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
                   <td><div class="text-center">
                     <div class="d-flex">
                       <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto" onclick="redirectPage('./pages/transaction.html?trip_name=${mt}')"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
