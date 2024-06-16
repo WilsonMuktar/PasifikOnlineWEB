@@ -642,7 +642,10 @@ function processTransactionTable(response) {
         total_price_page+=data[i].total_price
     }
     // adding total below
-    rows += "<tr><td colspan='4'></td><td> Total: "+currency(total_price_page)+"</td></tr>"
+    rows += "<tr style='background-color: lightgrey;'><td colspan='3'></td>" +
+        "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
+        "<td><span class='text-xs font-weight-bold'>"+currency(total_price_page)+"</span></td>" +
+        "<td colspan='5'></td></tr>"
 
     table.tBodies[0].innerHTML = rows;
 }
