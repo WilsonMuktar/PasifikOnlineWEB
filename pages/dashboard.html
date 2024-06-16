@@ -409,6 +409,7 @@
         monthlyTransactionByFishAndTransactionType = {}
         monthlyTransactionByTripNameAndTransactionType = {}
         monthlyTransactionByTransactionType = {}
+        monthlyTransactionByPaymentType = {}
         // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
         for (i = 0; i < data.length; i++) {
 
@@ -421,6 +422,15 @@
           }
           // accumulate by category and month groupind
           monthlyTransactionByTransactionType[transactionType][month] += transaction["total_price"]
+
+          // --> group by paymentType as DEBT price
+          paymentType = transaction["payment_type"]
+          if (monthlyTransactionByPaymentType[paymentType] == undefined) { //initiate monthly
+            monthlyTransactionByPaymentType[paymentType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
+          }
+          // accumulate by category and month groupind
+          monthlyTransactionByPaymentType[paymentType][month] += transaction["total_price"]
+
 
           // --> group total price by tripName
           tripName = transaction["trip_name"]
@@ -479,16 +489,21 @@
               if (mt == "Sale" || mt == "ColdStorage") {
                 total_yearly_income += monthlyTransactionByTransactionType[mt][mtt]
               } else if (mt == "Debt") {
-                total_yearly_debt += monthlyTransactionByTransactionType[mt][mtt]
+                //total_yearly_debt += monthlyTransactionByTransactionType[mt][mtt]
               } else {
                 total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
               }
             }
         }
-        document.getElementById("dashboard_total_transaction").innerHTML = "Rp."+total_yearly_transaction.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
-        document.getElementById("dashboard_total_income").innerHTML = "Rp."+total_yearly_income.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
-        document.getElementById("dashboard_total_expense").innerHTML = "Rp."+total_yearly_expense.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
-        document.getElementById("dashboard_total_debt").innerHTML = "Rp."+total_yearly_debt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
+        for (const pType in monthlyTransactionByPaymentType) {
+          for (const m in monthlyTransactionByPaymentType[pType]) {
+              total_yearly_debt += monthlyTransactionByPaymentType[pType][m]
+          }
+        }
+        document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction)
+        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income)
+        document.getElementById("dashboard_total_expense").innerHTML = currency(total_yearly_expense)
+        document.getElementById("dashboard_total_debt").innerHTML = currency(total_yearly_debt)
 
         // 3. CHART TRANSACTION OVERVIEW
         // process monthlyDatasets for Chart
@@ -573,10 +588,10 @@
         for (const mt in TripCatchTransactions) { // by tripName
             rows += `
                   <td><div class="text-center"><h6 class="text-sm mb-0">${mt}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${TripCatchTransactions[mt]['income'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${TripCatchTransactions[mt]['expense'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${(TripCatchTransactions[mt]['income'] - TripCatchTransactions[mt]['expense']).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${TripCatchTransactions[mt]['debt'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['income'])}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['expense'])}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${currency((TripCatchTransactions[mt]['income'] - TripCatchTransactions[mt]['expense']))}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['debt'])}</h6></div></td>
               `
         }
         tripCatchTable = document.getElementById("dashboard_top10_catch")

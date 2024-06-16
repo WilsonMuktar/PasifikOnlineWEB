@@ -79,6 +79,9 @@ function img(data) {
     }
     return data
 }
+function currency(data) {
+    return "Rp."+data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
+}
 function redirectPage(url) {
     if (origin.includes("page")) {
         window.location.replace("../" + url);
@@ -619,13 +622,13 @@ function processTransactionTable(response) {
                 </div>
             </td>
             <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date).replace("T00:00:00Z","")}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].transaction_type)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].total_price)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].transaction_type)}</span></td>
+            <td><span class="text-xs font-weight-bold">${currency(str(data[i].total_price))}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].buyer_first_name+" "+data[i].buyer_last_name)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].seller_first_name+" "+data[i].seller_last_name)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].payment_type)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].payment_status)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].buyer_first_name)+" "+str(data[i].buyer_last_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].seller_first_name)+" "+str(data[i].seller_last_name)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].payment_type)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].payment_status)}</span></td>
             <td class="align-middle text-center">
                 <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Transaction","",${JSON.stringify(data[i])})'>
                     <i class="fa fa-ellipsis-v text-xs"></i>
