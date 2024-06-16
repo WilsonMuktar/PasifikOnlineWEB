@@ -251,6 +251,8 @@
   "select_trip": "-- Pilih Perjalanan Kapal --",
   "select_vessel": "-- Pilih Kapal --",
   "select_department": "-- Pilih Departemen --",
+  "select_buyer": "-- Pilih Pembeli --",
+  "select_seller": "-- Pilih Penjual --",
 
   "dashboard_total_transaction":"Total Transaksi",
   "dashboard_total_transaction_change":"sejak bulan lalu",

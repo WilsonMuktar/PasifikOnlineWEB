@@ -245,7 +245,7 @@
           return
         }
         data = response.data;
-        options = "<option disabled selected value data-i18n-key=\"select_vessel\"> -- Select Vessel -- </option>"
+        options = "<option disabled selected value data-i18n-key='select_vessel'> -- Select Vessel -- </option>"
         for (i = 0; i < data.length; i++) {
           options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
         }
@@ -269,7 +269,7 @@
           return
         }
         data = response.data;
-        options = "<option disabled selected value data-i18n-key=\"select_product\"> -- Select Product -- </option>"
+        options = "<option disabled selected value data-i18n-key='select_product'> -- Select Product -- </option>"
         for (i = 0; i < data.length; i++) {
           options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
         }
@@ -281,12 +281,14 @@
           return;
         }
         ddata = response.data;
-        options = "<option disabled selected value data-i18n-key=\"select_product\"> -- Select Person -- </option>"
+        options = ""
         for (i = 0; i < ddata.length; i++) {
           options += `<option value="${ddata[i].person_id}">${str(ddata[i].first_name)} ${str(ddata[i].last_name)}</option>`;
         }
-        document.querySelector('select[name="filter_buyer"]').innerHTML = reorderSelectOptions(options, data.captain_id);
-        document.querySelector('select[name="filter_seller"]').innerHTML = reorderSelectOptions(options, data.captain_id);
+        document.querySelector('select[name="filter_buyer"]').innerHTML = reorderSelectOptions(
+                "<option disabled selected value data-i18n-key='select_buyer'> -- Select Buyer -- </option>" + options, data.captain_id);
+        document.querySelector('select[name="filter_seller"]').innerHTML = reorderSelectOptions(
+                "<option disabled selected value data-i18n-key='select_seller'> -- Select Seller -- </option>" + options, data.captain_id);
       });
       $(document).ready(function() {
         $('#filter_vessel').select2();
