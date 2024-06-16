@@ -490,12 +490,15 @@
         var total_yearly_income = 0
         var total_yearly_expense = 0
         var total_yearly_debt = 0
+        var total_yearly_debt_collect = 0
         for (const mt in monthlyTransactionByTransactionType) {
             for (const mtt in monthlyTransactionByTransactionType[mt]) {
               total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
               // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
-              if (mt == "Sale" || mt == "ColdStorage" || mt == "DebtCollect") {
+              if (mt == "Sale" || mt == "ColdStorage") {
                 total_yearly_income += monthlyTransactionByTransactionType[mt][mtt]
+              } else if (mt == "DebtCollect") {
+                total_yearly_debt_collect += monthlyTransactionByTransactionType[mt][mtt]
               } else {
                 total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
               }
@@ -508,10 +511,10 @@
             }
           }
         }
-        document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction)
-        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income)
+        document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction) // not include debt_collect
+        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income) // not include debt_collect
         document.getElementById("dashboard_total_expense").innerHTML = currency(total_yearly_expense)
-        document.getElementById("dashboard_total_debt").innerHTML = currency(total_yearly_debt)
+        document.getElementById("dashboard_total_debt").innerHTML = currency(total_yearly_debt-total_yearly_debt_collect) // debt - debt_collect
 
         // 3. CHART TRANSACTION OVERVIEW
         // process monthlyDatasets for Chart
