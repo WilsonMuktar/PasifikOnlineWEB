@@ -264,9 +264,11 @@
   "number":"No.",
   "product_subcategory":"sub-kategori",
   "dashboard_catch_by_vessel":"Tabel Hasil ikan dari Kapal",
-  "dasboard_table_expense":"Tabel Pengeluaran",
-  "dasboard_table_catch":"Tabel Hasil Ikan",
-  "dasboard_table_profit":"Table Penghasilan",
+  "dasboard_table_expense":"Pengeluaran",
+  "dasboard_table_trip":"Perjalanan Kapal",
+  "dasboard_table_debt":"Utang",
+  "dasboard_table_catch":"Hasil Ikan",
+  "dasboard_table_profit":"Penghasilan",
   "dashboard_catch_product":"Table Produk Hasil Ikan",
   "dashboard_vessel_scheduled_trip":"Tabel Jadwal Kapal",
   "dashboard_vessel_scheduled_maintenance":"Tabel Jadwal Servis Kapal",
@@ -275,6 +277,8 @@
   "dasboard_table_return":"Tanggal Pulang",
   "dasboard_table_cost":"Harga",
   "dasboard_table_captain":"Kapten",
+  "dasboard_table_date":"Tanggal",
+  "dasboard_table_task":"Pengerjaan",
   "dashboard_total_debt":"Total Utang",
   "dashboard_total_debt_change": "sejak bulan lalu"
 }
