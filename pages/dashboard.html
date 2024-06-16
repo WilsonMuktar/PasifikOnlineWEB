@@ -467,8 +467,8 @@
                   <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_type"])}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_date"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0 text-bg-success">${str(transaction["total_price"].toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))}</h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["buyer_first_name"] + " " + transaction["buyer_last_name"])}</h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["seller_first_name"] + " " + transaction["seller_last_name"])}</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["buyer_first_name"]) + " " + str(transaction["buyer_last_name"])}</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["seller_first_name"]) + " " + str(transaction["seller_last_name"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["trip_name"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["vessel_name"])}</h6></div></td>
                 </tr>`
@@ -497,7 +497,9 @@
         }
         for (const pType in monthlyTransactionByPaymentType) {
           for (const m in monthlyTransactionByPaymentType[pType]) {
+            if (pType == "DEBT") {
               total_yearly_debt += monthlyTransactionByPaymentType[pType][m]
+            }
           }
         }
         document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction)
@@ -653,7 +655,7 @@
              <td><div class="d-flex px-2 py-1"><div class="text-sm mb-0"><h6 class="text-sm mb-0">${data[i]["vessel_name"]}</h6></div></div></td>
              <td><div class="text-center"><h6 class="text-sm mb-0">${data[i]["departure_date"].replace("T00:00:00Z","")}</h6></div></td>
              <td><div class="text-center"><h6 class="text-sm mb-0">${data[i]["return_date"].replace("T00:00:00Z","")}</h6></div></td>
-             <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0 text-bg-success">${data[i]["captain_first_name"]+" "+data[i]["captain_last_name"]}</h6></div></td>
+             <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0 text-bg-success">${str(data[i]["captain_first_name"])+" "+str(data[i]["captain_last_name"])}</h6></div></td>
            </tr>
         `
         }
