@@ -526,6 +526,28 @@
             maxBarThickness: 6
           })
         }
+        for (const pType in monthlyTransactionByPaymentType) {
+          if (pType == "DEBT") {
+            var ctx = document.getElementById("chart-line").getContext("2d");
+            var gradientRED = ctx.createLinearGradient(0, 0, 0, 400)
+              gradientRED.addColorStop(0, 'rgba(229, 239, 255, 1)')
+              gradientRED.addColorStop(1, '#f53c3c')
+            monthlyTransactionTotal = monthlyTransactionByPaymentType[pType] // all monthly from each category
+            monthlyDatasets.push({
+              label: "Payment-" + pType,
+              tension: 0.4,
+              pointRadius: 0,
+              borderColor: "#FF0000",
+              backgroundColor: gradientRED,
+              borderWidth: 3,
+              fill: true,
+              data: [monthlyTransactionTotal["01"], monthlyTransactionTotal["02"], monthlyTransactionTotal["03"], monthlyTransactionTotal["04"],
+                monthlyTransactionTotal["05"], monthlyTransactionTotal["06"], monthlyTransactionTotal["07"], monthlyTransactionTotal["08"],
+                monthlyTransactionTotal["09"], monthlyTransactionTotal["10"], monthlyTransactionTotal["11"], monthlyTransactionTotal["12"]],
+              maxBarThickness: 6
+            })
+          }
+        }
         // update transaction chart
         var ctx1 = document.getElementById("chart-line").getContext("2d");
         var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
