@@ -406,37 +406,21 @@
         data = response.data;
 
         // group all transaction to monthly basis
-        monthlyTransactionTotal = {
-          '01': 0,
-          '02': 0,
-          '03': 0,
-          '04': 0,
-          '05': 0,
-          '06': 0,
-          '07': 0,
-          '08': 0,
-          '09': 0,
-          '10': 0,
-          '11': 0,
-          '12': 0
-        }
         monthlyTransactionByFishAndTransactionType = {}
         monthlyTransactionByTripNameAndTransactionType = {}
         monthlyTransactionByTransactionType = {}
         // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
         for (i = 0; i < data.length; i++) {
-          console.log("init")
 
           // --> group by transactionType price
           transaction = data[i]
+          month = transaction["transaction_date"].split("-")[1]
           transactionType = transaction["transaction_type"]
           if (monthlyTransactionByTransactionType[transactionType] == undefined) { //initiate monthly
-            monthlyTransactionByTransactionType[transactionType] = monthlyTransactionTotal
+            monthlyTransactionByTransactionType[transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
           }
           // accumulate by category and month groupind
-          month = transaction["transaction_date"].split("-")[1]
           monthlyTransactionByTransactionType[transactionType][month] += transaction["total_price"]
-          console.log("group by transaction type")
 
           // --> group total price by tripName
           tripName = transaction["trip_name"]
@@ -444,13 +428,12 @@
             monthlyTransactionByTripNameAndTransactionType[tripName] = {}
           }
           if (tripName != undefined && monthlyTransactionByTripNameAndTransactionType[tripName][transactionType] == undefined) { //initiate tripName
-            monthlyTransactionByTripNameAndTransactionType[tripName][transactionType] = monthlyTransactionTotal
+            monthlyTransactionByTripNameAndTransactionType[tripName][transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
           }
           // accumulate by tripName
           if (tripName != undefined) {
             monthlyTransactionByTripNameAndTransactionType[tripName][transactionType][month] += transaction["total_price"]
           }
-          console.log("group by trip")
 
           // --> group total hasil by ikan
           productName = transaction["product_name"]
@@ -461,14 +444,13 @@
             monthlyTransactionByFishAndTransactionType[productName][transactionType] = 0
           }
           monthlyTransactionByFishAndTransactionType[productName][transactionType] += transaction["quantity"]
-          console.log("group by product")
 
           // 1. TOP10 TRANSACTION OVERVIEW
           // update top10 Transaction Table
           if (i < 10) {
             rows += `
                 <tr>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${i}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${i+1}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["product_name"])}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0 text-bg-info">${str(transaction["payment_type"])}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0 text-bg-info">${convertPaymentStatus(transaction["payment_status"])}</h6></div></td>
@@ -483,7 +465,6 @@
           }
         }
         top10TransactionTable.tBodies[0].innerHTML = rows;
-        console.log("1")
 
         // 2. TOTAL TRANSACTION OVERVIEW
         // process Total Transaction, Total Income, Total Expense, Total Debt
@@ -508,8 +489,6 @@
         document.getElementById("dashboard_total_income").innerHTML = "Rp."+total_yearly_income.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
         document.getElementById("dashboard_total_expense").innerHTML = "Rp."+total_yearly_expense.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
         document.getElementById("dashboard_total_debt").innerHTML = "Rp."+total_yearly_debt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
-
-        console.log("2")
 
         // 3. CHART TRANSACTION OVERVIEW
         // process monthlyDatasets for Chart
@@ -568,7 +547,6 @@
             },
           },
         })
-        console.log("3")
 
         // 4. CATCH TRANSACTION OVERVIEW
         TripCatchTransactions = {}
@@ -593,7 +571,6 @@
         top10CatchTable = document.getElementById("dashboard_top10_catch")
         rows = ""
         for (const mt in TripCatchTransactions) { // by tripName
-          console.log(TripCatchTransactions[mt])
             rows += `
                   <td><div class="text-center"><h6 class="text-sm mb-0">${mt}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${TripCatchTransactions[mt]['income'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</h6></div></td>
@@ -604,7 +581,6 @@
         }
         tripCatchTable = document.getElementById("dashboard_top10_catch")
         tripCatchTable.tBodies[0].innerHTML = rows;
-        console.log("4")
 
         // 5. Hasil Jenis Ikan
         productTotal = {}
@@ -644,7 +620,6 @@
           `
           catchProductsTable.innerHTML = rows
         }
-        console.log("5")
       }
     });
 
