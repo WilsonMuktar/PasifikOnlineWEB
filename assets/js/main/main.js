@@ -208,6 +208,14 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="../pages/debt.html">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-solid fa-money-bill text-warning text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1" style="color:darkred" data-i18n-key="breadcrumb_debt">Debt</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="../pages/maintenance.html">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-settings text-success text-sm opacity-10"></i>
@@ -244,7 +252,8 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
             </li>
         </ul>
     `
-} else if (localStorage.getItem('user_roles') == "member") {
+}
+else if (localStorage.getItem('user_roles') == "member") {
     document.getElementById("sidenav-collapse-main").innerHTML = `
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -268,7 +277,8 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
             </li>
         </ul>
     `
-} else {
+}
+else {
     main_page_url= "pages/profile.html"
     document.getElementById("sidenav-collapse-main").innerHTML = `
         <ul class="navbar-nav">
@@ -1754,7 +1764,7 @@ function processPopup(title, title_extra, data) {
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
                                 <option value="Return" data-i18n-key="return">Return</option>
-                                <option value="Debt" data-i18n-key="debt">Debt</option>
+                                <option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>
                                 <option value="Tax" data-i18n-key="tax">Tax</option>
                                 <option value="Salary" data-i18n-key="salary">Salary</option>
                                 <option value="ColdStorage" data-i18n-key="cold_storage">Cold Storage</option>
@@ -2225,7 +2235,7 @@ function processPopup(title, title_extra, data) {
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
                                 <option value="Return" data-i18n-key="return">Return</option>
-                                <option value="Debt" data-i18n-key="debt">Debt</option>
+                                <option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>
                                 <option value="Tax" data-i18n-key="tax">Tax</option>
                                 <option value="Salary" data-i18n-key="salary">Salary</option>
                                 <option value="ColdStorage" data-i18n-key="cold_storage">Cold Storage</option>
@@ -3125,7 +3135,7 @@ function processPopup(title, title_extra, data) {
                 '<option value="Purchase" data-i18n-key="purchase">Purchase</option>',
                 '<option value="Sale" data-i18n-key="sale">Sale</option>',
                 '<option value="Return" data-i18n-key="return">Return</option>',
-                '<option value="Debt" data-i18n-key="debt">Debt</option>',
+                '<option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>',
                 '<option value="Tax" data-i18n-key="tax">Tax</option>',
                 '<option value="Salary" data-i18n-key="salary">Salary</option>',
                 '<option value="COLDSTORAGE" data-i18n-key="cold_storage">Cold Storage</option>',
@@ -3692,7 +3702,7 @@ function processPopup(title, title_extra, data) {
                                 <option value="Purchase" ${data.transaction_type === 'Purchase' ? 'selected' : ''} data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" ${data.transaction_type === 'Sale' ? 'selected' : ''} data-i18n-key="sale">Sale</option>
                                 <option value="Return" ${data.transaction_type === 'Return' ? 'selected' : ''} data-i18n-key="return">Return</option>
-                                <option value="Debt" ${data.transaction_type === 'Debt' ? 'selected' : ''} data-i18n-key="debt">Debt</option>
+                                <option value="DebtCollect" ${data.transaction_type === 'DebtCollect' ? 'selected' : ''} data-i18n-key="debt_collect">DebtCollect</option>
                                 <option value="Tax" ${data.transaction_type === 'Tax' ? 'selected' : ''} data-i18n-key="tax">Tax</option>
                                 <option value="Salary" ${data.transaction_type === 'Salary' ? 'selected' : ''} data-i18n-key="salary">Salary</option>
                                 <option value="ColdStorage" ${data.transaction_type === 'ColdStorage' ? 'selected' : ''} data-i18n-key="cold_storage">Cold Storage</option>

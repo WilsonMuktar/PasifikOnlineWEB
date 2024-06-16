@@ -102,7 +102,7 @@
                     <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
                   </div>
                 </div>
-                <div class="col-8">
+                <div class="col-8" onclick="redirectPage('./pages/transaction.html')">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_transaction">Total Transaction</p>
                       <h6 class="font-weight-bolder" id="dashboard_total_transaction">Rp.-,00</h6>
@@ -125,7 +125,7 @@
                     <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
                   </div>
                 </div>
-                <div class="col-8">
+                <div class="col-8" onclick="redirectPage('./pages/transaction.html?transaction_type=Sale')">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_income">Total Income</p>
                     <h6 class="font-weight-bolder" id="dashboard_total_income">Rp.-,00</h6>
@@ -148,7 +148,7 @@
                     <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
                   </div>
                 </div>
-                <div class="col-8">
+                <div class="col-8" onclick="redirectPage('./pages/transaction.html?transaction_type=Purchase')">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_expense">Total Expense</p>
                     <h6 class="font-weight-bolder" id="dashboard_total_expense">Rp.-,00</h6>
@@ -171,7 +171,7 @@
                     <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
                   </div>
                 </div>
-                <div class="col-8">
+                <div class="col-8" onclick="redirectPage('./pages/debt.html')">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_debt">Total Debt</p>
                     <h6 class="font-weight-bolder" id="dashboard_total_debt">Rp.-,00</h6>
@@ -494,10 +494,8 @@
             for (const mtt in monthlyTransactionByTransactionType[mt]) {
               total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
               // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
-              if (mt == "Sale" || mt == "ColdStorage") {
+              if (mt == "Sale" || mt == "ColdStorage" || mt == "DebtCollect") {
                 total_yearly_income += monthlyTransactionByTransactionType[mt][mtt]
-              } else if (mt == "Debt") {
-                //total_yearly_debt += monthlyTransactionByTransactionType[mt][mtt]
               } else {
                 total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
               }
@@ -614,7 +612,7 @@
           for (const mttype in monthlyTransactionByTripNameAndTransactionType[mt]) { // by transactionType
             for (const mtmonth in monthlyTransactionByTripNameAndTransactionType[mt][mttype]) { // by monthly basis
               // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
-              if (mttype == "Sale" || mttype == "ColdStorage") {
+              if (mttype == "Sale" || mttype == "ColdStorage" || mttype == "DebtCollect") {
                 TripCatchTransactions[mt]['income'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
               } else if (mttype == "Debt") {
                 TripCatchTransactions[mt]['debt'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
@@ -665,11 +663,8 @@
           }
         }
         // sorting
-        // Convert the object to an array of objects
         let dataArray = Object.keys(productTotal).map(key => ({ key, ...productTotal[key] }));
-        // Sort the array of objects by the "total" key
         dataArray.sort((a, b) => b.total - a.total);
-        // Convert sorted array back to an object
         let sortedData = {};
         dataArray.forEach(item => {
           sortedData[item.key] = { sold: item.sold, total: item.total };
