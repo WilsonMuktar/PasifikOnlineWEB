@@ -608,10 +608,11 @@ function processTransactionTable(response) {
     var rows = "";
     var table = document.getElementById("transaction_table");
 
+    total_price_page = 0
     for (var i = data.length - 1; i >= 0; i--) {
         rows += `
         <tr>
-            <td>
+            <td hidden>
                 <div class="d-flex px-2">
                     <div>
                         <img src="${img(data[i].transaction_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Transaction: ${data[i].transaction_date}', '${img(data[i].transaction_image)}');">
@@ -621,12 +622,13 @@ function processTransactionTable(response) {
                     </div>
                 </div>
             </td>
+            <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].buyer_first_name)+" "+str(data[i].buyer_last_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].seller_first_name)+" "+str(data[i].seller_last_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date).replace("T00:00:00Z","")}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].transaction_type)}</span></td>
             <td><span class="text-xs font-weight-bold">${currency(str(data[i].total_price))}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].buyer_first_name)+" "+str(data[i].buyer_last_name)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].seller_first_name)+" "+str(data[i].seller_last_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].payment_type)}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].payment_status)}</span></td>
             <td class="align-middle text-center">
@@ -637,7 +639,10 @@ function processTransactionTable(response) {
             </td>
         </tr>
     `;
+        total_price_page+=data[i].total_price
     }
+    // adding total below
+    rows += "<tr><td colspan='4'></td><td> Total: "+currency(total_price_page)+"</td></tr>"
 
     table.tBodies[0].innerHTML = rows;
 }

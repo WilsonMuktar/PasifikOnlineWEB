@@ -112,7 +112,7 @@
               <select class="form-control" name="filter_vessel"></select>
               <select class="form-control" name="filter_trip"></select>
               <select class="form-control" name="filter_product"></select>
-              <button class="form-control" onclick="applyTransactionFilters()">APPLY</button>
+              <button class="form-control bg-gradient-success text-bolder" onclick="applyTransactionFilters()">APPLY</button>
             </div>
             <ul class="nav-list">
               <div style="display: flex;">
@@ -125,13 +125,14 @@
             <div class="table-responsive p-0">
               <table id="transaction_table" class="table align-items-center mb-0">
                 <thead><tr>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="transaction_id">Transaction ID</th>
+                  <th hidden class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="transaction_id">Transaction ID</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="buyer">Buyer</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="seller">Seller</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="date">Date</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="type">Type</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="total">Total</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="vessel_id">Vessel ID</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="buyer">Buyer</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="seller">Seller</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="trip_id">Trip ID</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="payment_type">Payment Type</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="payment_status">Payment Status</th>
                   <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="actions">Actions</th>
