@@ -395,7 +395,7 @@
     currentYear = new Date().getFullYear()
     startYear = currentYear+"-01-01"
     endYear = currentYear+"-12-31"
-    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear, "", true, function(response){
+    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&order_by=total_price&order_type=desc", "", true, function(response){
       if (response instanceof Error) {
           alert("Failed to get transaction List \n"+ response)
           return
