@@ -187,6 +187,7 @@
         else {
             data = response.data;
             monthlyTransactionByTripNameAndTransactionType = {}
+            monthlyTransactionByTripNameAndTransactionTypeUTANG = {}
             monthlyCatchQuantityByTripNameAndTransactionType = {}
             // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
             for (i = 0; i < data.length; i++) {
@@ -197,24 +198,33 @@
                 transactionType = transaction["transaction_type"]
                 if (monthlyTransactionByTripNameAndTransactionType[tripName] == undefined) {
                     monthlyTransactionByTripNameAndTransactionType[tripName] = {}
+                    monthlyTransactionByTripNameAndTransactionTypeUTANG[tripName] = {}
                     monthlyCatchQuantityByTripNameAndTransactionType[tripName] = {}
                 }
                 if (tripName != undefined && monthlyTransactionByTripNameAndTransactionType[tripName][transactionType] == undefined) { //initiate tripName
                     monthlyTransactionByTripNameAndTransactionType[tripName][transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
+                    monthlyTransactionByTripNameAndTransactionTypeUTANG[tripName][transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
                     monthlyCatchQuantityByTripNameAndTransactionType[tripName][transactionType] = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0, '06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
                 }
                 // accumulate by tripName
                 if (tripName != undefined) {
                     monthlyTransactionByTripNameAndTransactionType[tripName][transactionType][month] += transaction["total_price"]
                     monthlyCatchQuantityByTripNameAndTransactionType[tripName][transactionType][month] += transaction["quantity"]
+
+                    //only check paymentStatus is DEBT
+                    if (transaction["payment_type"] == "DEBT") {
+                        monthlyTransactionByTripNameAndTransactionTypeUTANG[tripName][transactionType][month] += transaction["total_price"]
+                    }
                 }
             }
             // CATCH TRANSACTION OVERVIEW
             TripCatchTransactions = {}
+            TripCatchTransactionsUTANG = {}
             TripCatchQuantity = {}
             for (const mt in monthlyTransactionByTripNameAndTransactionType) { // by tripName
                 if (TripCatchTransactions[mt] == undefined) {
                     TripCatchTransactions[mt] = {'income': 0, 'expense': 0, 'debt': 0} // init
+                    TripCatchTransactionsUTANG[mt] = 0;
                     TripCatchQuantity[mt] = 0
                 }
                 for (const mttype in monthlyTransactionByTripNameAndTransactionType[mt]) { // by transactionType
@@ -230,6 +240,9 @@
 
                         // accumulate quantity
                         TripCatchQuantity[mt] += monthlyCatchQuantityByTripNameAndTransactionType[mt][mttype][mtmonth]
+
+                        // accumulate UTANG
+                        TripCatchTransactionsUTANG[mt] += monthlyTransactionByTripNameAndTransactionTypeUTANG[mt][mttype][mtmonth]
                     }
                 }
             }
@@ -242,7 +255,7 @@
                   <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['income'])}</h6></div></td>
                   <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['expense'])}</h6></div></td>
                   <td><div><h6 class="text-sm mb-0">${currency((TripCatchTransactions[mt]['income'] - TripCatchTransactions[mt]['expense']))}</h6></div></td>
-                  <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['debt'])}</h6></div></td>
+                  <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactionsUTANG[mt])}</h6></div></td>
                   <td><div><h6 class="text-sm mb-0">${TripCatchQuantity[mt].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
                   <td><div class="text-center">
                     <div class="d-flex">
