@@ -200,6 +200,7 @@
 <script src="../assets/js/main/main.js"></script>
 <script src="../assets/js/main/auth/login.js"></script>
 <script>
+  // FILTER
   function applyTransactionFilters(){
     newURL = window.location.href.split("?")[0]+"?a="
     filter_transaction_type = document.querySelector('select[name="filter_transaction_type"]')
@@ -233,7 +234,6 @@
     }
     window.location.replace(newURL)
   }
-
   $("#filter_button").click(function(){
       if ( $("#filters").css("display") == "flex"){
         return
