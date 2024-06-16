@@ -221,13 +221,13 @@
                 <tr>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="number"> No </th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="product_name">Product Name</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="payment_type">Payment Type</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="payment_status">Payment Status</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="transaction_type">Transaction Type</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="transaction_date">Transaction Date</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="total">Total</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="payment_type">Payment Type</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="buyer">Buyer</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="seller">Seller</th>
+                  <!--th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="payment_status">Payment Status</th-->
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="transaction_type">Transaction Type</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="transaction_date">Transaction Date</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="trip_name">Trip Name</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="vessel_name">Vessel Name</th>
                 </tr>
@@ -470,13 +470,13 @@
                 <tr>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${i+1}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["product_name"])}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0 text-bg-info">${str(transaction["payment_type"])}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0 text-bg-info">${convertPaymentStatus(transaction["payment_status"])}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_type"])}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_date"].replace("T00:00:00Z",""))}</h6></div></td>
-                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0 text-bg-success">${str(transaction["total_price"].toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))}</h6></div></td>
+                  <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0 ${transaction["payment_type"] === 'DEBT' ? 'text-bg-warning' : 'text-bg-success'}">${currency(str(transaction["total_price"]))}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0 ${transaction["payment_type"] === 'DEBT' ? 'text-bg-warning' : 'text-bg-success'}">${str(transaction["payment_type"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["buyer_first_name"]) + " " + str(transaction["buyer_last_name"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["seller_first_name"]) + " " + str(transaction["seller_last_name"])}</h6></div></td>
+                  <!--td><div class="text-center"><h6 class="text-sm mb-0 text-bg-info">${convertPaymentStatus(transaction["payment_status"])}</h6></div></td-->
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_type"])}</h6></div></td>
+                  <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["transaction_date"].replace("T00:00:00Z",""))}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["trip_name"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["vessel_name"])}</h6></div></td>
                 </tr>`
