@@ -1712,8 +1712,16 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
+                currentPeopleGroup = "";
                 options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_supplier_list").innerHTML = options
@@ -2053,8 +2061,16 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
+                currentPeopleGroup = "";
                 options = "<option disabled selected value data-i18n-key='select_person'> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_captain_list").innerHTML = options
@@ -2205,8 +2221,16 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
+                currentPeopleGroup = "";
                 options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_buyer_list"]').innerHTML = options
@@ -2759,14 +2783,29 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
+                currentPeopleGroup = "";
                 options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_buyer_list"]').innerHTML = options
                 options = ""
                 for (i = 0; i < data.length; i++) {
                     if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_seller_list").innerHTML = options
@@ -2960,14 +2999,29 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
+                currentPeopleGroup = "";
                 options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_buyer_list"]').innerHTML = options
                 options = ""
                 for (i = 0; i < data.length; i++) {
                     if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_seller_list").innerHTML = options
@@ -3167,14 +3221,29 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
+                currentPeopleGroup = "";
                 options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_seller_list"]').innerHTML = options
                 options = ""
                 for (i = 0; i < data.length; i++) {
                     if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_buyer_list").innerHTML = options
@@ -3369,14 +3438,29 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
+                currentPeopleGroup = "";
                 options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_seller_list"]').innerHTML = options
                 options = ""
                 for (i = 0; i < data.length; i++) {
                     if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options += '</optgroup>'
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options += `<optgroup label="${currentPeopleGroup}">>`
+                    }
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_buyer_list").innerHTML = options

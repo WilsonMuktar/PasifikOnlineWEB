@@ -219,7 +219,7 @@
             payTaxTable = document.getElementById("pay_tax_table")
             pay_rows = ""
             for (i = 0; i < data.length; i++) {
-                dataStr = JSON.stringify(data[i])
+                console.log(data[i])
                 paymentType = data[i]["payment_type"]
                     pay_rows += `
                         <tr>
@@ -253,7 +253,6 @@
             payTable = document.getElementById("pay_salary_table")
             pay_rows = ""
             for (i = 0; i < data.length; i++) {
-                dataStr = JSON.stringify(data[i])
                 paymentType = data[i]["payment_type"]
                     pay_rows += `
                         <tr>
