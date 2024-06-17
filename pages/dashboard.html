@@ -573,14 +573,16 @@
         for (const mt in monthlyTransactionByTransactionType) {
           for (const mtt in monthlyTransactionByTransactionType[mt]) {
             if(mtt == 'captain'){continue}
-            total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
             // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
             if (mt == "Sale" || mt == "ColdStorage") {
               total_yearly_income += monthlyTransactionByTransactionType[mt][mtt]
+              total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
             } else if (mt == "DebtCollect") {
               total_yearly_debt_collect += monthlyTransactionByTransactionType[mt][mtt]
+              // total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt] <- skip debtCollect
             } else {
               total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
+              total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
             }
           }
         }
@@ -600,7 +602,9 @@
         // 3. CHART TRANSACTION OVERVIEW
         // process monthlyDatasets for Chart
         monthlyDatasets = []
+        debtCollected = {}
         for (const mt in monthlyTransactionByTransactionType) {
+          if (mt == 'DebtCollect') {debtCollected = monthlyTransactionByTransactionType[mt]; continue}
           monthlyTransactionTotal = monthlyTransactionByTransactionType[mt] // all monthly from each category
           monthlyDatasets.push({
             label: "Transaction-" + mt,
@@ -617,7 +621,7 @@
           })
         }
         for (const pType in monthlyTransactionByPaymentType) {
-          if (pType == "DEBT") {
+          if (pType == "DEBT") { // DEBT - DEBTCOLLECTED monthly basis
             var ctx = document.getElementById("chart-line").getContext("2d");
             var gradientRED = ctx.createLinearGradient(0, 0, 0, 400)
             gradientRED.addColorStop(0, 'rgba(229, 239, 255, 1)')
@@ -631,9 +635,12 @@
               backgroundColor: gradientRED,
               borderWidth: 3,
               fill: true,
-              data: [monthlyTransactionTotal["01"], monthlyTransactionTotal["02"], monthlyTransactionTotal["03"], monthlyTransactionTotal["04"],
-                monthlyTransactionTotal["05"], monthlyTransactionTotal["06"], monthlyTransactionTotal["07"], monthlyTransactionTotal["08"],
-                monthlyTransactionTotal["09"], monthlyTransactionTotal["10"], monthlyTransactionTotal["11"], monthlyTransactionTotal["12"]],
+              data: [monthlyTransactionTotal["01"]-debtCollected["01"], monthlyTransactionTotal["02"]-debtCollected["02"],
+                     monthlyTransactionTotal["03"]-debtCollected["03"], monthlyTransactionTotal["04"]-debtCollected["04"],
+                     monthlyTransactionTotal["05"]-debtCollected["05"], monthlyTransactionTotal["06"]-debtCollected["06"],
+                     monthlyTransactionTotal["07"]-debtCollected["07"], monthlyTransactionTotal["08"]-debtCollected["08"],
+                     monthlyTransactionTotal["09"]-debtCollected["09"], monthlyTransactionTotal["10"]-debtCollected["10"],
+                     monthlyTransactionTotal["11"]-debtCollected["11"], monthlyTransactionTotal["12"]-debtCollected["12"]],
               maxBarThickness: 6
             })
           }
@@ -688,6 +695,7 @@
         // 4. CATCH TRANSACTION OVERVIEW
         TripCatchTransactions = {}
         for (const mt in monthlyTransactionByTripNameAndTransactionType) { // by tripName
+          if (mt == undefined) {continue}
           if (TripCatchTransactions[mt] == undefined) {
             TripCatchTransactions[mt] = {'income': 0, 'expense': 0, 'debt': 0} // init
           }
@@ -711,6 +719,7 @@
         top10CatchTable = document.getElementById("dashboard_top10_catch")
         rows = ""
         for (const mt in TripCatchTransactions) { // by tripName
+          if (mt == undefined||mt == "undefined") {continue}
           rows += `
                   <tr><td><div class="text-center"><h6 class="text-sm mb-0">${mt}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['income'])}</h6></div></td>

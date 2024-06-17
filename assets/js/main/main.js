@@ -80,6 +80,9 @@ function img(data) {
     return data
 }
 function currency(data) {
+    if (data == "" || data == undefined || data == NaN || data == 'NaN') {
+        return "Rp.0,00"
+    }
     return "Rp."+data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
 }
 function redirectPage(url) {
@@ -2855,7 +2858,7 @@ function processPopup(title, title_extra, data) {
                     </div>
                 </div>
                 <hr class="horizontal dark">
-                <button id="add_transaction_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_transaction_btn">ADD TRANSACTION</button>
+                <button id="add_transaction_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_giro_btn">ADD GIRO</button>
             </div>
         </div>
     `, function (){
@@ -2903,7 +2906,7 @@ function processPopup(title, title_extra, data) {
                                 "payment_type": payment_type,
                                 "payment_status": payment_status,
                                 "transaction_image": blobText,
-                                "notes": `{"assign_giro_number":"${rows[i].querySelector('input[name="assign_giro_number"]').value}"},"assign_giro_expired_date":"${rows[i].querySelector('input[name="assign_giro_expired_date"]').value}"}`
+                                "notes": `{"claimed":false,"assign_giro_number":"${rows[i].querySelector('input[name="assign_giro_number"]').value}","assign_giro_expired_date":"${rows[i].querySelector('input[name="assign_giro_expired_date"]').value}"}`
                             };
 
                             // Send payload to server
@@ -4015,7 +4018,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="update_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
-                            <input id="update_notes" class="form-control" type="text" value="${str(data.notes)}" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="update_notes" class="form-control" type="text" value='${str((data.notes))}' onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                 </div>

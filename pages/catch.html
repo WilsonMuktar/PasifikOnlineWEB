@@ -205,6 +205,7 @@
                 // --> group total price by tripName
                 transaction = data[i]
                 tripName = transaction["trip_name"]
+                if (tripName == undefined) {continue}
                 transaction_date = transaction["transaction_date"].replace("T00:00:00Z","")
                 captainName = str(transaction["captain_first_name"])+" "+str(transaction["captain_last_name"])
                 transactionType = transaction["transaction_type"]
