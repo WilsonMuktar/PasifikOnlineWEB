@@ -151,7 +151,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-bar-chart text-secondary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_dashboard">Dashboard</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('dashboard.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_dashboard">Dashboard</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -159,7 +159,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-ship text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_vessel">Vessels</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('vessel.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_vessel">Vessels</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -167,7 +167,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-shop text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_stock">Stocks</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('stock.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_stock">Stocks</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -175,7 +175,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_transaction">Transaction</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('transaction.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_transaction">Transaction</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -183,7 +183,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-product-hunt text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_product">Product</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('product.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_product">Product</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -191,7 +191,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-02 text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_people">People</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('people.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_people">People</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -199,7 +199,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-calendar-grid-58 text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_trip">Trip</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('trip.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_trip">Trip</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -207,7 +207,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-solid fa-fish text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_catch">Catch</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('catch.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_catch">Catch</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -215,7 +215,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-solid fa-money-bill text-warning text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" style="color:darkred" data-i18n-key="breadcrumb_debt">Debt</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('debt.html') ? 'text-bolder' : ''}" style="color:darkred" data-i18n-key="breadcrumb_debt">Debt</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -223,7 +223,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-settings text-success text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_maintenance">Maintenance</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('maintenance.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_maintenance">Maintenance</span>
                 </a>
             </li>
             <li class="nav-item mt-3">
@@ -234,7 +234,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_profile">Profile</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('profile.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_profile">Profile</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -242,7 +242,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_user">Users</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('user.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_user">Users</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -250,7 +250,7 @@ if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_role">Roles</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('role.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_role">Roles</span>
                 </a>
             </li>
         </ul>
@@ -264,7 +264,7 @@ else if (localStorage.getItem('user_roles') == "member") {
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-ship text-primary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_vessel">Vessels</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('vessel.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_vessel">Vessels</span>
                 </a>
             </li>
             <li class="nav-item mt-3">
@@ -275,7 +275,7 @@ else if (localStorage.getItem('user_roles') == "member") {
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_profile">Profile</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('profile.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_profile">Profile</span>
                 </a>
             </li>
         </ul>
@@ -290,7 +290,7 @@ else {
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-bar-chart text-secondary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_dashboard">Dashboard</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('dashboard.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_dashboard">Dashboard</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -298,7 +298,7 @@ else {
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1" data-i18n-key="breadcrumb_profile">Profile</span>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('profile.html') ? 'text-bolder' : ''}" data-i18n-key="breadcrumb_profile">Profile</span>
                 </a>
             </li>
         </ul>
