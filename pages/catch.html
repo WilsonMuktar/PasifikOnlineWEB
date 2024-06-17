@@ -291,7 +291,7 @@
                       <td><div><h6 class="text-sm mb-0">${TripCatchTransactions[mt][tDate]['quantity'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
                       <td><div class="text-center">
                         <div class="d-flex">
-                          <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto" onclick="redirectPage('./pages/transaction.html?trip_name=${mt}&transaction_date_from=${tDate}')">
+                          <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto" onclick="redirectPage('./pages/transaction.html?trip_name=${mt}&transaction_date_from=${tDate}&transaction_date_to=${tDate}')">
                           <i class="ni ni-bold-right" aria-hidden="true"></i></button></div></div></td></tr>`
                     total_income += TripCatchTransactions[mt][tDate]['income']
                     total_expense += TripCatchTransactions[mt][tDate]['expense']
