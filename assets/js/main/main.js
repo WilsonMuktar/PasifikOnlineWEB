@@ -3403,6 +3403,25 @@ function processPopup(title, title_extra, data) {
                                 "notes": notes
                             };
 
+                            // init for use crediter money to pay tax
+                            crediter = rows[i].querySelector('select[name="assign_crediter_list"]').value
+                            newPayload = {
+                                "transaction_date": transaction_date,
+                                "transaction_type": "DebtCollect", // paying with crediter debt
+                                "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
+                                "quantity": 1,
+                                "unit_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
+                                "total_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
+                                "seller_id": rows[i].querySelector('select[name="assign_buyer_list"]').value, // paying to seikai sakana
+                                "buyer_id": rows[i].querySelector('select[name="assign_crediter_list"]').value, // crediter as buyer
+                                "vessel_id": rows[i].querySelector('select[name="assign_vessel_list"]').value,
+                                "trip_id": trip_id,
+                                "payment_type": payment_type,
+                                "payment_status": payment_status,
+                                "transaction_image": blobText,
+                                "notes": notes
+                            };
+
                             // Send payload to server
                             MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(payload), true, function (response) {
                                 if (response instanceof Error) {
@@ -3410,28 +3429,11 @@ function processPopup(title, title_extra, data) {
                                     return false;
                                 }
 
-                                crediter = rows[i].querySelector('select[name="assign_crediter_list"]').value
                                 if (crediter == undefined || crediter == "") {
                                     // Refresh the page or perform other actions
                                     location.reload();
                                 } else {
                                     // use crediter money to pay tax
-                                    newPayload = {
-                                        "transaction_date": transaction_date,
-                                        "transaction_type": "DebtCollect", // paying with crediter debt
-                                        "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
-                                        "quantity": 1,
-                                        "unit_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
-                                        "total_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
-                                        "seller_id": rows[i].querySelector('select[name="assign_buyer_list"]').value, // paying to seikai sakana
-                                        "buyer_id": rows[i].querySelector('select[name="assign_crediter_list"]').value, // crediter as buyer
-                                        "vessel_id": rows[i].querySelector('select[name="assign_vessel_list"]').value,
-                                        "trip_id": trip_id,
-                                        "payment_type": payment_type,
-                                        "payment_status": payment_status,
-                                        "transaction_image": blobText,
-                                        "notes": notes
-                                    };
                                     MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(newPayload), true, function (response) {
                                         if (response instanceof Error) {
                                             alert("Failed to add new debt collect! \nerror:" + response.message);
