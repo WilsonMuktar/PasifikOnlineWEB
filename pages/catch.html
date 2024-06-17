@@ -97,10 +97,11 @@
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
-                            <table id="catch_table" class="table align-items-center justify-content-center mb-0">
+                            <table id="catch_table" class="table align-items-center justify-content-center mb-0" style="margin-left:1%;">
                                 <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center" data-i18n-key="trip_id">TripID</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center" data-i18n-key="transaction_date">Transaction Date</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center" data-i18n-key="captain">Captain</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="income">Income</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="expense">Expense</th>
@@ -193,13 +194,17 @@
                 // --> group total price by tripName
                 transaction = data[i]
                 tripName = transaction["trip_name"]
+                transaction_date = transaction["transaction_date"].replace("T00:00:00Z","")
                 captainName = str(transaction["captain_first_name"])+" "+str(transaction["captain_last_name"])
                 transactionType = transaction["transaction_type"]
                 if (TransactionByTripNameAndTransactionType[tripName] == undefined) {
                     TransactionByTripNameAndTransactionType[tripName] = {}
                 }
-                if (tripName != undefined && TransactionByTripNameAndTransactionType[tripName][transactionType] == undefined) { //initiate tripName
-                    TransactionByTripNameAndTransactionType[tripName][transactionType] = {
+                if (TransactionByTripNameAndTransactionType[tripName][transaction_date] == undefined) {
+                    TransactionByTripNameAndTransactionType[tripName][transaction_date] = {}
+                }
+                if (tripName != undefined && TransactionByTripNameAndTransactionType[tripName][transaction_date][transactionType] == undefined) { //initiate tripName
+                    TransactionByTripNameAndTransactionType[tripName][transaction_date][transactionType] = {
                         "total": 0,
                         "quantity": 0,
                         "debt": 0,
@@ -208,59 +213,91 @@
                 }
                 // accumulate by tripName
                 if (tripName != undefined) {
-                    TransactionByTripNameAndTransactionType[tripName][transactionType]["total"] += transaction["total_price"]
-                    TransactionByTripNameAndTransactionType[tripName][transactionType]["quantity"] += transaction["quantity"]
+                    TransactionByTripNameAndTransactionType[tripName][transaction_date][transactionType]["total"] += transaction["total_price"]
+                    TransactionByTripNameAndTransactionType[tripName][transaction_date][transactionType]["quantity"] += transaction["quantity"]
 
                     //only check paymentStatus is DEBT
                     if (transaction["payment_type"] == "DEBT") {
-                        TransactionByTripNameAndTransactionType[tripName][transactionType]["debt"] += transaction["total_price"]
+                        TransactionByTripNameAndTransactionType[tripName][transaction_date][transactionType]["debt"] += transaction["total_price"]
                     }
                 }
             }
             // CATCH TRANSACTION OVERVIEW
             TripCatchTransactions = {}
             for (const mt in TransactionByTripNameAndTransactionType) { // by tripName
-                if (TripCatchTransactions[mt] == undefined) {
-                    TripCatchTransactions[mt] = {'income': 0, 'expense': 0, 'debt': 0, 'quantity': 0, 'captain': ""} // init
-                }
-                for (const mttype in TransactionByTripNameAndTransactionType[mt]) { // by transactionType
-                    // captain
-                    TripCatchTransactions[mt]['captain'] += TransactionByTripNameAndTransactionType[mt][mttype]["captain"]
-
-                    // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
-                    if (mttype == "Sale" || mttype == "ColdStorage") {
-                        TripCatchTransactions[mt]['income'] += TransactionByTripNameAndTransactionType[mt][mttype]["total"]
-                    } else if (mttype == "Debt") {
-                        TripCatchTransactions[mt]['debt'] += TransactionByTripNameAndTransactionType[mt][mttype]["total"]
-                    } else {
-                        TripCatchTransactions[mt]['expense'] += TransactionByTripNameAndTransactionType[mt][mttype]["total"]
+                for (const tdate in TransactionByTripNameAndTransactionType[mt]) { // by transactionDate
+                    if (TripCatchTransactions[mt] == undefined) {
+                        TripCatchTransactions[mt] = {}
                     }
+                    if (TripCatchTransactions[mt][tdate] == undefined) {
+                        TripCatchTransactions[mt][tdate] = {
+                            'income': 0,
+                            'expense': 0,
+                            'debt': 0,
+                            'quantity': 0,
+                            'captain': ""
+                        } // init
+                    }
+                    for (const mttype in TransactionByTripNameAndTransactionType[mt][tdate]) { // by transactionType
+                        // captain
+                        TripCatchTransactions[mt][tdate]['captain'] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["captain"]
 
-                    // accumulate quantity
-                    TripCatchTransactions[mt]["quantity"] += TransactionByTripNameAndTransactionType[mt][mttype]["quantity"]
+                        // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
+                        if (mttype == "Sale" || mttype == "ColdStorage") {
+                            TripCatchTransactions[mt][tdate]['income'] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["total"]
+                        } else if (mttype == "Debt") {
+                            TripCatchTransactions[mt][tdate]['debt'] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["total"]
+                        } else {
+                            TripCatchTransactions[mt][tdate]['expense'] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["total"]
+                        }
 
-                    // accumulate UTANG
-                    TripCatchTransactions[mt]["debt"] += TransactionByTripNameAndTransactionType[mt][mttype]["debt"]
+                        // accumulate quantity
+                        TripCatchTransactions[mt][tdate]["quantity"] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["quantity"]
+
+                        // accumulate UTANG
+                        TripCatchTransactions[mt][tdate]["debt"] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["debt"]
+                    }
                 }
             }
             // update dashboard_top10_catch table
             tripCatchTable = document.getElementById("catch_table")
             rows = ""
             for (const mt in TripCatchTransactions) { // by tripName
-                rows += `
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${mt}</h6></div></td>
-                  <td><div><h6 class="text-sm mb-0">${str(TripCatchTransactions[mt]['captain'])}</h6></div></td>
-                  <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['income'])}</h6></div></td>
-                  <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['expense'])}</h6></div></td>
-                  <td><div><h6 class="text-sm mb-0">${currency((TripCatchTransactions[mt]['income'] - TripCatchTransactions[mt]['expense']))}</h6></div></td>
-                  <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['debt'])}</h6></div></td>
-                  <td><div><h6 class="text-sm mb-0">${TripCatchTransactions[mt]['quantity'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
-                  <td><div class="text-center">
-                    <div class="d-flex">
-                      <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto" onclick="redirectPage('./pages/transaction.html?trip_name=${mt}')"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
-                    </div>
-                  </div></td>
-              `
+                total_income = 0
+                total_expense = 0
+                total_profit = 0
+                total_debt = 0
+                total_quantity = 0
+                for (const tDate in TripCatchTransactions[mt]) { // by transactionDate
+                    rows += `<tr>
+                      <td><div class="text-center"><h6 class="text-sm mb-0">${mt}</h6></div></td>
+                      <td><div class="text-center"><h6 class="text-sm mb-0">${tDate}</h6></div></td>
+                      <td><div><h6 class="text-sm mb-0">${str(TripCatchTransactions[mt][tDate]['captain'])}</h6></div></td>
+                      <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt][tDate]['income'])}</h6></div></td>
+                      <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt][tDate]['expense'])}</h6></div></td>
+                      <td><div><h6 class="text-sm mb-0">${currency((TripCatchTransactions[mt][tDate]['income'] - TripCatchTransactions[mt][tDate]['expense']))}</h6></div></td>
+                      <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt][tDate]['debt'])}</h6></div></td>
+                      <td><div><h6 class="text-sm mb-0">${TripCatchTransactions[mt][tDate]['quantity'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
+                      <td><div class="text-center">
+                        <div class="d-flex">
+                          <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto" onclick="redirectPage('./pages/transaction.html?trip_name=${mt}&transaction_date_from=${tDate}')">
+                          <i class="ni ni-bold-right" aria-hidden="true"></i></button></div></div></td></tr>`
+                    total_income += TripCatchTransactions[mt][tDate]['income']
+                    total_expense += TripCatchTransactions[mt][tDate]['expense']
+                    total_profit += TripCatchTransactions[mt][tDate]['income'] - TripCatchTransactions[mt][tDate]['expense']
+                    total_debt += TripCatchTransactions[mt][tDate]['debt']
+                    total_quantity += TripCatchTransactions[mt][tDate]['quantity']
+                }
+
+                // adding total below
+                rows += "<tr style='background-color: lightgrey;'><td colspan='2'></td>" +
+                    "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
+                    "<td><span class='text-xs font-weight-bold'>"+currency(total_income)+"</span></td>" +
+                    "<td><span class='text-xs font-weight-bold'>"+currency(total_expense)+"</span></td>" +
+                    "<td><span class='text-xs font-weight-bold'>"+currency(total_profit)+"</span></td>" +
+                    "<td><span class='text-xs font-weight-bold'>"+currency(total_debt)+"</span></td>" +
+                    "<td><span class='text-xs font-weight-bold'>"+total_quantity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+"kg</span></td>" +
+                    "<td colspan='1'></td></tr>"
             }
             tripCatchTable.tBodies[0].innerHTML = rows;
         }
