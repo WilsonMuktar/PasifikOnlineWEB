@@ -471,8 +471,8 @@ function processProductTable(response) {
                      <td><p class="text-sm font-weight-bold mb-0">${str(data[i].product_category)}</p></td>
                      <td><span class="text-xs font-weight-bold">${str(data[i].brand)}</span></td>
                      <td><span class="text-xs font-weight-bold">${str(data[i].category)}</span></td>
-                     <td><span class="text-xs font-weight-bold">${str(data[i].quantity_in_stock)}</span></td>
-                     <td><span class="text-xs font-weight-bold">${str(data[i].supplier_name)}</span></td>
+                     <!--td><span class="text-xs font-weight-bold">${str(data[i].quantity_in_stock)}</span></td>
+                     <td><span class="text-xs font-weight-bold">${str(data[i].supplier_name)}</span></td-->
                      <td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-secondary">${str(data[i].date_added)}</span></td>
                      <td class="align-middle text-center">
                         <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Product","",${JSON.stringify(data[i])})'><i class="fa fa-ellipsis-v text-xs"></i></button>
@@ -1062,7 +1062,7 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value data-i18n-key=\"select_feature\"> -- Select Feature -- </option>"
+                options = "<option disabled selected value data-i18n-key='select_feature'> -- Select Feature -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].id}" data-i18n-key="${data[i].id}">${data[i].id}: [${data[i].tag}] ${data[i].endpoint}</option>`
                 }
@@ -2030,7 +2030,7 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value data-i18n-key=\"select_vessel\"> -- Select Vessel -- </option>"
+                options = "<option disabled selected value data-i18n-key='select_vessel'> -- Select Vessel -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
                 }
@@ -2042,7 +2042,7 @@ function processPopup(title, title_extra, data) {
                     return
                 }
                 data = response.data;
-                options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
+                options = "<option disabled selected value data-i18n-key='select_person'> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
