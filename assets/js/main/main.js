@@ -10,7 +10,7 @@ function loadLocalization(language) {
         .then(data => {
             // Apply translations to elements with data-i18n-key attribute
             Object.keys(data).forEach(key => {
-                const elements = document.querySelectorALl(`[data-i18n-key="${key}"]`);
+                const elements = document.querySelectorAll(`[data-i18n-key="${key}"]`);
                 elements.forEach(element => {
                     element.textContent = data[key];
                 });
