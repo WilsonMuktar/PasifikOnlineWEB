@@ -664,6 +664,7 @@ function processTransactionTable(response) {
         "<td colspan='6'></td></tr>"
 
     table.tBodies[0].innerHTML = rows;
+    loadLocalization(localStorage.getItem("localization_language"))
 }
 
 function processMaintenanceTable(response) {
@@ -3761,9 +3762,9 @@ function processPopup(title, title_extra, data) {
                         <div class="form-group">
                             <label for="update_payment_type" class="form-control-label" data-i18n-key="payment_type">Payment Type</label>
                             <select id="update_payment_type" class="form-control">
-                                <option value="CASH" ${data.payment_status === 'CASH' ? 'selected' : ''} data-i18n-key="cash">CASH</option>
-                                <option value="DEBT" ${data.payment_status === 'DEBT' ? 'selected' : ''} data-i18n-key="debt">DEBT</option>
-                                <option value="GIRO" ${data.payment_status === 'GIRO' ? 'selected' : ''} data-i18n-key="giro">GIRO</option>
+                                <option value="CASH" ${data.payment_type === 'CASH' ? 'selected' : ''} data-i18n-key="cash">CASH</option>
+                                <option value="DEBT" ${data.payment_type === 'DEBT' ? 'selected' : ''} data-i18n-key="debt">DEBT</option>
+                                <option value="GIRO" ${data.payment_type === 'GIRO' ? 'selected' : ''} data-i18n-key="giro">GIRO</option>
                             </select>
                         </div>
                     </div>
