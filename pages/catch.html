@@ -275,7 +275,7 @@
                       <td><div><h6 class="text-sm mb-0">${str(TripCatchTransactions[mt][tDate]['captain'])}</h6></div></td>
                       <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt][tDate]['income'])}</h6></div></td>
                       <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt][tDate]['expense'])}</h6></div></td>
-                      <td><div><h6 class="text-sm mb-0">${currency((TripCatchTransactions[mt][tDate]['income'] - TripCatchTransactions[mt][tDate]['expense']))}</h6></div></td>
+                      <td><div><h6 class="text-sm mb-0">${currency((TripCatchTransactions[mt][tDate]['income'] - TripCatchTransactions[mt][tDate]['expense'] - TripCatchTransactions[mt][tDate]['debt']))}</h6></div></td>
                       <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt][tDate]['debt'])}</h6></div></td>
                       <td><div><h6 class="text-sm mb-0">${TripCatchTransactions[mt][tDate]['quantity'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
                       <td><div class="text-center">
@@ -284,7 +284,7 @@
                           <i class="ni ni-bold-right" aria-hidden="true"></i></button></div></div></td></tr>`
                     total_income += TripCatchTransactions[mt][tDate]['income']
                     total_expense += TripCatchTransactions[mt][tDate]['expense']
-                    total_profit += TripCatchTransactions[mt][tDate]['income'] - TripCatchTransactions[mt][tDate]['expense']
+                    total_profit += TripCatchTransactions[mt][tDate]['income'] - TripCatchTransactions[mt][tDate]['expense'] - TripCatchTransactions[mt][tDate]['debt']
                     total_debt += TripCatchTransactions[mt][tDate]['debt']
                     total_quantity += TripCatchTransactions[mt][tDate]['quantity']
                 }
