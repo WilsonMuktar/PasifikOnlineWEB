@@ -643,7 +643,7 @@ function processTransactionTable(response) {
             <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].transaction_type)}">${str(data[i].transaction_type)}</span></td>
             <td><span class="text-xs font-weight-bold">${currency(str(data[i].total_price))}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].quantity)}</span></td>
-            <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].unit_price)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${currency(data[i].unit_price)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].payment_type)}">${str(data[i].payment_type)}</span></td>
@@ -2858,7 +2858,7 @@ function processPopup(title, title_extra, data) {
                     </div>
                 </div>
                 <hr class="horizontal dark">
-                <button id="add_transaction_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_giro_btn">ADD GIRO</button>
+                <button id="add_giro_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_giro_btn">ADD GIRO</button>
             </div>
         </div>
     `, function (){
@@ -2866,7 +2866,7 @@ function processPopup(title, title_extra, data) {
                     $('#assign_seller_list').select2({dropdownParent: $('#myModal')});
                     loadLocalization(localStorage.getItem("localization_language"))
                 });
-                document.getElementById("add_transaction_btn").addEventListener('click', function (e) {
+                document.getElementById("add_giro_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let transaction_date = document.getElementById("transaction_date").value+"T00:00:00Z";
                     let transaction_type = document.getElementById("transaction_type").value;
@@ -2912,7 +2912,201 @@ function processPopup(title, title_extra, data) {
                             // Send payload to server
                             MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(payload), true, function (response) {
                                 if (response instanceof Error) {
-                                    alert("Failed to add new transaction! \nerror:" + response.message);
+                                    alert("Failed to add new GIRO debt collect! \nerror:" + response.message);
+                                    return false;
+                                }
+                                // Refresh the page or perform other actions
+                                location.reload();
+                            });
+                        }
+                    }
+
+                    if (transaction_image_file != undefined) {
+                        // process image uploaded file to BLOB
+                        var reader = new FileReader();
+                        reader.onloadend = update
+                        reader.readAsDataURL(transaction_image_file);
+                    } else {
+                        update()
+                    }
+                });
+            }]
+        case 'Add DebtCollect':
+            MAKE_REQUEST("GET",product_api_url,"",true, function(response) {
+                if (response instanceof Error) {
+                    alert("Add transaction get product list failed!")
+                    return
+                }
+                data = response.data;
+                options = ""
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].product_name != "CASH") {continue}
+                    options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
+                }
+                document.querySelector('select[name="assign_product_list"]').innerHTML = options
+            })
+            MAKE_REQUEST("GET",people_api_url,"",true, function(response) {
+                if (response instanceof Error) {
+                    alert("Add transaction get people list failed!")
+                    return
+                }
+                data = response.data;
+                options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
+                for (i = 0; i < data.length; i++) {
+                    options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
+                }
+                document.querySelector('select[name="assign_buyer_list"]').innerHTML = options
+                options = ""
+                for (i = 0; i < data.length; i++) {
+                    if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
+                    options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
+                }
+                document.getElementById("assign_seller_list").innerHTML = options
+            })
+            return [`
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="add_debt_collect">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="transaction_date" class="form-control-label" data-i18n-key="transaction_date">Transaction Date</label>
+                            <input id="transaction_date" class="form-control" type="date" value="${getTodayDate()}" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
+                            <select id="transaction_type" class="form-control" data-toggle="select"> 
+                                <option value="DebtCollect" data-i18n-key="debt_collect" selected>DebtCollect</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
+                            <select id="assign_seller_list" class="form-control" data-toggle="select"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="payment_type" class="form-control-label" data-i18n-key="payment_type">Payment Type</label>
+                            <select id="payment_type" class="form-control" data-toggle="select">
+                                <option value="CASH" data-i18n-key="cash" selected>CASH</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6" hidden>
+                        <div class="form-group">
+                            <label for="payment_status" class="form-control-label" data-i18n-key="payment_status">Payment Status</label>
+                            <select id="payment_status" class="form-control" data-toggle="select">
+                                <option value="0" data-i18n-key="pending">PENDING</option>
+                                <option value="1" data-i18n-key="done" selected>DONE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:auto;">
+                        <div class="col-md-12 text-center text-bg-success" style="margin:auto;" onclick="document.getElementById('multiple_product_transaction').append(document.getElementById('multiple_product_transaction').getElementsByClassName('row')[0].cloneNode(true))">&plus;</div>
+                    </div>
+                    <div id="multiple_product_transaction">
+                        <div class="row" style="background: lightgrey">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
+                                    <select name="assign_buyer_list" class="form-control" data-toggle="select"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-1" hidden>
+                                <div class="form-group">
+                                    <label for="product_id" class="form-control-label" data-i18n-key="product_id">product ID</label>
+                                    <select name="assign_product_list" class="form-control" data-toggle="select"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="total_price" class="form-control-label" data-i18n-key="nominal">Nominal</label>
+                                    <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                                </div>
+                            </div>
+                            <div class="col-md-6" hidden>
+                                <div class="form-group">
+                                    <label for="transaction_image" class="form-control-label" data-i18n-key="transaction_image">Transaction Image</label>
+                                    <input name="transaction_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                                </div>
+                            </div>
+                            <div class="col-md-1 justify-content-xxl-center content-center text-center text-bg-warning" style="margin:auto;" onclick="if(document.getElementById('multiple_product_transaction').getElementsByClassName('row').length > 1){this.parentElement.remove()}">
+                                &minus;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="debt_collect_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                        <input id="debt_collect_notes" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
+                      </div>
+                    </div>
+                </div>
+                <hr class="horizontal dark">
+                <button id="add_debt_collect_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_debt_collect_btn">ADD DEBTCOLLECT</button>
+            </div>
+        </div>
+    `, function (){
+                $(document).ready(function() {
+                    $('#assign_seller_list').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"))
+                });
+                document.getElementById("add_debt_collect_btn").addEventListener('click', function (e) {
+                    // Retrieve input values
+                    let transaction_date = document.getElementById("transaction_date").value+"T00:00:00Z";
+                    let transaction_type = document.getElementById("transaction_type").value;
+                    let seller_id = document.getElementById("assign_seller_list").value;
+                    let vessel_id = "";
+                    let trip_id = "";
+                    let payment_type = document.getElementById("payment_type").value;
+                    let payment_status = parseInt(document.getElementById("payment_status").value);
+                    let transaction_image_file = undefined;
+                    let notes =document.getElementById("debt_collect_notes").value;
+
+                    function update() {
+                        blobText = ""
+                        if (transaction_image_file != undefined) {
+                            blobText = reader.result
+                        }
+
+                        // multiple call for all product
+                        rows = document.getElementById("multiple_product_transaction").getElementsByClassName("row")
+                        for(i=0;i<rows.length;i++) {
+                            if (rows[i].querySelector('select[name="assign_buyer_list"]').length == 0) {continue;}
+                            if (rows[i].querySelector('select[name="assign_product_list"]').length == 0) {continue;}
+                            if (rows[i].querySelector('input[name="total_price"]').length == 0) {continue;}
+
+                            // Construct payload
+                            let payload = {
+                                "transaction_date": transaction_date,
+                                "transaction_type": transaction_type,
+                                "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
+                                "quantity": 1,
+                                "unit_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
+                                "total_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
+                                "seller_id": seller_id,
+                                "buyer_id": rows[i].querySelector('select[name="assign_buyer_list"]').value,
+                                "vessel_id": vessel_id,
+                                "trip_id": trip_id,
+                                "payment_type": payment_type,
+                                "payment_status": payment_status,
+                                "transaction_image": blobText,
+                                "notes": notes
+                            };
+
+                            // Send payload to server
+                            MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(payload), true, function (response) {
+                                if (response instanceof Error) {
+                                    alert("Failed to add new debt collect! \nerror:" + response.message);
                                     return false;
                                 }
                                 // Refresh the page or perform other actions

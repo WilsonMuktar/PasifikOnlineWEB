@@ -161,6 +161,39 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6 data-i18n-key="debt_collected_table">Debt Collected Table</h6>
+                        <ul class="nav-list">
+                            <li><span onclick="openPopup('Add DebtCollect','')" >&plus;</span></li>
+                        </ul>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table id="debt_collected_table" class="table align-items-center justify-content-center mb-0" style="margin-left: 2%;">
+                                <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="crediter">Crediter</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="nominal">Nominal</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="notes">Notes</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="actions">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="datagrid__row vertical-animation">
+                                    <td><span><div class="datagrid__loader" style="width: 96%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 79%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <footer class="footer pt-3  ">
             <div class="container-fluid">
                 <div class="row align-items-center justify-content-lg-between">
@@ -297,19 +330,20 @@
         }
         else {
             data = response.data;
-            total_price = 0;
+            total_giro_price = 0;
             giroTable = document.getElementById("giro_table")
             giro_rows = ""
-            // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
             for (i = 0; i < data.length; i++) {
                 dataStr = JSON.stringify(data[i])
-                giro_rows += `
+                paymentType = data[i]["payment_type"]
+                if(paymentType == "GIRO") {
+                    giro_rows += `
                         <tr>
-                          <td><div><h6 class="text-sm mb-0">${str(data[i]["buyer_first_name"])+" "+str(data[i]["buyer_last_name"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["buyer_first_name"]) + " " + str(data[i]["buyer_last_name"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${JSON.parse(data[i]["notes"]).assign_giro_number}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${JSON.parse(data[i]["notes"]).assign_giro_expired_date}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${currency(data[i]["total_price"])}</h6></div></td>
-                          <td class="${(str(JSON.parse(data[i]["notes"]).claimed) === undefined || str(JSON.parse(data[i]["notes"]).claimed) === ''|| str(JSON.parse(data[i]["notes"]).claimed) === false)? "bg-gradient-warning" : "bg-gradient-success"}"><div>
+                          <td class="${(str(JSON.parse(data[i]["notes"]).claimed) === undefined || str(JSON.parse(data[i]["notes"]).claimed) === '' || str(JSON.parse(data[i]["notes"]).claimed) === false) ? "bg-gradient-warning" : "bg-gradient-success"}"><div>
                             <h6 class="text-sm mb-0">${str(JSON.parse(data[i]["notes"]).claimed)}</h6>
                           </div></td>
                           <td class="text-center">
@@ -320,14 +354,40 @@
                               <i class="ni ni-bold-right" aria-hidden="true"></i></button>
                               </div></div></td>
                           </tr>`
-                total_price+=data[i]["total_price"]
+                    total_giro_price += data[i]["total_price"]
+                }
             }
             // adding total below
             giro_rows += "<tr style='background-color: lightgrey;'><td colspan='2'></td>" +
                 "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
-                "<td><span class='text-xs font-weight-bold'>"+currency(total_price)+"</span></td>" +
+                "<td><span class='text-xs font-weight-bold'>"+currency(total_giro_price)+"</span></td>" +
                 "<td colspan='2'></td></tr>"
             giroTable.tBodies[0].innerHTML = giro_rows;
+
+
+            total_cash_price = 0;
+            debtCollectedTable = document.getElementById("debt_collected_table")
+            debtCollectedRows = ""
+            for (i = 0; i < data.length; i++) {
+                dataStr = JSON.stringify(data[i])
+                paymentType = data[i]["payment_type"]
+                if(paymentType != "GIRO") {
+                    debtCollectedRows += `
+                        <tr>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["buyer_first_name"]) + " " + str(data[i]["buyer_last_name"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["total_price"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["notes"])}</h6></div></td>
+                          <td></td>
+                          </tr>`
+                    total_cash_price += data[i]["total_price"]
+                }
+            }
+            // adding total below
+            debtCollectedRows += "<tr style='background-color: lightgrey;'>" +
+                "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
+                "<td><span class='text-xs font-weight-bold'>"+currency(total_cash_price)+"</span></td>" +
+                "<td colspan='2'></td></tr>"
+            debtCollectedTable.tBodies[0].innerHTML = debtCollectedRows;
         }
     });
 function claimGiro(data){
