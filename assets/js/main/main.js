@@ -2375,10 +2375,6 @@ function processPopup(title, title_extra, data) {
                     let transaction_image_file = document.getElementById("transaction_image").files[0];
                     let notes = document.getElementById("notes").value;
 
-                    if (payment_status == undefined) {
-                        payment_status = 0
-                    }
-
                     function update() {
                         blobText = ""
                         if (transaction_image_file != undefined) {
