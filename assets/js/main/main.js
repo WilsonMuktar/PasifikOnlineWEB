@@ -3405,14 +3405,14 @@ function processPopup(title, title_extra, data) {
 
                             // init for use crediter money to pay tax
                             crediter = rows[i].querySelector('select[name="assign_crediter_list"]').value
-                            newPayload = {
+                            newCrediterPayload = {
                                 "transaction_date": transaction_date,
                                 "transaction_type": "DebtCollect", // paying with crediter debt
                                 "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
                                 "quantity": 1,
                                 "unit_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
                                 "total_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
-                                "seller_id": rows[i].querySelector('select[name="assign_buyer_list"]').value, // paying to seikai sakana
+                                "seller_id": document.getElementById("assign_buyer_list").value, // paying to seikai sakana
                                 "buyer_id": rows[i].querySelector('select[name="assign_crediter_list"]').value, // crediter as buyer
                                 "vessel_id": rows[i].querySelector('select[name="assign_vessel_list"]').value,
                                 "trip_id": trip_id,
@@ -3429,12 +3429,13 @@ function processPopup(title, title_extra, data) {
                                     return false;
                                 }
 
+                                // init for use crediter money to pay tax
                                 if (crediter == undefined || crediter == "") {
                                     // Refresh the page or perform other actions
                                     location.reload();
                                 } else {
                                     // use crediter money to pay tax
-                                    MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(newPayload), true, function (response) {
+                                    MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(newCrediterPayload), true, function (response) {
                                         if (response instanceof Error) {
                                             alert("Failed to add new debt collect! \nerror:" + response.message);
                                             return false;
