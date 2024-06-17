@@ -664,6 +664,7 @@ function processTransactionTable(response) {
         "<td colspan='6'></td></tr>"
 
     table.tBodies[0].innerHTML = rows;
+    loadLocalization(localStorage.getItem("localization_language"))
 }
 
 function processMaintenanceTable(response) {
@@ -1116,6 +1117,7 @@ function processPopup(title, title_extra, data) {
                 `, function() {
                     $(document).ready(function() {
                         $('#assign_feature_list').select2({dropdownParent: $('#myModal')});
+                        loadLocalization(localStorage.getItem("localization_language"))
                     });
                     document.getElementById("assign_feature_btn").addEventListener('click', function (e) {
                         role_name = title_extra.id
@@ -1381,6 +1383,9 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function () {
+                $(document).ready(function() {
+                    loadLocalization(localStorage.getItem("localization_language"))
+                });
                 document.getElementById("add_product_btn").addEventListener('click', function (e) {
                     product_name = document.getElementById("add_product_name").value;
                     product_category = document.getElementById("add_product_category").value;
@@ -1553,7 +1558,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="active_status" class="form-control-label" data-i18n-key="active_status">Active Status</label>
-                            <select id="active_status" class="form-control" data-i18n-key="active_status">
+                            <select id="active_status" class="form-control">
                                 <option value="Active" data-i18n-key="active">Active</option>
                                 <option value="Inactive" data-i18n-key="inactive">Inactive</option>
                                 <option value="Decommissioned" data-i18n-key="decommissioned">Decommissioned</option>
@@ -1596,6 +1601,9 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    loadLocalization(localStorage.getItem("localization_language"))
+                });
                 document.getElementById("add_vessel_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let vessel_name = document.getElementById("vessel_name").value;
@@ -1760,7 +1768,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
-                            <select id="transaction_type" class="form-control" data-i18n-key="transaction_type">
+                            <select id="transaction_type" class="form-control">
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
                                 <option value="Return" data-i18n-key="return">Return</option>
@@ -1799,6 +1807,7 @@ function processPopup(title, title_extra, data) {
                     $('#assign_product_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_supplier_list').select2({dropdownParent: $('#myModal')});
                     $('#transaction_type').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"));
                 });
                 document.getElementById("add_stock_btn").addEventListener('click', function (e) {
                     // Retrieve input values
@@ -1884,7 +1893,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="person_category" class="form-control-label" data-i18n-key="person_category">Person Category</label>
-                            <select id="person_category" data-i18n-key="person_category" class="form-control">
+                            <select id="person_category" class="form-control">
                                     <option value="PT" data-i18n-key="pt">PT</option>
                                     <option value="Reguler" data-i18n-key="reguler">Perorangan</option>
                                     <option value="Captain" data-i18n-key="captain">Tekong</option>
@@ -1953,6 +1962,9 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    loadLocalization(localStorage.getItem("localization_language"))
+                });
                 document.getElementById("add_person_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let person_category = document.getElementById("person_category").value;
@@ -2079,13 +2091,13 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="captain_id" class="form-control-label" data-i18n-key="captain_id">Captain ID</label>
-                            <select id="assign_captain_list" class="form-control" data-toggle="select" data-i18n-key="captain_id"></select>
+                            <select id="assign_captain_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control" data-toggle="select" data-i18n-key="vessel_id"></select>
+                            <select id="assign_vessel_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -2109,6 +2121,7 @@ function processPopup(title, title_extra, data) {
                 $(document).ready(function() {
                     $('#assign_captain_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"));
                 });
                 document.getElementById("add_trip_btn").addEventListener('click', function (e) {
                     // Retrieve input values
@@ -2231,7 +2244,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
-                            <select id="transaction_type" class="form-control" data-toggle="select" data-i18n-key="transaction_type">
+                            <select id="transaction_type" class="form-control" data-toggle="select">
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
                                 <option value="Return" data-i18n-key="return">Return</option>
@@ -2245,25 +2258,25 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
-                            <select id="assign_seller_list" class="form-control" data-toggle="select" data-i18n-key="seller_id"></select>
+                            <select id="assign_seller_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                            <select id="assign_vessel_list" class="form-control" data-toggle="select" data-i18n-key="vessel_id"></select>
+                            <select id="assign_vessel_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
-                            <select id="assign_trip_list" class="form-control" data-toggle="select" data-i18n-key="trip_id"></select>
+                            <select id="assign_trip_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="payment_type" class="form-control-label" data-i18n-key="payment_type">Payment Type</label>
-                            <select id="payment_type" class="form-control" data-toggle="select" data-i18n-key="payment_type">
+                            <select id="payment_type" class="form-control" data-toggle="select">
                                 <option value="CASH" data-i18n-key="cash">CASH</option>
                                 <option value="DEBT" data-i18n-key="debt">DEBT</option>
                                 <option value="GIRO" data-i18n-key="giro">GIRO</option>
@@ -2273,7 +2286,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="payment_status" class="form-control-label" data-i18n-key="payment_status">Payment Status</label>
-                            <select id="payment_status" class="form-control" data-toggle="select" data-i18n-key="payment_status">
+                            <select id="payment_status" class="form-control" data-toggle="select">
                                 <option value="0" data-i18n-key="pending">PENDING</option>
                                 <option value="1" data-i18n-key="done">DONE</option>
                             </select>
@@ -2287,13 +2300,13 @@ function processPopup(title, title_extra, data) {
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
-                                    <select name="assign_buyer_list" class="form-control" data-toggle="select" data-i18n-key="buyer_id"></select>
+                                    <select name="assign_buyer_list" class="form-control" data-toggle="select"></select>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="product_id" class="form-control-label" data-i18n-key="product_id">product ID</label>
-                                    <select name="assign_product_list" class="form-control" data-toggle="select" data-i18n-key="product_id"></select>
+                                    <select name="assign_product_list" class="form-control" data-toggle="select"></select>
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -2453,7 +2466,7 @@ function processPopup(title, title_extra, data) {
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                    <select id="assign_vessel_list" class="form-control" data-toggle="select" data-i18n-key="vessel_id"></select>
+                    <select id="assign_vessel_list" class="form-control" data-toggle="select"></select>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -2494,6 +2507,7 @@ function processPopup(title, title_extra, data) {
     `, function (){
                 $(document).ready(function() {
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"));
                 });
                 document.getElementById("add_maintenance_btn").addEventListener('click', function (e) {
                     // Retrieve input values
@@ -2593,13 +2607,13 @@ function processPopup(title, title_extra, data) {
                 <div class="col-md-6">
                    <div class="form-group">
                       <label for="trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
-                      <select id="assign_trip_list" class="form-control" data-toggle="select" data-i18n-key="trip_id"></select>
+                      <select id="assign_trip_list" class="form-control" data-toggle="select"></select>
                    </div>
                 </div>
                 <div class="col-md-6">
                    <div class="form-group">
                       <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
-                      <select id="assign_vessel_list" class="form-control" data-toggle="select" data-i18n-key="vessel_id"></select>
+                      <select id="assign_vessel_list" class="form-control" data-toggle="select"></select>
                    </div>
                 </div>
                 <div class="col-md-6">
@@ -2622,7 +2636,7 @@ function processPopup(title, title_extra, data) {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="product_id" class="form-control-label" data-i18n-key="product_id">Product ID</label>
-                            <select name="assign_product_list" class="form-control" data-toggle="select" data-i18n-key="product_id"></select>
+                            <select name="assign_product_list" class="form-control" data-toggle="select"></select>
                           </div>
                         </div>
                         <div class="col-md-5">
@@ -2658,6 +2672,7 @@ function processPopup(title, title_extra, data) {
                     //$('#assign_product_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"));
                 });
                 document.getElementById("add_catch_btn").addEventListener('click', function (e) {
                     // Retrieve input values
@@ -2836,6 +2851,9 @@ function processPopup(title, title_extra, data) {
             </div>
           </div>
     `, function (){
+                $(document).ready(function() {
+                    loadLocalization(localStorage.getItem("localization_language"))
+                });
                 document.getElementById("update_product_btn").addEventListener('click', function (e) {
                     product_id = document.getElementById("update_product_id").value;
                     product_name = document.getElementById("update_product_name").value;
@@ -3053,6 +3071,9 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    loadLocalization(localStorage.getItem("localization_language"))
+                });
                 document.getElementById("update_vessel_btn").addEventListener('click', function (e) {
                     vessel_id = document.getElementById("update_vessel_id").value;
                     vessel_name = document.getElementById("update_vessel_name").value;
@@ -3238,6 +3259,9 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    loadLocalization(localStorage.getItem("localization_language"))
+                });
                 document.getElementById("update_stock_btn").addEventListener('click', function (e) {
                     stock_id = document.getElementById("update_stock_id").value;
                     product_id = document.getElementById("update_product_id").value;
@@ -3399,6 +3423,9 @@ function processPopup(title, title_extra, data) {
             </div>
         </div>
     `, function (){
+                $(document).ready(function() {
+                    loadLocalization(localStorage.getItem("localization_language"))
+                });
                 document.getElementById("update_person_btn").addEventListener('click', function (e) {
                     person_id = document.getElementById("update_person_id").value;
                     person_category = document.getElementById("update_person_category").value;
@@ -3570,6 +3597,7 @@ function processPopup(title, title_extra, data) {
                 $(document).ready(function() {
                     $('#assign_captain_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"));
                 });
                 document.getElementById("update_trip_btn").addEventListener('click', function (e) {
                     trip_id = document.getElementById("update_trip_id").value;
@@ -3955,6 +3983,7 @@ function processPopup(title, title_extra, data) {
     `, function (){
                 $(document).ready(function() {
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"));
                 });
                 document.getElementById("update_maintenance_btn").addEventListener('click', function (e) {
                     maintenance_id = document.getElementById("update_maintenance_id").value;
@@ -4121,6 +4150,7 @@ function processPopup(title, title_extra, data) {
                     $('#assign_product_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"))
                 });
                 document.getElementById("update_catch_btn").addEventListener('click', function (e) {
                     catch_id = document.getElementById("update_catch_id").value;
