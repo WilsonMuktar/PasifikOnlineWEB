@@ -789,7 +789,7 @@ function processPopup(title, title_extra, data) {
                 <div class="card">
                     <div class="card-header pb-0">
                       <div class="d-flex align-items-center">
-                        <p class="mb-0">${title_extra}</p>
+                        <p class="mb-0" data-i18n-key="show_image">${title_extra}</p>
                       </div>
                     </div>
                     <div class="card-body">
@@ -819,7 +819,7 @@ function processPopup(title, title_extra, data) {
                 <div class="card">
                     <div class="card-header pb-0">
                       <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
+                        <p class="mb-0" data-i18n-key="user_profile">${title}</p>
                       </div>
                     </div>
                     <div class="card-body">
@@ -927,7 +927,7 @@ function processPopup(title, title_extra, data) {
                 <div class="card">
                     <div class="card-header pb-0">
                       <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
+                        <p class="mb-0" data-i18n-key="add_role">${title}</p>
                       </div>
                     </div>
                     <div class="card-body">
@@ -1172,7 +1172,7 @@ function processPopup(title, title_extra, data) {
                 <div class="card">
                     <div class="card-header pb-0">
                       <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
+                        <p class="mb-0" data-i18n-key="bind_role">${title}</p>
                       </div>
                     </div>
                     <div class="card-body">
@@ -1226,7 +1226,7 @@ function processPopup(title, title_extra, data) {
                 <div class="card">
                     <div class="card-header pb-0">
                       <div class="d-flex align-items-center">
-                        <p class="mb-0">${title}</p>
+                        <p class="mb-0" data-i18n-key="unbind_role">${title}</p>
                       </div>
                     </div>
                     <div class="card-body">
@@ -1277,7 +1277,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
-                    <p class="mb-0">${title}</p>
+                    <p class="mb-0" data-i18n-key="add_product">${title}</p>
                 </div>
             </div>
             <div class="card-body">
@@ -1454,7 +1454,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
-                    <p class="mb-0">${title}</p>
+                    <p class="mb-0" data-i18n-key="add_vessel">${title}</p>
                 </div>
             </div>
             <div class="card-body">
@@ -1712,7 +1712,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
-                    <p class="mb-0">${title}</p>
+                    <p class="mb-0" data-i18n-key="add_stock">${title}</p>
                 </div>
             </div>
             <div class="card-body">
@@ -1873,7 +1873,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
-                    <p class="mb-0">${title}</p>
+                    <p class="mb-0" data-i18n-key="add_person">${title}</p>
                 </div>
             </div>
             <div class="card-body">
@@ -2053,7 +2053,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
-                    <p class="mb-0">${title}</p>
+                    <p class="mb-0" data-i18n-key="add_trip">${title}</p>
                 </div>
             </div>
             <div class="card-body">
@@ -2230,7 +2230,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
-                    <p class="mb-0">${title}</p>
+                    <p class="mb-0" data-i18n-key="add_transaction">${title}</p>
                 </div>
             </div>
             <div class="card-body">
@@ -2452,7 +2452,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
               <div class="d-flex align-items-center">
-                <p class="mb-0" >${title}</p>
+                <p class="mb-0" data-i18n-key="add_maintenance">${title}</p>
               </div>
             </div>
             <div class="card-body">
@@ -2599,7 +2599,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
               <div class="d-flex align-items-center">
-                <p class="mb-0">${title}</p>
+                <p class="mb-0" data-i18n-key="add_catch">${title}</p>
               </div>
             </div>
             <div class="card-body">
@@ -2753,7 +2753,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
               <div class="d-flex align-items-center">
-                <p class="mb-0">${title}</p>
+                <p class="mb-0" data-i18n-key="update_product">${title}</p>
               </div>
             </div>
             <div class="card-body">
