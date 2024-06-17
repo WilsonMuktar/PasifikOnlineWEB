@@ -550,7 +550,7 @@
                   <td><div class="text-center"><h6 class="text-sm mb-0">${i + 1}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${str(transaction["product_name"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 data-i18n-key="${transaction['payment_type']}" class="text-sm mb-0 ${transaction["payment_type"] === 'DEBT' ? 'text-bg-warning' : 'text-bg-success'}">${currency(str(transaction["total_price"]))}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0 data-i18n-key="${transaction["payment_type"]}" ${transaction["payment_type"] === 'DEBT' ? 'text-bg-warning' : 'text-bg-success'}">${str(transaction["payment_type"])}</h6></div></td>
+                  <td><div class="text-center"><h6 data-i18n-key="${transaction["payment_type"]}" class="text-sm mb-0" ${transaction["payment_type"] === 'DEBT' ? 'text-bg-warning' : 'text-bg-success'}">${str(transaction["payment_type"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["buyer_first_name"]) + " " + str(transaction["buyer_last_name"])}</h6></div></td>
                   <td class="align-middle text-sm"><div class="col text-center"><h6 class="text-sm mb-0">${str(transaction["seller_first_name"]) + " " + str(transaction["seller_last_name"])}</h6></div></td>
                   <!--td><div class="text-center"><h6 class="text-sm mb-0 text-bg-info">${convertPaymentStatus(transaction["payment_status"])}</h6></div></td-->
