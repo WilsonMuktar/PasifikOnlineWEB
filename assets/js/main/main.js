@@ -644,7 +644,7 @@ function processTransactionTable(response) {
             <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].payment_type)}">${str(data[i].payment_type)}</span></td>
-            <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${data[i].payment_status}">${data[i].payment_status}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${parseInt(data[i].payment_status)}">${str(data[i].payment_status)}</span></td>
             <td class="align-middle text-center">
                 <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Transaction","",${JSON.stringify(data[i])})'>
                     <i class="fa fa-ellipsis-v text-xs"></i>
