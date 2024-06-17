@@ -3136,6 +3136,18 @@ function processPopup(title, title_extra, data) {
                 });
             }]
         case 'Add Tax Payment':
+            MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
+                if (response instanceof Error) {
+                    alert("Add transaction get vessel list failed!")
+                    return
+                }
+                data = response.data;
+                options = "<option selected value='' data-i18n-key=\"select_vessel\"> -- Select Vessel -- </option>"
+                for (i = 0; i < data.length; i++) {
+                    options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
+                }
+                document.querySelector('select[name="assign_vessel_list"]').innerHTML = options
+            })
             MAKE_REQUEST("GET",product_api_url,"",true, function(response) {
                 if (response instanceof Error) {
                     alert("Add transaction get product list failed!")
@@ -3225,11 +3237,17 @@ function processPopup(title, title_extra, data) {
                                     <select name="assign_seller_list" class="form-control" data-toggle="select"></select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                                 <div class="form-group">
                                     <label for="product_id" class="form-control-label" data-i18n-key="product_id">product ID</label>
                                     <select name="assign_product_list" class="form-control" data-toggle="select">
                                     </select>
+                                </div>
+                            </div> 
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
+                                    <select name="assign_vessel_list" class="form-control" data-toggle="select"></select>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -3287,6 +3305,7 @@ function processPopup(title, title_extra, data) {
                         rows = document.getElementById("multiple_product_transaction").getElementsByClassName("row")
                         for(i=0;i<rows.length;i++) {
                             if (rows[i].querySelector('select[name="assign_seller_list"]').length == 0) {continue;}
+                            if (rows[i].querySelector('select[name="assign_vessel_list"]').length == 0) {continue;}
                             if (rows[i].querySelector('select[name="assign_product_list"]').length == 0) {continue;}
                             if (rows[i].querySelector('input[name="total_price"]').length == 0) {continue;}
 
@@ -3300,7 +3319,7 @@ function processPopup(title, title_extra, data) {
                                 "total_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
                                 "seller_id": rows[i].querySelector('select[name="assign_seller_list"]').value,
                                 "buyer_id": buyer_id,
-                                "vessel_id": vessel_id,
+                                "vessel_id": rows[i].querySelector('select[name="assign_vessel_list"]').value,
                                 "trip_id": trip_id,
                                 "payment_type": payment_type,
                                 "payment_status": payment_status,
