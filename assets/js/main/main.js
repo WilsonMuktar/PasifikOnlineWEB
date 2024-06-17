@@ -637,7 +637,7 @@ function processTransactionTable(response) {
             <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].buyer_first_name)+" "+str(data[i].buyer_last_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].seller_first_name)+" "+str(data[i].seller_last_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date).replace("T00:00:00Z","")}</span></td>
-            <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].transaction_type)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].transaction_type)}">${str(data[i].transaction_type)}</span></td>
             <td><span class="text-xs font-weight-bold">${currency(str(data[i].total_price))}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].quantity)}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].unit_price)}</span></td>
