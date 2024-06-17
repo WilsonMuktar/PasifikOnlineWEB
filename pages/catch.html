@@ -107,7 +107,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="expense">Expense</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="profit">Profit</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt">Debt</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt">Quantity</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="quantity">Quantity</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="actions">Actions</th>
                                 </tr>
                                 </thead>
@@ -178,10 +178,21 @@
             processCatchTable(resp)
         }
     })*/
+    // Get the query string part of the URL
+    // ?transaction_date_from=&transaction_date_to=&transaction_type=&product_id=&seller_id=&buyer_id=&vessel_id=&trip_id=&payment_type=
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    var extraParams = ""
+    urlParams.forEach((value, key) => {
+        if (value != "") {
+            extraParams += `&${key}=${value}`
+        }
+    });
+
     currentYear = new Date().getFullYear()
     startYear = currentYear+"-01-01"
     endYear = currentYear+"-12-31"
-    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&order_by=transaction_date&order_type=DESC", "", true, function(response){
+    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&order_by=transaction_date&order_type=DESC"+extraParams, "", true, function(response){
         if (response instanceof Error) {
             alert("Failed to get transaction List \n"+ response)
             return
@@ -297,7 +308,9 @@
                     "<td><span class='text-xs font-weight-bold'>"+currency(total_profit)+"</span></td>" +
                     "<td><span class='text-xs font-weight-bold'>"+currency(total_debt)+"</span></td>" +
                     "<td><span class='text-xs font-weight-bold'>"+total_quantity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+"kg</span></td>" +
-                    "<td colspan='1'></td></tr>"
+                    "<td><div class='text-center'><div class='d-flex'>" +
+                    "<button class='btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto' onclick=\"redirectPage('./pages/transaction.html?trip_name="+mt+"')\">" +
+                    "<i class='ni ni-bold-right' aria-hidden='true'></i></button></div></div></td></tr>"
             }
             tripCatchTable.tBodies[0].innerHTML = rows;
         }
