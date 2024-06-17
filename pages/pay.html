@@ -224,9 +224,9 @@
                     pay_rows += `
                         <tr>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["seller_first_name"]) + " " + str(data[i]["seller_last_name"])}</h6></div></td>
-                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["vessel_name"])}</h6></div></td>
-                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["transaction_date"])}</h6></div></td>
-                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["transaction_type"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["vessel_name"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["transaction_date"].replace("T00:00:00Z",""))}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["transaction_type"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${currency(data[i]["total_price"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["notes"])}</h6></div></td>
                           <td></td>
@@ -258,8 +258,8 @@
                     pay_rows += `
                         <tr>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["buyer_first_name"]) + " " + str(data[i]["buyer_last_name"])}</h6></div></td>
-                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["transaction_date"])}</h6></div></td>
-                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["transaction_type"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["transaction_date"].replace("T00:00:00Z",""))}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["transaction_type"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${currency(data[i]["total_price"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["notes"])}</h6></div></td>
                           <td></td>
