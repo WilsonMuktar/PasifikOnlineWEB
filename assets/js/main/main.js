@@ -2796,7 +2796,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_buyer_list"]').innerHTML = options
-                options = ""
+                options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
                     if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
                     if (currentPeopleGroup != data[i].person_category) {
@@ -3012,7 +3012,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_buyer_list"]').innerHTML = options
-                options = ""
+                options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
                     if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
                     if (currentPeopleGroup != data[i].person_category) {
@@ -3234,7 +3234,8 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_seller_list"]').innerHTML = options
-                options = ""
+                document.querySelector('select[name="assign_crediter_list"]').innerHTML = options
+                options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
                     if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
                     if (currentPeopleGroup != data[i].person_category) {
@@ -3300,7 +3301,7 @@ function processPopup(title, title_extra, data) {
                     </div>
                     <div id="multiple_product_transaction">
                         <div class="row" style="background: lightgrey">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
                                     <select name="assign_seller_list" class="form-control" data-toggle="select"></select>
@@ -3313,13 +3314,19 @@ function processPopup(title, title_extra, data) {
                                     </select>
                                 </div>
                             </div> 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
                                     <select name="assign_vessel_list" class="form-control" data-toggle="select"></select>
                                 </div>
                             </div>
                             <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="crediter_id" class="form-control-label" data-i18n-key="crediter">Crediter</label>
+                                    <select name="assign_crediter_list" class="form-control" data-toggle="select"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="total_price" class="form-control-label" data-i18n-key="nominal">Nominal</label>
                                     <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
@@ -3402,8 +3409,38 @@ function processPopup(title, title_extra, data) {
                                     alert("Failed to add new debt collect! \nerror:" + response.message);
                                     return false;
                                 }
-                                // Refresh the page or perform other actions
-                                location.reload();
+
+                                crediter = rows[i].querySelector('select[name="assign_crediter_list"]').value
+                                if (crediter == undefined || crediter == "") {
+                                    // Refresh the page or perform other actions
+                                    location.reload();
+                                } else {
+                                    // use crediter money to pay tax
+                                    newPayload = {
+                                        "transaction_date": transaction_date,
+                                        "transaction_type": "DebtCollect", // paying with crediter debt
+                                        "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
+                                        "quantity": 1,
+                                        "unit_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
+                                        "total_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
+                                        "seller_id": rows[i].querySelector('select[name="assign_buyer_list"]').value, // paying to seikai sakana
+                                        "buyer_id": rows[i].querySelector('select[name="assign_crediter_list"]').value, // crediter as buyer
+                                        "vessel_id": rows[i].querySelector('select[name="assign_vessel_list"]').value,
+                                        "trip_id": trip_id,
+                                        "payment_type": payment_type,
+                                        "payment_status": payment_status,
+                                        "transaction_image": blobText,
+                                        "notes": notes
+                                    };
+                                    MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(newPayload), true, function (response) {
+                                        if (response instanceof Error) {
+                                            alert("Failed to add new debt collect! \nerror:" + response.message);
+                                            return false;
+                                        }
+                                        // Refresh the page or perform other actions
+                                        location.reload();
+                                    });
+                                }
                             });
                         }
                     }
@@ -3451,7 +3488,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_seller_list"]').innerHTML = options
-                options = ""
+                options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
                     if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
                     if (currentPeopleGroup != data[i].person_category) {
