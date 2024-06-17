@@ -10,10 +10,10 @@ function loadLocalization(language) {
         .then(data => {
             // Apply translations to elements with data-i18n-key attribute
             Object.keys(data).forEach(key => {
-                const element = document.querySelector(`[data-i18n-key="${key}"]`);
-                if (element) {
+                const elements = document.querySelectorALl(`[data-i18n-key="${key}"]`);
+                elements.forEach(element => {
                     element.textContent = data[key];
-                }
+                });
             });
             return
         })
@@ -2344,6 +2344,7 @@ function processPopup(title, title_extra, data) {
                     $('#assign_seller_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"))
                 });
                 document.getElementById("add_transaction_btn").addEventListener('click', function (e) {
                     // Retrieve input values
@@ -2361,6 +2362,10 @@ function processPopup(title, title_extra, data) {
                     let payment_status = parseInt(document.getElementById("payment_status").value);
                     let transaction_image_file = document.getElementById("transaction_image").files[0];
                     let notes = document.getElementById("notes").value;
+
+                    if (payment_status == undefined) {
+                        payment_status = 0
+                    }
 
                     function update() {
                         blobText = ""
@@ -3772,15 +3777,9 @@ function processPopup(title, title_extra, data) {
                         <div class="form-group">
                             <label for="update_payment_status" class="form-control-label" data-i18n-key="payment_status">Payment Status</label>
                             <select id="update_payment_status" class="form-control">
-                                <option value="0" ${data.payment_status === 0 ? 'selected' : ''} data-i18n-key="pending">PENDING</option>
+                                <option value="0" ${(data.payment_status === 0 || data.payment_status ===undefined) ? 'selected' : ''} data-i18n-key="pending">PENDING</option>
                                 <option value="1" ${data.payment_status === 1 ? 'selected' : ''} data-i18n-key="done">DONE</option>
                             </select>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="update_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
-                            <input id="update_notes" class="form-control" type="text" value="${str(data.notes)}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -3788,6 +3787,12 @@ function processPopup(title, title_extra, data) {
                             <label for="update_transaction_image_old" class="form-control-label" data-i18n-key="transaction_image">Transaction Image</label>
                             <input id="update_transaction_image_old" class="form-control" type="text" hidden value="${str(data.transaction_image)}">
                             <input id="update_transaction_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="update_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                            <input id="update_notes" class="form-control" type="text" value="${str(data.notes)}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                 </div>
@@ -3802,6 +3807,7 @@ function processPopup(title, title_extra, data) {
                     $('#assign_buyer_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_seller_list').select2({dropdownParent: $('#myModal')});
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"))
                 });
                 document.getElementById("update_transaction_btn").addEventListener('click', function(e) {
                     transaction_id = document.getElementById("update_transaction_id").value;
