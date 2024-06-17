@@ -100,8 +100,10 @@
                             <table id="pay_tax_table" class="table align-items-center justify-content-center mb-0" style="margin-left: 2%;">
                                 <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="buyer">Buyer</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt">TransactionType</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="seller">Seller</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="vessel">Vessel</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="transaction_date">Transaction Date</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="transaction_type">Transaction Type</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="quantity">Nominal</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt_final">Notes</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="actions">Actions</th>
@@ -136,8 +138,9 @@
                             <table id="pay_salary_table" class="table align-items-center justify-content-center mb-0" style="margin-left: 2%;">
                                 <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="buyer">Buyer</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt">TransactionType</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="seller">Seller</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="transaction_date">Transaction Date</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="transaction_type">Transaction Type</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="quantity">Nominal</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt_final">Notes</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="actions">Actions</th>
@@ -220,7 +223,10 @@
                 paymentType = data[i]["payment_type"]
                     pay_rows += `
                         <tr>
-                          <td><div><h6 class="text-sm mb-0">${str(data[i]["buyer_first_name"]) + " " + str(data[i]["buyer_last_name"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["seller_first_name"]) + " " + str(data[i]["seller_last_name"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["vessel_name"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["transaction_date"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["transaction_type"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${currency(data[i]["total_price"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["notes"])}</h6></div></td>
                           <td></td>
@@ -228,7 +234,7 @@
                     total_pay_price += data[i]["total_price"]
             }
             // adding total below
-            pay_rows += "<tr style='background-color: lightgrey;'><td colspan='2'></td>" +
+            pay_rows += "<tr style='background-color: lightgrey;'><td colspan='3'></td>" +
                 "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
                 "<td><span class='text-xs font-weight-bold'>"+currency(total_pay_price)+"</span></td>" +
                 "<td colspan='2'></td></tr>"
@@ -252,6 +258,8 @@
                     pay_rows += `
                         <tr>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["buyer_first_name"]) + " " + str(data[i]["buyer_last_name"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["transaction_date"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${currency(data[i]["transaction_type"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${currency(data[i]["total_price"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["notes"])}</h6></div></td>
                           <td></td>
