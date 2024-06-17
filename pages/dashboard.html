@@ -601,46 +601,55 @@
 
         // 3. CHART TRANSACTION OVERVIEW
         // process monthlyDatasets for Chart
+        var ctx = document.getElementById("chart-line").getContext("2d");
+        var gradientGREEN = ctx.createLinearGradient(0, 0, 0, 400)
+        gradientGREEN.addColorStop(0, 'rgba(91,207,55,0.7)')
+        gradientGREEN.addColorStop(1, 'rgba(32,184,67,0)')
+        var gradientRED = ctx.createLinearGradient(0, 0, 0, 400)
+        gradientRED.addColorStop(0, 'rgba(229, 239, 255, 1)')
+        gradientRED.addColorStop(1, 'rgb(245,60,60, 1)')
         monthlyDatasets = []
         debtCollected = {}
+        monthBasis = ["01","02","03","04","05","06","07","08","09","10","11","12"]
         for (const mt in monthlyTransactionByTransactionType) {
           if (mt == 'DebtCollect') {debtCollected = monthlyTransactionByTransactionType[mt]; continue}
           monthlyTransactionTotal = monthlyTransactionByTransactionType[mt] // all monthly from each category
+          monthlyAccumulateData = []
+          accumulateCount = 0
+          for(i in monthBasis) {
+            accumulateCount += monthlyTransactionTotal[monthBasis[i]]
+            monthlyAccumulateData.push(accumulateCount)
+          }
           monthlyDatasets.push({
             label: "Transaction-" + mt,
             tension: 0.4,
             pointRadius: 0,
             borderColor: "#5e72e4",
-            backgroundColor: gradientStroke1,
+            backgroundColor: gradientGREEN,
             borderWidth: 3,
             fill: true,
-            data: [monthlyTransactionTotal["01"], monthlyTransactionTotal["02"], monthlyTransactionTotal["03"], monthlyTransactionTotal["04"],
-              monthlyTransactionTotal["05"], monthlyTransactionTotal["06"], monthlyTransactionTotal["07"], monthlyTransactionTotal["08"],
-              monthlyTransactionTotal["09"], monthlyTransactionTotal["10"], monthlyTransactionTotal["11"], monthlyTransactionTotal["12"]],
+            data: monthlyAccumulateData,
             maxBarThickness: 6
           })
         }
         for (const pType in monthlyTransactionByPaymentType) {
           if (pType == "DEBT") { // DEBT - DEBTCOLLECTED monthly basis
-            var ctx = document.getElementById("chart-line").getContext("2d");
-            var gradientRED = ctx.createLinearGradient(0, 0, 0, 400)
-            gradientRED.addColorStop(0, 'rgba(229, 239, 255, 1)')
-            gradientRED.addColorStop(1, '#f53c3c')
             monthlyTransactionTotal = monthlyTransactionByPaymentType[pType] // all monthly from each category
+            monthlyAccumulateIncomeData = []
+            accumulateCount = 0
+            for(i in monthBasis) {
+              accumulateCount += monthlyTransactionTotal[monthBasis[i]] - debtCollected[monthBasis[i]]
+              monthlyAccumulateIncomeData.push(accumulateCount)
+            }
             monthlyDatasets.push({
               label: "Payment-" + pType,
               tension: 0.4,
               pointRadius: 0,
               borderColor: "#FF0000",
-              backgroundColor: gradientRED,
+              backgroundColor: "#FF0000",
               borderWidth: 3,
               fill: true,
-              data: [monthlyTransactionTotal["01"]-debtCollected["01"], monthlyTransactionTotal["02"]-debtCollected["02"],
-                     monthlyTransactionTotal["03"]-debtCollected["03"], monthlyTransactionTotal["04"]-debtCollected["04"],
-                     monthlyTransactionTotal["05"]-debtCollected["05"], monthlyTransactionTotal["06"]-debtCollected["06"],
-                     monthlyTransactionTotal["07"]-debtCollected["07"], monthlyTransactionTotal["08"]-debtCollected["08"],
-                     monthlyTransactionTotal["09"]-debtCollected["09"], monthlyTransactionTotal["10"]-debtCollected["10"],
-                     monthlyTransactionTotal["11"]-debtCollected["11"], monthlyTransactionTotal["12"]-debtCollected["12"]],
+              data: monthlyAccumulateIncomeData,
               maxBarThickness: 6
             })
           }
