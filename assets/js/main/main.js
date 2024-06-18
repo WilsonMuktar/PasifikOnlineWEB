@@ -3147,7 +3147,7 @@ function processPopup(title, title_extra, data) {
                                     <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                                 </div>
                             </div>
-                            <div class="col-md-2" hidden>
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
                                     <select name="assign_vessel_list" class="form-control" data-toggle="select">
