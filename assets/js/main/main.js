@@ -2803,6 +2803,7 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Add Giro':
             MAKE_REQUEST("GET",product_api_url,"",true, function(response) {
+                showLoader();
                 if (response instanceof Error) {
                     alert("Add transaction get product list failed!")
                     return
@@ -2814,8 +2815,10 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
                 }
                 document.querySelector('select[name="assign_product_list"]').innerHTML = options
+                hideLoader();
             })
             MAKE_REQUEST("GET",people_api_url,"",true, function(response) {
+                showLoader();
                 if (response instanceof Error) {
                     alert("Add transaction get people list failed!")
                     return
@@ -2847,6 +2850,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_seller_list").innerHTML = options
+                hideLoader();
             })
             return [`
         <span class="close">&times;</span>
@@ -3019,6 +3023,7 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Add DebtCollect':
             MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
+                showLoader();
                 if (response instanceof Error) {
                     alert("Add transaction get vessel list failed!")
                     return
@@ -3029,8 +3034,10 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
                 }
                 document.querySelector('select[name="assign_vessel_list"]').innerHTML = options
+                hideLoader();
             })
             MAKE_REQUEST("GET",product_api_url,"",true, function(response) {
+                showLoader();
                 if (response instanceof Error) {
                     alert("Add transaction get product list failed!")
                     return
@@ -3042,8 +3049,10 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
                 }
                 document.querySelector('select[name="assign_product_list"]').innerHTML = options
+                hideLoader();
             })
             MAKE_REQUEST("GET",people_api_url,"",true, function(response) {
+                showLoader();
                 if (response instanceof Error) {
                     alert("Add transaction get people list failed!")
                     return
@@ -3075,6 +3084,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_seller_list").innerHTML = options
+                hideLoader();
             })
             return [`
         <span class="close">&times;</span>
@@ -3248,6 +3258,7 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Add Tax Payment':
             MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
+                showLoader();
                 if (response instanceof Error) {
                     alert("Add transaction get vessel list failed!")
                     return
@@ -3258,8 +3269,10 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
                 }
                 document.querySelector('select[name="assign_vessel_list"]').innerHTML = options
+                hideLoader();
             })
             MAKE_REQUEST("GET",product_api_url,"",true, function(response) {
+                showLoader();
                 if (response instanceof Error) {
                     alert("Add transaction get product list failed!")
                     return
@@ -3271,8 +3284,10 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
                 }
                 document.querySelector('select[name="assign_product_list"]').innerHTML = options
+                hideLoader();
             })
             MAKE_REQUEST("GET",people_api_url,"",true, function(response) {
+                showLoader();
                 if (response instanceof Error) {
                     alert("Add transaction get people list failed!")
                     return
@@ -3305,6 +3320,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_buyer_list").innerHTML = options
+                hideLoader();
             })
             return [`
         <span class="close">&times;</span>
@@ -3517,6 +3533,7 @@ function processPopup(title, title_extra, data) {
             }]
         case 'Add Salary Payment':
             MAKE_REQUEST("GET",product_api_url,"",true, function(response) {
+                showLoader()
                 if (response instanceof Error) {
                     alert("Add transaction get product list failed!")
                     return
@@ -3528,8 +3545,10 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
                 }
                 document.querySelector('select[name="assign_product_list"]').innerHTML = options
+                hideLoader();
             })
             MAKE_REQUEST("GET",people_api_url,"",true, function(response) {
+                showLoader()
                 if (response instanceof Error) {
                     alert("Add transaction get people list failed!")
                     return
@@ -3561,6 +3580,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_buyer_list").innerHTML = options
+                hideLoader();
             })
             return [`
         <span class="close">&times;</span>
