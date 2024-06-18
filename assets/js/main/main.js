@@ -635,24 +635,23 @@ function processTransactionTable(response) {
     total_quantity = 0
     curr_transaction_type = ""
     for (var i = data.length - 1; i >= 0; i--) {
-
-        if (curr_transaction_type != data[i].transaction_type) {
+        /*if (curr_transaction_type != data[i].transaction_type) {
             if (curr_transaction_type != "" ) {
                 // adding total below for each transaction_type
-                rows += "<tr style='background-color: lightgrey;'><td colspan='4'></td>" +
-                    "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
-                    "<td><span class='text-xs font-weight-bold'>" + currency(total_price_page) + "</span></td>" +
-                    "<td class='text-center'><span class='text-xs font-weight-bold'>" + str(total_quantity) + "</span></td>" +
-                    "<td colspan='6'></td></tr>"
+                rows += `<tr style='background-color: lightgrey;'><td colspan='4'></td>
+                    <td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>
+                    <td><span class='text-xs font-weight-bold'> ${currency(total_price_page)} </span></td>
+                    <td class='text-center'><span class='text-xs font-weight-bold'> ${str(total_quantity)} </span></td>
+                    <td colspan='6'></td></tr>`
                 // reset each transaction type
                 total_price_page = 0
                 total_quantity = 0
             }
             curr_transaction_type = data[i].transaction_type
-        }
+        }*/
 
         rows += `
-        <tr class="${data[i].transaction_type=='DebtCollect'? "bg-gradient-success" : ""}">
+        <tr class="${ data[i].transaction_type=='Salary'? "bg-gradient-warning" : (data[i].transaction_type=='Tax'? "bg-gradient-warning" : (data[i].transaction_type=='DebtCollect'? "bg-gradient-success" : ""))}">
             <td hidden>
                 <div class="d-flex px-2">
                     <div>
@@ -693,9 +692,23 @@ function processTransactionTable(response) {
         total_quantity+=data[i].quantity
     }
 
+    /*if (curr_transaction_type != "") {
+        if (total_price_page != 0 ) {
+            // adding total below for each transaction_type
+            rows += `<tr style='background-color: lightgrey;'><td colspan='4'></td>
+                    <td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>
+                    <td><span class='text-xs font-weight-bold'> ${currency(total_price_page)} </span></td>
+                    <td class='text-center'><span class='text-xs font-weight-bold'> ${str(total_quantity)} </span></td>
+                    <td colspan='6'></td></tr>`
+            // reset each transaction type
+            total_price_page = 0
+            total_quantity = 0
+        }
+    }*/
+
     // adding final total below
     rows += "<tr style='background-color: lightgrey;'><td colspan='4'></td>" +
-        "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
+        "<td class='text-center'><span class='text-xs font-weight-bold'>Final Total:</span></td>" +
         "<td><span class='text-xs font-weight-bold'>" + currency(total_final_price_page) + "</span></td>" +
         "<td class='text-center'><span class='text-xs font-weight-bold'>" + str(total_final_quantity) + "</span></td>" +
         "<td colspan='6'></td></tr>"
