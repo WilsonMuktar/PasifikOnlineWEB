@@ -634,7 +634,6 @@ function processTransactionTable(response) {
     total_price_page = 0
     total_quantity = 0
     curr_transaction_type = ""
-    console.log(data)
     for (var i = data.length - 1; i >= 0; i--) {
         /*if (curr_transaction_type != data[i].transaction_type) {
             if (curr_transaction_type != "" ) {
@@ -694,7 +693,6 @@ function processTransactionTable(response) {
             total_final_quantity += data[i].quantity
         } else {
             total_final_price_page += data[i].total_price
-            console.log(data[i])
         }
         total_price_page += data[i].total_price
         total_quantity+=data[i].quantity
