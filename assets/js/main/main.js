@@ -629,11 +629,30 @@ function processTransactionTable(response) {
     var rows = "";
     var table = document.getElementById("transaction_table");
 
+    total_final_price_page = 0
+    total_final_quantity = 0
     total_price_page = 0
     total_quantity = 0
+    curr_transaction_type = ""
     for (var i = data.length - 1; i >= 0; i--) {
+
+        if (curr_transaction_type != data[i].transaction_type) {
+            if (curr_transaction_type != "" ) {
+                // adding total below for each transaction_type
+                rows += "<tr style='background-color: lightgrey;'><td colspan='4'></td>" +
+                    "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
+                    "<td><span class='text-xs font-weight-bold'>" + currency(total_price_page) + "</span></td>" +
+                    "<td class='text-center'><span class='text-xs font-weight-bold'>" + str(total_quantity) + "</span></td>" +
+                    "<td colspan='6'></td></tr>"
+                // reset each transaction type
+                total_price_page = 0
+                total_quantity = 0
+            }
+            curr_transaction_type = data[i].transaction_type
+        }
+
         rows += `
-        <tr>
+        <tr class="${data[i].transaction_type=='DebtCollect'? "bg-gradient-success" : ""}">
             <td hidden>
                 <div class="d-flex px-2">
                     <div>
@@ -664,16 +683,22 @@ function processTransactionTable(response) {
             </td>
         </tr>
     `;
-        total_price_page+=data[i].total_price
+        if (data[i].transaction_type=='DebtCollect') {
+            total_final_price_page -= data[i].total_price
+        } else {
+            total_final_price_page += data[i].total_price
+            total_final_quantity += data[i].quantity
+        }
+        total_price_page += data[i].total_price
         total_quantity+=data[i].quantity
     }
-    // adding total below
+
+    // adding final total below
     rows += "<tr style='background-color: lightgrey;'><td colspan='4'></td>" +
         "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
-        "<td><span class='text-xs font-weight-bold'>"+currency(total_price_page)+"</span></td>" +
-        "<td class='text-center'><span class='text-xs font-weight-bold'>"+str(total_quantity)+"</span></td>"+
+        "<td><span class='text-xs font-weight-bold'>" + currency(total_final_price_page) + "</span></td>" +
+        "<td class='text-center'><span class='text-xs font-weight-bold'>" + str(total_final_quantity) + "</span></td>" +
         "<td colspan='6'></td></tr>"
-
     table.tBodies[0].innerHTML = rows;
     loadLocalization(localStorage.getItem("localization_language"))
 }

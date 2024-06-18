@@ -105,7 +105,6 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="quantity">Quantity</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt_collect">DebtCollect</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt_final">Final</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="actions">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -179,7 +178,6 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="payment_type">Payment Type</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="nominal">Nominal</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="notes">Notes</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="actions">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -294,23 +292,14 @@
             total_price_page = 0
             total_quantity = 0
                 for (const bid in BuyerDEBT) { // by buyerID
-                    if ( BuyerDEBT[bid]["total_price"] == 0 || (BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"])==0) {
-                        continue
-                    }
+                    if (BuyerDEBT[bid]["total_price"] == 0) {continue}
                     rows += `
                         <tr>
                           <td><div><h6 class="text-sm mb-0">${BuyerDEBT[bid]["buyer_name"]}</h6></div></td>
-                          <td><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"])}</h6></div></td>
+                          <td class="bg-gradient-warning" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&payment_type=DEBT')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${BuyerDEBT[bid]["quantity"].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
-                          <td class="bg-gradient-success"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
-                          <td class="bg-gradient-warning"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
-                          <td class="text-center">
-                              <div><div class="d-flex">
-                              <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto text-bg-warning" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&payment_type=DEBT')">
-                              <i class="ni ni-bold-right" aria-hidden="true"></i></button>
-                              <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto text-bg-success" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&transaction_type=DebtCollect')">
-                              <i class="ni ni-bold-right" aria-hidden="true"></i></button>
-                              </div></div></td>
+                          <td class="bg-gradient-success" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&transaction_type=DebtCollect')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
+                          <td class="${ BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"] == 0 ? "bg-gradient-success":"bg-gradient-warning"}" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
                           </tr>`
                     total_price_page+=BuyerDEBT[bid]["total_price"]
                     total_quantity+=BuyerDEBT[bid]["quantity"]
