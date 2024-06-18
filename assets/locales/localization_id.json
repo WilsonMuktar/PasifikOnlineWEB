@@ -315,7 +315,7 @@
   "select_buyer": "-- Pilih Pembeli --",
   "select_seller": "-- Pilih Penjual --",
 
-  "dashboard_total_description":"Penghasilan + Pengeluaran + Utang belum bayar",
+  "dashboard_total_description":"Penjualan",
   "dashboard_income_description":"Tunai + Giro - Pengeluaran",
   "dashboard_expense_description":"Belanja + Pajak + Gaji",
   "dashboard_debt_description":"Utang Belum Bayar",
