@@ -3018,6 +3018,18 @@ function processPopup(title, title_extra, data) {
                 });
             }]
         case 'Add DebtCollect':
+            MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
+                if (response instanceof Error) {
+                    alert("Add transaction get vessel list failed!")
+                    return
+                }
+                data = response.data;
+                options = "<option selected value='' data-i18n-key=\"select_vessel\"> -- Select Vessel -- </option>"
+                for (i = 0; i < data.length; i++) {
+                    options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
+                }
+                document.querySelector('select[name="assign_vessel_list"]').innerHTML = options
+            })
             MAKE_REQUEST("GET",product_api_url,"",true, function(response) {
                 if (response instanceof Error) {
                     alert("Add transaction get product list failed!")
@@ -3135,6 +3147,19 @@ function processPopup(title, title_extra, data) {
                                     <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                                 </div>
                             </div>
+                            <div class="col-md-1" hidden>
+                                <div class="form-group">
+                                    <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
+                                    <select name="assign_vessel_list" class="form-control" data-toggle="select">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label for="debt_collect_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                                <input name="debt_collect_notes" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
+                              </div>
+                            </div>
                             <div class="col-md-6" hidden>
                                 <div class="form-group">
                                     <label for="transaction_image" class="form-control-label" data-i18n-key="transaction_image">Transaction Image</label>
@@ -3145,12 +3170,6 @@ function processPopup(title, title_extra, data) {
                                 &minus;
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="debt_collect_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
-                        <input id="debt_collect_notes" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
-                      </div>
                     </div>
                 </div>
                 <hr class="horizontal dark">
@@ -3172,7 +3191,7 @@ function processPopup(title, title_extra, data) {
                     let payment_type = document.getElementById("payment_type").value;
                     let payment_status = parseInt(document.getElementById("payment_status").value);
                     let transaction_image_file = undefined;
-                    let notes =document.getElementById("debt_collect_notes").value;
+                    let notes = "";
 
                     function update() {
                         blobText = ""
@@ -3197,12 +3216,12 @@ function processPopup(title, title_extra, data) {
                                 "total_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
                                 "seller_id": seller_id,
                                 "buyer_id": rows[i].querySelector('select[name="assign_buyer_list"]').value,
-                                "vessel_id": vessel_id,
+                                "vessel_id": rows[i].querySelector('select[name="assign_vessel_list"]').value,
                                 "trip_id": trip_id,
                                 "payment_type": payment_type,
                                 "payment_status": payment_status,
                                 "transaction_image": blobText,
-                                "notes": notes
+                                "notes": rows[i].querySelector('input[name="debt_collect_notes"]').value,
                             };
 
                             // Send payload to server
