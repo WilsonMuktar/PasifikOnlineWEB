@@ -35,7 +35,7 @@ if (account_roles != undefined) {
 // UTILS //
 function showLoader() {
     var loaderElement = document.createElement('div');
-    loaderElement.style.cssText = 'display: block; position: absolute; height: 100px; width: 100px; top: 50%; left: 50%; margin-left: -50px; margin-top: -50px; background: url("../assets/img/loader1.gif"); background-size: 100%; z-index: 999999999999999999999; border-radius: 50%;'
+    loaderElement.style.cssText = 'display: block; position: fixed; height: 100px; width: 100px; top: 50%; left: 50%; margin-left: -50px; margin-top: -50px; background: url("../assets/img/loader1.gif"); background-size: 100%; z-index: 999999999999999999999; border-radius: 50%;'
     loaderElement.id = 'loaderElement';
     document.body.appendChild(loaderElement)
 }
