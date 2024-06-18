@@ -102,8 +102,8 @@
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_transaction">Total Transaction</p>
                       <h5 class="font-weight-bolder" id="dashboard_total_transaction">Rp.-,00</h5>
                       <p class="font-weight-bolder text-xxs" style="margin-top:-1%" id="dashboard_total_description">(INCOME + EXPENSE + DEBT)</p>
-                    <p class="mb-0" style="margin-top:-6%">
-                      <span class="text-success text-sm font-weight-bolder" id="dashboard_total_transaction_change">+0%</span>
+                    <p class="mb-0 text-xxs" style="margin-top:-4%">
+                      <span class="text-success font-weight-bolder" id="dashboard_total_transaction_change">+0%</span>
                       <span data-i18n-key="dashboard_total_transaction_change">since last month</span>
                     </p>
                   </div>
@@ -119,9 +119,10 @@
                 <div class="col-12" onclick="redirectPage('./pages/transaction.html?payment_type=GIRO,CASH&order_by=transaction_date,total_price&order_type=ASC')">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_income">Total Income</p>
-                    <h5 class="font-weight-bolder text-success" id="dashboard_total_income">Rp.-,00</h5>
-                    <p class="mb-0" style="margin-top:-2%">
-                      <span class="text-success text-sm font-weight-bolder" id="dashboard_total_income_change">+0%</span>
+                    <h5 class="font-weight-bolder" id="dashboard_total_income" style="color: forestgreen">Rp.-,00</h5>
+                    <p class="font-weight-bolder text-xxs" style="margin-top:-1%" id="dashboard_income_description">(CASH + GIRO - EXPENSE)</p>
+                    <p class="mb-0 text-xxs" style="margin-top:-4%">
+                      <span class="text-green font-weight-bolder" id="dashboard_total_income_change">+0%</span>
                       <span data-i18n-key="dashboard_total_income_change">since last month</span>
                     </p>
                   </div>
@@ -138,8 +139,9 @@
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_expense">Total Expense</p>
                     <h5 class="font-weight-bolder text-warning" id="dashboard_total_expense">Rp.-,00</h5>
-                    <p class="mb-0" style="margin-top:-2%">
-                      <span class="text-success text-sm font-weight-bolder" id="dashboard_total_expense_change">-0%</span>
+                    <p class="font-weight-bolder text-xxs" style="margin-top:-1%" id="dashboard_expense_description">(PURCHASE + TAX + SALARY)</p>
+                    <p class="mb-0 text-xxs" style="margin-top:-4%">
+                      <span class="text-success font-weight-bolder" id="dashboard_total_expense_change">-0%</span>
                       <span data-i18n-key="dashboard_total_expense_change">since last month</span>
                     </p>
                   </div>
@@ -156,8 +158,9 @@
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_debt">Total Debt</p>
                     <h5 class="font-weight-bolder text-primary" id="dashboard_total_debt">Rp.-,00</h5>
-                    <p class="mb-0" style="margin-top:-2%">
-                      <span class="text-success text-sm font-weight-bolder" id="dashboard_total_debt_change">-0%</span>
+                    <p class="font-weight-bolder text-xxs" style="margin-top:-1%" id="dashboard_debt_description">(DEBT)</p>
+                    <p class="mb-0 text-xxs" style="margin-top:-4%">
+                      <span class="text-success font-weight-bolder" id="dashboard_total_debt_change">-0%</span>
                       <span data-i18n-key="dashboard_total_debt_change">since last month</span>
                     </p>
                   </div>
