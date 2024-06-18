@@ -684,12 +684,10 @@ function processTransactionTable(response) {
     `;
         if (data[i].transaction_type=='DebtCollect') {
             total_final_price_page += data[i].total_price
-        } else if (data[i].transaction_type=='Tax'||data[i].transaction_type=='Salary') {
+        } else if (data[i].transaction_type=='Tax'||data[i].transaction_type=='Salary'||data[i].transaction_type=='Purchase') {
             total_final_price_page -= data[i].total_price
-        } else if (data[i].transaction_type=='Sale' && data[i].payment_type=='DEBT') {
-            total_final_price_page -= data[i].total_price
-            total_final_quantity += data[i].quantity
-        } else if (data[i].transaction_type=='Sale' && data[i].payment_type=='CASH') {
+        } else if (data[i].transaction_type=='Sale') {
+            total_final_price_page += data[i].total_price
             total_final_quantity += data[i].quantity
         } else {
             total_final_price_page += data[i].total_price

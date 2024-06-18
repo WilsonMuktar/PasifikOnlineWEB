@@ -97,7 +97,7 @@
           <div class="card">
             <div class="card-body p-3">
               <div class="row">
-                <div class="col-12" onclick="redirectPage('./pages/transaction.html?order_by=transaction_date,total_price&order_type=ASC')">
+                <div class="col-12" onclick="redirectPage('./pages/transaction.html?order_by=transaction_date,total_price&order_type=ASC&transaction_type=Sale')">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_transaction">Total Transaction</p>
                       <h6 class="font-weight-bolder" id="dashboard_total_transaction">Rp.-,00</h6>
@@ -115,10 +115,10 @@
           <div class="card">
             <div class="card-body p-3">
               <div class="row">
-                <div class="col-12" onclick="redirectPage('./pages/transaction.html?transaction_type=Sale&order_by=transaction_date,total_price&order_type=ASC')">
+                <div class="col-12" onclick="redirectPage('./pages/transaction.html?payment_type=GIRO,CASH&order_by=transaction_date,total_price&order_type=ASC')">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_income">Total Income</p>
-                    <h6 class="font-weight-bolder" id="dashboard_total_income">Rp.-,00</h6>
+                    <h6 class="font-weight-bolder text-success" id="dashboard_total_income">Rp.-,00</h6>
                     <p class="mb-0">
                       <span class="text-success text-sm font-weight-bolder" id="dashboard_total_income_change">+0%</span>
                       <span data-i18n-key="dashboard_total_income_change">since last month</span>
@@ -136,7 +136,7 @@
                 <div class="col-12" onclick="redirectPage('./pages/transaction.html?transaction_type=Purchase,Salary,Tax&order_by=transaction_date,total_price&order_type=ASC')">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_expense">Total Expense</p>
-                    <h6 class="font-weight-bolder" id="dashboard_total_expense">Rp.-,00</h6>
+                    <h6 class="font-weight-bolder text-warning" id="dashboard_total_expense">Rp.-,00</h6>
                     <p class="mb-0">
                       <span class="text-success text-sm font-weight-bolder" id="dashboard_total_expense_change">-0%</span>
                       <span data-i18n-key="dashboard_total_expense_change">since last month</span>
@@ -154,7 +154,7 @@
                 <div class="col-12" onclick="redirectPage('./pages/debt.html')">
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="dashboard_total_debt">Total Debt</p>
-                    <h6 class="font-weight-bolder" id="dashboard_total_debt">Rp.-,00</h6>
+                    <h6 class="font-weight-bolder text-primary" id="dashboard_total_debt">Rp.-,00</h6>
                     <p class="mb-0">
                       <span class="text-success text-sm font-weight-bolder" id="dashboard_total_debt_change">-0%</span>
                       <span data-i18n-key="dashboard_total_debt_change">since last month</span>
@@ -560,6 +560,8 @@
             } else if (mt == "DebtCollect") {
               total_yearly_debt_collect += monthlyTransactionByTransactionType[mt][mtt]
               // total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt] <- skip debtCollect
+            } else if (mt == "Tax" || mt == "Salary") {
+              total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
             } else {
               total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
               total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
@@ -575,7 +577,7 @@
           }
         }
         document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction) // not include debt_collect
-        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income - total_yearly_debt + total_yearly_debt_collect) // not include debt
+        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income - total_yearly_debt + total_yearly_debt_collect - total_yearly_expense) // not include debt
         document.getElementById("dashboard_total_expense").innerHTML = currency(total_yearly_expense)
         document.getElementById("dashboard_total_debt").innerHTML = currency(total_yearly_debt - total_yearly_debt_collect) // debt - debt_collect
 
