@@ -3128,7 +3128,7 @@ function processPopup(title, title_extra, data) {
                     </div>
                     <div id="multiple_product_transaction">
                         <div class="row" style="background: lightgrey">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
                                     <select name="assign_buyer_list" class="form-control" data-toggle="select"></select>
@@ -3141,20 +3141,20 @@ function processPopup(title, title_extra, data) {
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="total_price" class="form-control-label" data-i18n-key="nominal">Nominal</label>
                                     <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                                 </div>
                             </div>
-                            <div class="col-md-1" hidden>
+                            <div class="col-md-2" hidden>
                                 <div class="form-group">
                                     <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
                                     <select name="assign_vessel_list" class="form-control" data-toggle="select">
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label for="debt_collect_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
                                 <input name="debt_collect_notes" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
