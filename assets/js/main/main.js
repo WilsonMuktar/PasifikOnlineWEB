@@ -682,7 +682,7 @@ function processTransactionTable(response) {
             </td>
         </tr>
     `;
-        if (data[i].transaction_type=='DebtCollect') {
+        if (data[i].transaction_type=='DebtCollect'||data[i].transaction_type=='Tax'||data[i].transaction_type=='Salary') {
             total_final_price_page -= data[i].total_price
         } else {
             total_final_price_page += data[i].total_price
