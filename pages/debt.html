@@ -303,13 +303,15 @@
                           </tr>`
                     total_price_page+=BuyerDEBT[bid]["total_price"]
                     total_quantity+=BuyerDEBT[bid]["quantity"]
+                    total_debt_left += (BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"])
                 }
             // adding total below
             rows += "<tr style='background-color: lightgrey;'>" +
                 "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
                 "<td><span class='text-xs font-weight-bold'>"+currency(total_price_page)+"</span></td>" +
                 "<td><span class='text-xs font-weight-bold'>"+str(total_quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+"</span></td>"+
-                "<td colspan='6'></td></tr>"
+                "<td colspan='1'></td>" +
+                "<td><span class='text-xs font-weight-bold'>"+currency(total_debt_left)+"</span></td></tr>"
             debtTable.tBodies[0].innerHTML = rows;
         }
     });
@@ -321,6 +323,7 @@
         else {
             data = response.data;
             total_giro_price = 0;
+            total_debt_left = 0;
             giroTable = document.getElementById("giro_table")
             giro_rows = ""
             dataStrs = []
