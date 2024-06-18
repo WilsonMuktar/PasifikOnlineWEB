@@ -315,6 +315,7 @@
   "select_buyer": "-- Pilih Pembeli --",
   "select_seller": "-- Pilih Penjual --",
 
+  "dashboard_total_description":"Penghasilan + Pengeluaran + Utang belum bayar",
   "dashboard_total_transaction":"Total Transaksi",
   "dashboard_total_transaction_change":"sejak bulan lalu",
   "dashboard_total_income":"Total Penghasilan",
