@@ -89,9 +89,9 @@
       text-align: center;
     }
     .nota{ 
-      font-size: 15px;
+      font-size: 18px;
       margin-bottom: -5px;
-      margin-top: 10px;
+      margin-top: 20px;
     }
     #nota_number{
       display: inline;
@@ -205,7 +205,7 @@
             <tbody>
               <tr>
                 <td></td>
-                <td colspan="10" class="border-bottom-double">&nbsp;</td></tr>
+                <td colspan="10" class="border-bottom-double"><input type="text" class="form-control" id="nota_id" style="border:none;"></td></tr>
             </tbody>
           </table>
         </div>
@@ -306,7 +306,11 @@
     if (resp instanceof Error) {
       console.log(resp);
     } else {
+      console.log("?")
+      console.log(getRandomIdFromHash())
+      document.getElementById("nota_id").value = getRandomIdFromHash();
       processBill(resp)
+      
     }
   })
 
@@ -361,7 +365,6 @@
           </tr>
           <tr><td class="no-border">&nbsp;</td></tr>
           <tr><td class="no-border">&nbsp;</td></tr>`
-    console.log(rows)
     table.tBodies[0].innerHTML = rows;
     document.getElementById("buyer").innerHTML = buyer["name"]
     document.getElementById("buyer_address").innerHTML = buyer["address"]
@@ -370,6 +373,25 @@
     document.getElementById("seller").innerHTML = seller["name"]
     loadLocalization(localStorage.getItem("localization_language"))
   }
+
+  function getRandomIdFromHash() {
+    // Get current date and time
+    let now = new Date();
+    
+    // Format date components
+    let year = now.getFullYear().toString().slice(-2); // Last two digits of the year
+    let month = ('0' + (now.getMonth() + 1)).slice(-2); // Month (zero padded)
+    let day = ('0' + now.getDate()).slice(-2); // Day of the month (zero padded)
+
+    // Generate a random unique identifier
+    let uniqueId = Math.random().toString(36).substr(2, 6); // Random alphanumeric string of length 9
+
+    // Combine timestamp and unique identifier to create unique invoice number
+    let invoiceNumber = `${year}${month}${day}-${uniqueId}`;
+
+    return invoiceNumber;
+  }
+
   </script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
