@@ -321,13 +321,13 @@
     seller = {}
     for (var i = data.length - 1; i >= 0; i--) {
         rows += `
-        <tr>
-            <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].quantity)}</span></td>
-            <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].product_name)}</span></td>
-            <td class="text-center"><span class="text-xs font-weight-bold">${curr(data[i].unit_price)}</span></td>
-            <td><span class="text-xs font-weight-bold">${curr(str(data[i].total_price))}</span></td>
-        </tr>
-    `;
+            <tr>
+                <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].quantity)}</span></td>
+                <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].product_name)}</span></td>
+                <td class="text-center"><span class="text-xs font-weight-bold">${curr(data[i].unit_price)}</span></td>
+                <td><span class="text-xs font-weight-bold">${curr(str(data[i].total_price))}</span></td>
+            </tr>
+        `;
         total_price_page += data[i].total_price
         total_quantity+=data[i].quantity
         if (i==0) {
@@ -343,6 +343,14 @@
             "phone": ""
           }
         }
+    }
+
+    // fill gap, minimal rows invoice
+    min_number_row = 7
+    if ( data.length < min_number_row ) {
+      for(var i=0; i < min_number_row - data.length; i++) {
+        rows += "<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>"
+      }
     }
 
     // adding final total below
