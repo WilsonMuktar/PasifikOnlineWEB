@@ -80,7 +80,6 @@ PasifikOnlineWeb
 
 ## Project Development Flow
 - Started with developer coding
-- Hosting MySQL Databases mysql-pasifikonline.alwaysdata.net
 - Hosting Golang Application (Backend) using https://app.koyeb.com
 - Hosting Web (Frontend) using https://app.netlify.com/
 - DB Hosting
