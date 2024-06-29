@@ -92,6 +92,8 @@
           <div class="card-header pb-0">
             <h6 data-i18n-key="transaction_table">Transaction table</h6>
             <div id="filters" style="display: none;">
+              <input name="filter_transaction_start_date" class="form-control" type="date" value="">
+              <input name="filter_transaction_end_date" class="form-control" type="date" value="">
               <select class="form-control" name="filter_transaction_type">
                 <option disabled selected value="">--Select TransactionType--</option>
                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
@@ -116,7 +118,8 @@
             </div>
             <ul class="nav-list">
               <div style="display: flex;">
-                <h id="filter_button">filter</h>
+                <h id="filter_button" data-i18n-key="filter">&nbsp;Filter&nbsp;&nbsp;&nbsp;</h>
+                <h id="print_button" data-i18n-key="print">&nbsp;&nbsp;Print&nbsp;&nbsp;</h>
               </div>
               <li><span onclick="openPopup('Add Transaction','')" >&plus;</span></li>
             </ul>
@@ -213,6 +216,8 @@
     filter_product = document.querySelector('select[name="filter_product"]')
     filter_trip = document.querySelector('select[name="filter_trip"]')
     filter_vessel = document.querySelector('select[name=filter_vessel]')
+    filter_transaction_start_date = document.querySelector('input[name=filter_transaction_start_date]')
+    filter_transaction_end_date = document.querySelector('input[name=filter_transaction_end_date]')
 
     if (filter_transaction_type.value != ""){
       newURL += "&transaction_type="+filter_transaction_type.value
@@ -234,6 +239,12 @@
     }
     if (filter_vessel.value != ""){
       newURL += "&vessel_id="+filter_vessel.value
+    }
+    if (filter_transaction_start_date.value != "") {
+      newURL += "&transaction_date_from="+filter_transaction_start_date.value.replace("T00:00:00Z")
+    }
+    if (filter_transaction_end_date.value != "") {
+      newURL += "&transaction_date_to="+filter_transaction_end_date.value
     }
     window.location.replace(newURL)
   }
@@ -302,6 +313,13 @@
       });
   });
 
+  $("#print_button").click(function(){
+    if (window.location.href.includes("buyer_id=") && window.location.href.includes("seller_id=")) {
+      window.location.href = window.location.href.replace("transaction.html", "bill.html")
+    } else {
+      alert("Silahkan Filter dan pilih buyer and seller, sebelum print")
+    }
+  });
 
   // Get the query string part of the URL
   // ?transaction_date_from=&transaction_date_to=&transaction_type=&product_id=&seller_id=&buyer_id=&vessel_id=&trip_id=&payment_type=

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/pasifikonline.png">
+    <link rel="icon" type="image/png" href="../assets/img/pasifikonline.png">
+    <title data-i18n-key="page_title">PASIFIK-ONLINE</title>
+    <link href="../assets/css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/vendor/select2/select2.min.css">
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <!-- Nucleo Icons -->
+    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="../assets/js/plugins/fontawesome.js" crossorigin="anonymous"></script>
+    <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+  <style>
+    /* CSS for bill layout */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      font-size: 12px;
+      line-height: 18px;
+    }
+    .bill {
+      width: 90%;
+      margin: 20px auto;
+      border: 1px solid #000;
+      padding: 20px;
+      background: #ffffff;
+    }
+    .bill-info {
+      display: flex;
+    }
+    .bill-info .left-panel{
+      border: 1px dotted;
+      border-radius: 10px;
+      width: 30%;
+      padding: 10px 10px 10px 60px;
+    } 
+    .bill-info .middle-panel{
+      width:40%;
+    } 
+    .bill-info .right-panel{
+      width:30%;
+    }
+    .bill-info .right-panel div{
+      display: inline;
+    }
+    .bill-header, .bill-footer {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .bill-items {
+      margin-top: 10px;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .bill-items th, .bill-items td {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: left;
+    }
+    .bill-items .no-border{
+      border: 0px;
+    }
+    .bill-items .border-top-only{
+      border-bottom: 0;
+      border-left: 0; 
+      border-right: 0;
+    }
+    .bill-items .border-bottom-double{
+      border-bottom: 3px double black;
+    }
+    .bill-items .text-right{
+      text-align: right;
+    }
+
+    .border-bottom-dotted{
+      border-bottom: 1px dotted black;
+      width: 500px;
+      text-align: center;
+    }
+    .border-bottom-double{
+      border-bottom: 3px double black;
+      width: 500px;
+      text-align: center;
+    }
+    .nota{ 
+      font-size: 15px;
+      margin-bottom: -5px;
+      margin-top: 10px;
+    }
+    #nota_number{
+      display: inline;
+      margin-left: 75%;
+      border-bottom: 3px double black;
+    }
+
+    .print-button {
+      display: block;
+      margin: 20px auto;
+      text-align: center;
+    }
+    @media print {
+      .print-button {
+        display: none;
+      }
+
+      .bill {
+        width: 100%;
+      }
+
+      body {
+        font-family: Arial, sans-serif !important; 
+        background: #f9f9f9 !important;
+        font-size: 12px !important;
+        line-height: 18px !important;
+      }
+
+      #menu-button {
+        display:none !important;
+      }
+    }
+  </style>
+    <link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+</head>
+<body class="g-sidenav-show bg-gray-100">
+  <div class="min-height-300 bg-primary position-absolute w-100"></div>
+  <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
+    <div class="sidenav-header">
+        <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+        <a class="navbar-brand m-0" href="../index.html" target="_blank">
+            <img src="../assets/img/pasifikonline.png" class="navbar-brand-img h-100" alt="main_logo">
+            <span class="me-1 font-weight-bold" data-i18n-key="brand_name">PASIFIK-ONLINE</span>
+        </a>
+    </div>
+    <hr class="horizontal dark mt-0">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main" style="height:82%;">
+        <!-- NAV SIDEBAR using main.js to load -->
+    </div>
+    <div>
+        <ul class="navbar-nav">
+            <li id="logout_btn" class="nav-item">
+                <a href="" class="nav-link text-muted" style="margin-left: 15%;">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni text-info text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1" style="color:#FF0000" data-i18n-key="sign_out">Sign Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+  </aside>
+  <main class="main-content position-relative border-radius-lg" style="padding: 5% 5% 10% 5%;">
+    <div id="menu-button" style="display:flex;">
+      <button class="form-control" style="width: 100px; margin-left: 5%;" data-i18n-key="back" onclick="openTransaction()">back</button>
+      <button class="form-control" style="width: 100px;" data-i18n-key="print" onclick="printBill()">Print Bill</button>
+    </div>
+    <div class="bill">
+      <div class="bill-header">
+        <h2></h2>
+      </div>
+      <div class="bill-info">
+        <div class="left-panel">
+          <div id="buyer"><strong>Seikai Sakana</strong></div>
+          <div id="buyer_address"></div>
+          <div id="buyer_phone"></div>
+        </div>
+        <div class="middle-panel"></div>
+        <div class="right-panel">
+          <table>
+            <tbody>
+              <tr>
+                <td>&nbsp;</td>
+                <td style="text-align: right;">Tgl: </td>
+                <td>&nbsp;</td>
+                <td colspan="10" class="border-bottom-dotted"><div id="date"></div></td></tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>Kepada: </td>
+                <td>&nbsp;</td>
+                <td colspan="5" class="border-bottom-dotted"><div id="seller"></div></td></tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="5" class="border-bottom-dotted">&nbsp;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="bill-info">
+        <div class="middle-panel">
+          <div class="nota">
+            <strong>Nota</strong>
+          </div>
+        </div>
+        <div class="middle-panel"></div>
+        <div class="middle-panel"></div>
+        <div class="right-panel">
+          <table>
+            <tbody>
+              <tr>
+                <td></td>
+                <td colspan="10" class="border-bottom-double">&nbsp;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <table id="bill_table" class="bill-items" width="1000">
+        <thead>
+          <tr>
+            <th width="100">Qty</th>
+            <th width="1500">Nama Barang</th>
+            <th width="200">Harga Satuan</th>
+            <th width="100">Jumlah</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+          <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+          <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+          <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+          <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+          <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+          <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+          <tr>
+            <td colspan="2" class="border-top-only">Tanda Terima</td>
+            <td class="border-top-only text-right">Total Rp.</td>
+            <td class="border-bottom-double"></td>
+          </tr>
+          <tr><td class="no-border">&nbsp;</td></tr>
+          <tr><td class="no-border">&nbsp;</td></tr>
+        </tbody>
+      </table>
+      <div class="bill-footer">
+        <p></p>
+      </div>
+    </div>
+  </main>
+  <div class="fixed-plugin">
+      <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
+          <i class="fa fa-cog py-2"> </i>
+      </a>
+      <div class="card shadow-lg" id="right-side-navbar" hidden></div>
+  </div>
+  <script>
+    // Function to print the bill
+    function printBill() {
+      window.print();
+    }
+
+    function openTransaction() {
+      window.location.href = window.location.href.replace("bill.html", "transaction.html")
+    }
+  </script>
+  <!-- JS -->
+  <script src="../assets/vendor/jquery/jquery-3.2.1.min.js"></script>
+  <script src="../assets/js/main/config.js"></script>
+  <script src="../assets/js/main/main.js"></script>
+  <script src="../assets/js/main/auth/login.js"></script>
+  <!--   Core JS Files   -->
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script>
+      var win = navigator.platform.indexOf('Win') > -1;
+      if (win && document.querySelector('#sidenav-scrollbar')) {
+          var options = {
+              damping: '0.5'
+          }
+          Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+      }
+
+  // Get the query string part of the URL
+  // ?transaction_date_from=&transaction_date_to=&transaction_type=&product_id=&seller_id=&buyer_id=&vessel_id=&trip_id=&payment_type=
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  var extraParams = ""
+  urlParams.forEach((value, key) => {
+    if (value != "") {
+      if (extraParams == "") {
+        extraParams += `?${key}=${value}`
+      } else {
+        extraParams += `&${key}=${value}`
+      }
+    }
+  });
+  currentYear = new Date().getFullYear()
+  startYear = currentYear+"-01-01"
+  endYear = currentYear+"-12-31"
+  if (queryString.includes("transaction_date_from") || queryString.includes("transaction_date_to")) {} else {
+    if (extraParams == "") {
+      extraParams += `?transaction_date_from=${startYear}&transaction_date_to=${endYear}`
+    } else {
+      extraParams += `&transaction_date_from=${startYear}&transaction_date_to=${endYear}`
+    }
+  }
+
+  // retrieve Transaction table
+  MAKE_REQUEST("GET", transaction_api_url+extraParams, "", true,function(resp){
+    if (resp instanceof Error) {
+      console.log(resp);
+    } else {
+      processBill(resp)
+    }
+  })
+
+  function processBill(response) {
+    var data = response.data;
+    var rows = "";
+    var table = document.getElementById("bill_table");
+
+    total_price_page = 0
+    total_quantity = 0
+    buyer = {}
+    seller = {}
+    for (var i = data.length - 1; i >= 0; i--) {
+        rows += `
+        <tr>
+            <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].quantity)}</span></td>
+            <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].product_name)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${curr(data[i].unit_price)}</span></td>
+            <td><span class="text-xs font-weight-bold">${curr(str(data[i].total_price))}</span></td>
+        </tr>
+    `;
+        total_price_page += data[i].total_price
+        total_quantity+=data[i].quantity
+        if (i==0) {
+          buyer = {
+            "name": str(data[i].buyer_first_name)+" "+str(data[i].buyer_last_name),
+            "address": "",
+            "phone": "",
+            "date": data[i].transaction_date.replace("T00:00:00Z","")
+          }
+          seller = {
+            "name": str(data[i].seller_first_name)+" "+str(data[i].seller_last_name),
+            "address": "",
+            "phone": ""
+          }
+        }
+    }
+
+    // adding final total below
+    rows += `<tr>
+            <td colspan="2" class="border-top-only">Tanda Terima</td>
+            <td class="border-top-only text-right">Total Rp.</td>
+            <td class="border-bottom-double">${curr(total_price_page)}</td>
+          </tr>
+          <tr><td class="no-border">&nbsp;</td></tr>
+          <tr><td class="no-border">&nbsp;</td></tr>`
+    console.log(rows)
+    table.tBodies[0].innerHTML = rows;
+    document.getElementById("buyer").innerHTML = buyer["name"]
+    document.getElementById("buyer_address").innerHTML = buyer["address"]
+    document.getElementById("buyer_phone").innerHTML = buyer["phone"]
+    document.getElementById("date").innerHTML = buyer["date"]
+    document.getElementById("seller").innerHTML = seller["name"]
+    loadLocalization(localStorage.getItem("localization_language"))
+  }
+  </script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+  <script src="../assets/vendor/select2/select2.min.js"></script>
+</body>
+
+</html>

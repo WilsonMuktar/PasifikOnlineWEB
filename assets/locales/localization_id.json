@@ -350,5 +350,8 @@
   "dasboard_table_date":"Tanggal",
   "dasboard_table_task":"Pengerjaan",
   "dashboard_total_debt":"Total Belum Bayar",
-  "dashboard_total_debt_change": "sejak bulan lalu"
+  "dashboard_total_debt_change": "sejak bulan lalu",
+  "print": "Cetak",
+  "filter": "Filter",
+  "back": "Kembali"
 }

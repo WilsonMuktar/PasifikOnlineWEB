@@ -85,6 +85,12 @@ function currency(data) {
     }
     return "Rp."+data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
 }
+function curr(data) {
+    if (data == "" || data == undefined || data == NaN || data == 'NaN') {
+        return "0"
+    }
+    return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+}
 function redirectPage(url) {
     if (origin.includes("page")) {
         window.location.replace("../" + url);
@@ -349,7 +355,7 @@ async function MAKE_REQUEST(method,url,payload,needToken,callback) {
             const result = await response.json()
             callback(result)
         } catch(ex) {
-            callback("success")
+            //callback("success")
         }
     } catch (ex) {
         hideLoader();
