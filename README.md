@@ -82,7 +82,10 @@ PasifikOnlineWeb
 - Started with developer coding
 - Hosting MySQL Databases mysql-pasifikonline.alwaysdata.net
 - Hosting Golang Application (Backend) using https://app.koyeb.com
-- Hosting Web (Frontend) using https://alwaysdata.net
+- Hosting Web (Frontend) using https://app.netlify.com/
+- DB Hosting
+  - MariaDB: https://alwaysdata.net/
+  - MySQL: https://console.aiven.io/ 
 <img width="1728" alt="image" src="./assets/img/dev-flows.png">
 
 
