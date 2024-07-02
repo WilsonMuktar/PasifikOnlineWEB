@@ -102,6 +102,12 @@ function updateTotalPrice() {
     if (document.getElementById("total_price") == undefined) return;
     if (document.getElementById("quantity") == undefined) return;
     if (document.getElementById("unit_price") == undefined) return;
+    if (document.getElementById("quantity").value == '0' || document.getElementById("quantity").value == '') {
+        return;
+    }
+    if (document.getElementById("unit_price").value == '0' || document.getElementById("unit_price").value == '') {
+        return;
+    }
     document.getElementById("total_price").value = document.getElementById("quantity").value * document.getElementById("unit_price").value;
 }
 function getTodayDate() {
@@ -2395,19 +2401,19 @@ function processPopup(title, title_extra, data) {
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="quantity" class="form-control-label" data-i18n-key="quantity">Quantity</label>
-                                    <input name="quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
+                                    <input name="quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="unit_price" class="form-control-label" data-i18n-key="unit_price">Unit Price</label>
-                                    <input name="unit_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
+                                    <input name="unit_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                                 </div>
                             </div>
-                            <div class="col-md-6" hidden>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="total_price" class="form-control-label" data-i18n-key="total_price">Total Price</label>
-                                    <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)" readonly>
+                                    <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                                 </div>
                             </div>
                             <div class="col-md-1 justify-content-xxl-center content-center text-center text-bg-warning" style="margin:auto;" onclick="if(document.getElementById('multiple_product_transaction').getElementsByClassName('row').length > 1){this.parentElement.remove()}">
@@ -2474,9 +2480,10 @@ function processPopup(title, title_extra, data) {
                             if (rows[i].querySelector('input[name="total_price"]').length == 0) {continue;}
 
                             // process total independently
-                            totalPrice = parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value))
-                            if (parseInt(rows[i].querySelector('input[name="quantity"]').value) == 0 || rows[i].querySelector('input[name="quantity"]').value == "0") {
-                                totalPrice = parseFloat(rows[i].querySelector('input[name="unit_price"]').value)
+                            totalPrice = parseFloat(rows[i].querySelector('input[name="total_price"]').value)
+                            if (parseInt(rows[i].querySelector('input[name="quantity"]').value) != 0 && rows[i].querySelector('input[name="quantity"]').value != "0" &&
+                                parseInt(rows[i].querySelector('input[name="unit_price"]').value) != 0 && rows[i].querySelector('input[name="unit_price"]').value != "0") {
+                                totalPrice = parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value))
                             }
 
                             // Construct payload
@@ -4772,7 +4779,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_total_price" class="form-control-label" data-i18n-key="total_price">Total Price</label>
-                            <input id="total_price" class="form-control" type="number" value="${str(data.total_price)}" onfocus="focused(this)" onfocusout="defocused(this)" readonly>
+                            <input id="total_price" class="form-control" type="number" value="${str(data.total_price)}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -4848,8 +4855,9 @@ function processPopup(title, title_extra, data) {
 
                 // process total independently
                 totalPrice = parseFloat(document.getElementById("total_price").value)
-                if (parseInt(document.getElementById("quantity").value) == 0 || document.getElementById("quantity").value == "0") {
-                    totalPrice = parseFloat(document.getElementById("unit_price").value);
+                if (parseInt(document.getElementById("quantity").value) != 0 && document.getElementById("quantity").value != "0" &&
+                    parseInt(document.getElementById("unit_price").value) == 0 && document.getElementById("unit_price").value == "0") {
+                    totalPrice = parseInt(document.getElementById("quantity").value) * parseInt(document.getElementById("unit_price").value)
                 }
 
                 document.getElementById("update_transaction_btn").addEventListener('click', function(e) {
