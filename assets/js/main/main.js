@@ -2475,7 +2475,7 @@ function processPopup(title, title_extra, data) {
 
                             // process total independently
                             totalPrice = parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value))
-                            if (parseInt(rows[i].querySelector('input[name="quantity"]').value) == 0) {
+                            if (parseInt(rows[i].querySelector('input[name="quantity"]').value) == 0 || rows[i].querySelector('input[name="quantity"]').value == "0") {
                                 totalPrice = parseFloat(rows[i].querySelector('input[name="unit_price"]').value)
                             }
 
@@ -4845,6 +4845,13 @@ function processPopup(title, title_extra, data) {
                     $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
                     loadLocalization(localStorage.getItem("localization_language"))
                 });
+
+                // process total independently
+                totalPrice = parseFloat(document.getElementById("total_price").value)
+                if (parseInt(document.getElementById("quantity").value) == 0 || document.getElementById("quantity").value == "0") {
+                    totalPrice = parseFloat(document.getElementById("unit_price").value);
+                }
+
                 document.getElementById("update_transaction_btn").addEventListener('click', function(e) {
                     transaction_id = document.getElementById("update_transaction_id").value;
                     transaction_date = document.getElementById("update_transaction_date").value + "T00:00:00Z";
@@ -4852,7 +4859,7 @@ function processPopup(title, title_extra, data) {
                     product_id = document.getElementById("assign_product_list").value;
                     quantity = parseInt(document.getElementById("quantity").value);
                     unit_price = parseFloat(document.getElementById("unit_price").value);
-                    total_price = parseFloat(document.getElementById("total_price").value);
+                    total_price = totalPrice;
                     seller_id = document.getElementById("assign_seller_list").value;
                     buyer_id = document.getElementById("assign_buyer_list").value;
                     vessel_id = document.getElementById("assign_vessel_list").value;
