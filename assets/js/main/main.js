@@ -674,7 +674,7 @@ function processTransactionTable(response) {
             <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date).replace("T00:00:00Z","")}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].transaction_type)}">${str(data[i].transaction_type)}</span></td>
             <td><span class="text-xs font-weight-bold">${currency(str(data[i].total_price))}</span></td>
-            <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].quantity)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${str(parseInt(data[i].quantity)||0)}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${currency(data[i].unit_price)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td>
@@ -694,7 +694,7 @@ function processTransactionTable(response) {
             total_final_price_page -= data[i].total_price
         } else if (data[i].transaction_type=='Sale') {
             total_final_price_page += data[i].total_price
-            total_final_quantity += data[i].quantity
+            total_final_quantity += (parseInt(data[i].quantity) || 0)
         } else {
             total_final_price_page += data[i].total_price
         }
