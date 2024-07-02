@@ -544,7 +544,7 @@ function processStockTable(response) {
             </td>
             <td><p class="text-sm font-weight-bold mb-0">${data[i].transaction_type}</p></td>
             <td><span class="text-xs font-weight-bold">${data[i].location}</span></td>
-            <td><span class="text-xs font-weight-bold">${data[i].quantity}</span></td>
+            <td><span class="text-xs font-weight-bold">${(parseInt(data[i].quantity)||0)}</span></td>
             <td><span class="text-xs font-weight-bold">${data[i].date_added}</span></td>
             <td><span class="text-xs font-weight-bold">${data[i].supplier_id}</span></td>
             <td class="align-middle text-center">
@@ -674,7 +674,7 @@ function processTransactionTable(response) {
             <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date).replace("T00:00:00Z","")}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].transaction_type)}">${str(data[i].transaction_type)}</span></td>
             <td><span class="text-xs font-weight-bold">${currency(str(data[i].total_price))}</span></td>
-            <td class="text-center"><span class="text-xs font-weight-bold">${str(parseInt(data[i].quantity)||0)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${str((parseInt(data[i].quantity)||0))}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${currency(data[i].unit_price)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
             <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td>
@@ -699,7 +699,7 @@ function processTransactionTable(response) {
             total_final_price_page += data[i].total_price
         }
         total_price_page += data[i].total_price
-        total_quantity+=data[i].quantity
+        total_quantity+=(parseInt(data[i].quantity) || 0)
     }
 
     /*if (curr_transaction_type != "") {
@@ -4196,7 +4196,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="example-text-input" class="form-control-label" data-i18n-key="quantity">Quantity</label>
-                            <input id="update_stock_quantity" class="form-control" type="number" value="${data.quantity}" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="update_stock_quantity" class="form-control" type="number" value="${(parseInt(data.quantity)||0)}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -4760,7 +4760,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_quantity" class="form-control-label" data-i18n-key="quantity">Quantity</label>
-                            <input id="quantity" class="form-control" type="number" value="${str(data.quantity)}" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
+                            <input id="quantity" class="form-control" type="number" value="${str((parseInt(data.quantity)||0)}" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
                         </div>
                     </div>
                     <div class="col-md-6">
