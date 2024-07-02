@@ -2473,6 +2473,12 @@ function processPopup(title, title_extra, data) {
                             if (rows[i].querySelector('input[name="unit_price"]').length == 0) {continue;}
                             if (rows[i].querySelector('input[name="total_price"]').length == 0) {continue;}
 
+                            // process total independently
+                            totalPrice = parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value))
+                            if (parseInt(rows[i].querySelector('input[name="quantity"]').value) == 0) {
+                                totalPrice = parseFloat(rows[i].querySelector('input[name="unit_price"]').value)
+                            }
+
                             // Construct payload
                             let payload = {
                                 "transaction_date": transaction_date,
@@ -2480,7 +2486,7 @@ function processPopup(title, title_extra, data) {
                                 "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
                                 "quantity": parseInt(rows[i].querySelector('input[name="quantity"]').value),
                                 "unit_price": parseFloat(rows[i].querySelector('input[name="unit_price"]').value),
-                                "total_price": parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value)),
+                                "total_price": totalPrice,
                                 "seller_id": seller_id,
                                 "buyer_id": rows[i].querySelector('select[name="assign_buyer_list"]').value,
                                 "vessel_id": vessel_id,
