@@ -226,7 +226,7 @@
                 // accumulate by tripName
                 if (tripName != undefined) {
                     TransactionByTripNameAndTransactionType[tripName][transaction_date][transactionType]["total"] += transaction["total_price"]
-                    TransactionByTripNameAndTransactionType[tripName][transaction_date][transactionType]["quantity"] += transaction["quantity"]
+                    TransactionByTripNameAndTransactionType[tripName][transaction_date][transactionType]["quantity"] += (parseInt(transaction["quantity"])||0)
 
                     //only check paymentStatus is DEBT
                     if (transaction["payment_type"] == "DEBT") {
@@ -264,7 +264,7 @@
                         }
 
                         // accumulate quantity
-                        TripCatchTransactions[mt][tdate]["quantity"] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["quantity"]
+                        TripCatchTransactions[mt][tdate]["quantity"] += (parseInt(TransactionByTripNameAndTransactionType[mt][tdate][mttype]["quantity"])||0)
 
                         // accumulate UTANG
                         TripCatchTransactions[mt][tdate]["debt"] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["debt"]
@@ -289,7 +289,7 @@
                       <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt][tDate]['expense'])}</h6></div></td>
                       <td><div><h6 class="text-sm mb-0">${currency((TripCatchTransactions[mt][tDate]['income'] - TripCatchTransactions[mt][tDate]['expense']))}</h6></div></td>
                       <td><div><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt][tDate]['debt'])}</h6></div></td>
-                      <td><div><h6 class="text-sm mb-0">${TripCatchTransactions[mt][tDate]['quantity'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
+                      <td><div><h6 class="text-sm mb-0">${(parseInt(TripCatchTransactions[mt][tDate]['quantity'])||0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
                       <td><div class="text-center">
                         <div class="d-flex">
                           <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto" onclick="redirectPage('./pages/transaction.html?trip_name=${mt}&transaction_date_from=${tDate}&transaction_date_to=${tDate}')">
@@ -298,7 +298,7 @@
                     total_expense += TripCatchTransactions[mt][tDate]['expense']
                     total_profit += TripCatchTransactions[mt][tDate]['income'] - TripCatchTransactions[mt][tDate]['expense']
                     total_debt += TripCatchTransactions[mt][tDate]['debt']
-                    total_quantity += TripCatchTransactions[mt][tDate]['quantity']
+                    total_quantity += (parseInt(TripCatchTransactions[mt][tDate]['quantity'])||0)
                 }
 
                 // adding total below
@@ -308,7 +308,7 @@
                     "<td><span class='text-xs font-weight-bold'>"+currency(total_expense)+"</span></td>" +
                     "<td><span class='text-xs font-weight-bold'>"+currency(total_profit)+"</span></td>" +
                     "<td><span class='text-xs font-weight-bold'>"+currency(total_debt)+"</span></td>" +
-                    "<td><span class='text-xs font-weight-bold'>"+total_quantity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+"kg</span></td>" +
+                    "<td><span class='text-xs font-weight-bold'>"+(parseInt(total_quantity)||0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+"kg</span></td>" +
                     "<td><div class='text-center'><div class='d-flex'>" +
                     "<button class='btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto' onclick=\"redirectPage('./pages/transaction.html?trip_name="+mt+"')\">" +
                     "<i class='ni ni-bold-right' aria-hidden='true'></i></button></div></div></td></tr>"

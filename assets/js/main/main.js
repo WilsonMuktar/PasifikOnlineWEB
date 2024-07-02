@@ -4760,7 +4760,7 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_quantity" class="form-control-label" data-i18n-key="quantity">Quantity</label>
-                            <input id="quantity" class="form-control" type="number" value="${str((parseInt(data.quantity)||0)}" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
+                            <input id="quantity" class="form-control" type="number" value="${str((parseInt(data.quantity)||0))}" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
                         </div>
                     </div>
                     <div class="col-md-6">
