@@ -2484,7 +2484,7 @@ function processPopup(title, title_extra, data) {
                                 "transaction_date": transaction_date,
                                 "transaction_type": transaction_type,
                                 "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
-                                "quantity": parseInt(rows[i].querySelector('input[name="quantity"]').value),
+                                "quantity": parseInt(rows[i].querySelector('input[name="quantity"]').value) || 0,
                                 "unit_price": parseFloat(rows[i].querySelector('input[name="unit_price"]').value),
                                 "total_price": totalPrice,
                                 "seller_id": seller_id,
@@ -4857,7 +4857,7 @@ function processPopup(title, title_extra, data) {
                     transaction_date = document.getElementById("update_transaction_date").value + "T00:00:00Z";
                     transaction_type = document.getElementById("update_transaction_type").value;
                     product_id = document.getElementById("assign_product_list").value;
-                    quantity = parseInt(document.getElementById("quantity").value);
+                    quantity = parseInt(document.getElementById("quantity").value) || 0;
                     unit_price = parseFloat(document.getElementById("unit_price").value);
                     total_price = totalPrice;
                     seller_id = document.getElementById("assign_seller_list").value;
