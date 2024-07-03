@@ -2481,8 +2481,8 @@ function processPopup(title, title_extra, data) {
 
                             // process total independently
                             totalPrice = parseFloat(rows[i].querySelector('input[name="total_price"]').value)
-                            if (parseInt(rows[i].querySelector('input[name="quantity"]').value) != 0 && rows[i].querySelector('input[name="quantity"]').value != "0" &&
-                                parseInt(rows[i].querySelector('input[name="unit_price"]').value) != 0 && rows[i].querySelector('input[name="unit_price"]').value != "0") {
+                            if (parseInt(rows[i].querySelector('input[name="quantity"]').value) != 0 && rows[i].querySelector('input[name="quantity"]').value != "" &&
+                                parseInt(rows[i].querySelector('input[name="unit_price"]').value) != 0 && rows[i].querySelector('input[name="unit_price"]').value != "") {
                                 totalPrice = parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value))
                             }
 
@@ -4855,8 +4855,8 @@ function processPopup(title, title_extra, data) {
 
                 // process total independently
                 totalPrice = parseFloat(document.getElementById("total_price").value)
-                if (parseInt(document.getElementById("quantity").value) != 0 && document.getElementById("quantity").value != "0" &&
-                    parseInt(document.getElementById("unit_price").value) == 0 && document.getElementById("unit_price").value == "0") {
+                if (parseInt(document.getElementById("quantity").value) != 0 && document.getElementById("quantity").value != "" &&
+                    parseInt(document.getElementById("unit_price").value) == 0 && document.getElementById("unit_price").value == "") {
                     totalPrice = parseInt(document.getElementById("quantity").value) * parseInt(document.getElementById("unit_price").value)
                 }
 
