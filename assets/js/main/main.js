@@ -4856,7 +4856,7 @@ function processPopup(title, title_extra, data) {
                 // process total independently
                 totalPrice = parseFloat(document.getElementById("total_price").value)
                 if (parseInt(document.getElementById("quantity").value) != 0 && document.getElementById("quantity").value != "" &&
-                    parseInt(document.getElementById("unit_price").value) == 0 && document.getElementById("unit_price").value == "") {
+                    parseInt(document.getElementById("unit_price").value) != 0 && document.getElementById("unit_price").value != "") {
                     totalPrice = parseInt(document.getElementById("quantity").value) * parseInt(document.getElementById("unit_price").value)
                 }
 
