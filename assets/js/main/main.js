@@ -4773,13 +4773,13 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_unit_price" class="form-control-label" data-i18n-key="unit_price">Unit Price</label>
-                            <input id="unit_price" class="form-control" type="number" value="${str(data.unit_price)}" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
+                            <input id="unit_price" class="form-control" type="number" value="${str(data.unit_price||0)}" onfocus="focused(this)" onfocusout="defocused(this)" onchange="updateTotalPrice()">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="update_total_price" class="form-control-label" data-i18n-key="total_price">Total Price</label>
-                            <input id="total_price" class="form-control" type="number" value="${str(data.total_price)}" onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="update_total_price" class="form-control" type="number" value="${str(data.total_price||0)}" onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -4853,14 +4853,14 @@ function processPopup(title, title_extra, data) {
                     loadLocalization(localStorage.getItem("localization_language"))
                 });
 
-                // process total independently
-                totalPrice = parseFloat(document.getElementById("total_price").value)
-                if (parseInt(document.getElementById("quantity").value) != 0 && document.getElementById("quantity").value != "" &&
-                    parseInt(document.getElementById("unit_price").value) != 0 && document.getElementById("unit_price").value != "") {
-                    totalPrice = parseInt(document.getElementById("quantity").value) * parseInt(document.getElementById("unit_price").value)
-                }
-
                 document.getElementById("update_transaction_btn").addEventListener('click', function(e) {
+                    // process total independently
+                    totalPrice = parseFloat(document.getElementById("update_total_price").value)
+                    if (parseInt(document.getElementById("quantity").value) != 0 && document.getElementById("quantity").value != "" &&
+                        parseInt(document.getElementById("unit_price").value) != 0 && document.getElementById("unit_price").value != "") {
+                        totalPrice = parseInt(document.getElementById("quantity").value) * parseInt(document.getElementById("unit_price").value)
+                    }
+
                     transaction_id = document.getElementById("update_transaction_id").value;
                     transaction_date = document.getElementById("update_transaction_date").value + "T00:00:00Z";
                     transaction_type = document.getElementById("update_transaction_type").value;
