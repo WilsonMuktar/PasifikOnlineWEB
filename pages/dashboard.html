@@ -253,7 +253,6 @@
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="dasboard_table_catch">Catch</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="dasboard_table_expense">Expense</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="dasboard_table_profit">Profit</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="dasboard_table_debt">Debt</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -523,9 +522,19 @@
             monthlyTransactionByFishAndTransactionType[productName] = {}
           }
           if (monthlyTransactionByFishAndTransactionType[productName][transactionType] == undefined) {
-            monthlyTransactionByFishAndTransactionType[productName][transactionType] = 0
+            monthlyTransactionByFishAndTransactionType[productName][transactionType] = {
+              "total": 0,
+              "max_unit_price": 0,
+              "min_unit_price": 9999999999
+            }
           }
-          monthlyTransactionByFishAndTransactionType[productName][transactionType] += transaction["quantity"]
+          monthlyTransactionByFishAndTransactionType[productName][transactionType]["total"] += transaction["quantity"]
+          if (transaction["unit_price"] >= monthlyTransactionByFishAndTransactionType[productName][transactionType]["max_unit_price"]) {
+              monthlyTransactionByFishAndTransactionType[productName][transactionType]["max_unit_price"] = transaction["unit_price"];
+          }
+          if (transaction["unit_price"] <= monthlyTransactionByFishAndTransactionType[productName][transactionType]["min_unit_price"]) {
+              monthlyTransactionByFishAndTransactionType[productName][transactionType]["min_unit_price"] = transaction["unit_price"];
+          }
           // 1. TOP10 TRANSACTION OVERVIEW
           // update top10 Transaction Table
           if (i < 10) {
@@ -720,8 +729,7 @@
                   <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['income'])}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['expense'])}</h6></div></td>
                   <td><div class="text-center"><h6 class="text-sm mb-0">${currency((TripCatchTransactions[mt]['income'] - TripCatchTransactions[mt]['expense']))}</h6></div></td>
-                  <td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['debt'])}</h6></div></td>
-                  <!--td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['debt'])}</h6></div></td-->
+                   <!--td><div class="text-center"><h6 class="text-sm mb-0">${currency(TripCatchTransactions[mt]['debt'])}</h6></div></td-->
                   <td><div class="text-center">
                     <div class="d-flex">
                       <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto" onclick="redirectPage('./pages/catch.html?trip_name=${mt}&order_by=transaction_date,total_price&order_type=asc')"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
@@ -741,24 +749,32 @@
                 "sold": 0
               }
             }
-            productTotal[mp]["total"] += monthlyTransactionByFishAndTransactionType[mp][mpt]
+            productTotal[mp]["total"] += monthlyTransactionByFishAndTransactionType[mp][mpt]["total"]
             if (mpt == "Sale") {
-              productTotal[mp]["sold"] += monthlyTransactionByFishAndTransactionType[mp][mpt]
+              productTotal[mp]["sold"] += monthlyTransactionByFishAndTransactionType[mp][mpt]["total"]
+              productTotal[mp]["max_unit_price"] = monthlyTransactionByFishAndTransactionType[mp][mpt]["max_unit_price"]
+              productTotal[mp]["min_unit_price"] = monthlyTransactionByFishAndTransactionType[mp][mpt]["min_unit_price"]
+              if (productTotal[mp]["min_unit_price"] == 0 || productTotal[mp]["min_unit_price"] == 9999999999) {
+                productTotal[mp]["min_unit_price"] = productTotal[mp]["max_unit_price"]
+              }
             }
-          }
+           }
         }
         // sorting
         let dataArray = Object.keys(productTotal).map(key => ({key, ...productTotal[key]}));
         dataArray.sort((a, b) => b.total - a.total);
         let sortedData = {};
         dataArray.forEach(item => {
-          sortedData[item.key] = {sold: item.sold, total: item.total};
+          sortedData[item.key] = {sold: item.sold, total: item.total, max_unit_price: item.max_unit_price, min_unit_price: item.min_unit_price};
         });
         productTotal = sortedData
         // update table
         catchProductsTable = document.getElementById("dashboard_catch_products")
         rows = ""
         for (const pt in productTotal) {
+          if (pt == "CASH" || pt == "GIRO") {
+            continue
+          }
           rows += `
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
@@ -768,6 +784,9 @@
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">${pt}</h6>
                         <span class="text-xs">${productTotal[pt]["total"]} hasil tangkap, <span class="font-weight-bold">${productTotal[pt]["sold"]} terjual</span></span>
+                        <span class="text-xs"><span class="text-xs" data-i18n-key="price">Price</span>:
+                            ${ (productTotal[pt]["min_unit_price"] === productTotal[pt]["max_unit_price"]) ? currency(productTotal[pt]["min_unit_price"]) : (currency(productTotal[pt]["min_unit_price"])+"-"+(currency(productTotal[pt]["max_unit_price"]))) }
+                        </span>
                       </div>
                     </div>
                     <div class="d-flex">
