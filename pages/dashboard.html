@@ -742,6 +742,9 @@
         // 5. Hasil Jenis Ikan
         productTotal = {}
         for (const mp in monthlyTransactionByFishAndTransactionType) { // by productName
+          if (mp == 'CASH' || mp == 'GIRO') {
+            continue
+          }
           for (const mpt in monthlyTransactionByFishAndTransactionType[mp]) { // by transaction type
             if (productTotal[mp] == undefined) {
               productTotal[mp] = {
@@ -772,9 +775,6 @@
         catchProductsTable = document.getElementById("dashboard_catch_products")
         rows = ""
         for (const pt in productTotal) {
-          if (pt == "CASH" || pt == "GIRO") {
-            continue
-          }
           rows += `
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
