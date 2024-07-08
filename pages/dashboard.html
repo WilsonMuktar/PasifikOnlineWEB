@@ -525,7 +525,8 @@
             monthlyTransactionByFishAndTransactionType[productName][transactionType] = {
               "total": 0,
               "max_unit_price": 0,
-              "min_unit_price": 9999999999
+              "min_unit_price": 9999999999,
+              "unit_price_map": {},
             }
           }
           monthlyTransactionByFishAndTransactionType[productName][transactionType]["total"] += transaction["quantity"]
@@ -534,6 +535,16 @@
           }
           if (transaction["unit_price"] <= monthlyTransactionByFishAndTransactionType[productName][transactionType]["min_unit_price"]) {
               monthlyTransactionByFishAndTransactionType[productName][transactionType]["min_unit_price"] = transaction["unit_price"];
+          }
+          // for calculate average sale of fish by unit_price
+          fishPriceMap = monthlyTransactionByFishAndTransactionType[productName][transactionType]["unit_price_map"]
+          if (fishPriceMap[transaction["unit_price"]] == undefined) {
+            fishPriceMap[transaction["unit_price"]] = {
+               "unit_price": transaction["unit_price"],
+               "total": 1
+            }
+          } else {
+            fishPriceMap[transaction["unit_price"]]["total"] += 1
           }
           // 1. TOP10 TRANSACTION OVERVIEW
           // update top10 Transaction Table
@@ -749,7 +760,10 @@
             if (productTotal[mp] == undefined) {
               productTotal[mp] = {
                 "total": 0,
-                "sold": 0
+                "sold": 0,
+                "max_unit_price": 0,
+                "min_unit_price": 0,
+                "avg_unit_price": 0.0
               }
             }
             productTotal[mp]["total"] += monthlyTransactionByFishAndTransactionType[mp][mpt]["total"]
@@ -760,6 +774,14 @@
               if (productTotal[mp]["min_unit_price"] == 0 || productTotal[mp]["min_unit_price"] == 9999999999) {
                 productTotal[mp]["min_unit_price"] = productTotal[mp]["max_unit_price"]
               }
+              average_unit_price = 0.0
+              average_total_amount = 0
+              for (key in monthlyTransactionByFishAndTransactionType[mp][mpt]["unit_price_map"]){
+                item = monthlyTransactionByFishAndTransactionType[mp][mpt]["unit_price_map"][key]
+                average_unit_price +=  item.unit_price * item.total
+                average_total_amount += item.total
+              }
+              productTotal[mp]["avg_unit_price"] = (average_unit_price/average_total_amount).toFixed(0)
             }
            }
         }
@@ -768,7 +790,7 @@
         dataArray.sort((a, b) => b.total - a.total);
         let sortedData = {};
         dataArray.forEach(item => {
-          sortedData[item.key] = {sold: item.sold, total: item.total, max_unit_price: item.max_unit_price, min_unit_price: item.min_unit_price};
+          sortedData[item.key] = {sold: item.sold, total: item.total, max_unit_price: item.max_unit_price, min_unit_price: item.min_unit_price, avg_unit_price: item.avg_unit_price};
         });
         productTotal = sortedData
         // update table
@@ -785,7 +807,7 @@
                         <h6 class="mb-1 text-dark text-sm">${pt}</h6>
                         <span class="text-xs">${productTotal[pt]["total"]} hasil tangkap, <span class="font-weight-bold">${productTotal[pt]["sold"]} terjual</span></span>
                         <span class="text-xs"><span class="text-xs" data-i18n-key="price">Price</span>:
-                            ${ (productTotal[pt]["min_unit_price"] === productTotal[pt]["max_unit_price"]) ? currency(productTotal[pt]["min_unit_price"]) : (currency(productTotal[pt]["min_unit_price"])+"-"+(currency(productTotal[pt]["max_unit_price"]))) }
+                            ${ (productTotal[pt]["min_unit_price"] === productTotal[pt]["max_unit_price"]) ? currency(productTotal[pt]["min_unit_price"]) : (currency(productTotal[pt]["min_unit_price"])+"-"+(currency(productTotal[pt]["max_unit_price"])))+" <br/>(<span class=\"text-xs\" data-i18n-key=\"average\">Average</span>:"+(currency(productTotal[pt]["avg_unit_price"]))+")" }
                         </span>
                       </div>
                     </div>
