@@ -363,6 +363,40 @@
             </div>
           </div>
         </div>
+        <hr class="horizontal dark">
+        <div class="col-lg-12 mb-lg-0 mb-4">
+          <div class="card ">
+            <div class="card-header pb-0 p-3">
+              <div class="d-flex justify-content-between">
+                <h6 class="mb-2" data-i18n-key="dashboard_top10_operations">Last Operations</h6>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center" id="dashboard_top10_operations">
+                <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="operation_table_name">TableName</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="operation_table_operation">Operation</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="operation_time">Time</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="operation_user">User</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="operation_email">Email</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="operation_table_data">Data</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td><span><div class="datagrid__loader" style="width: 90%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 80%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
       <hr class="horizontal dark">
       <footer class="footer pt-3  ">
@@ -976,6 +1010,33 @@
 
         // update top10 Transaction Table
         top10TripTable.tBodies[0].innerHTML = rows;
+      }
+    })
+
+    MAKE_REQUEST("GET", logs_api_url+"?page=0&limit=10", "", true, function(response) {
+      if (response instanceof Error) {
+        alert("Failed to get Logs List \n" + response)
+        return
+      } else {
+
+        var top10LogsTable = document.getElementById("dashboard_top10_operations")
+        var rows = ""
+        data = response.data
+        for(i=0;i<data.length;i++) {
+          rows += `
+           <tr>
+             <td><div class="d-flex px-2 py-1"><div class="text-sm mb-0"><h6 class="text-sm mb-0">${data[i]["table_name"]}</h6></div></div></td>
+             <td><div class="d-flex px-2 py-1"><div class="text-sm mb-0"><h6 class="text-sm mb-0">${data[i]["operation"]}</h6></div></div></td>
+             <td><div class="text-center"><h6 class="text-sm mb-0">${data[i]["created_at"].replace("T00:00:00Z","")}</h6></div></td>
+             <td><div class="text-center"><h6 class="text-sm mb-0">${data[i]["user_name"]}</h6></div></td>
+             <td><div class="text-center"><h6 class="text-sm mb-0">${data[i]["user_email"]}</h6></div></td>
+             <td><div class="d-flex px-2 py-1"><div class="text-sm mb-0"><h6 class="text-sm mb-0">${data[i]["data"]}</h6></div></div></td>
+           </tr>
+        `
+        }
+
+        // update top10 logs Table
+        top10LogsTable.tBodies[0].innerHTML = rows;
       }
     })
   </script>

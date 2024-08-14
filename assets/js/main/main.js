@@ -365,9 +365,11 @@ async function MAKE_REQUEST(method,url,payload,needToken,callback) {
         }
     } catch (ex) {
         hideLoader();
+        return
         callback(new Error(`not enough permission to open [${method}]${url} \nwith error ${ex}`))
     }
     hideLoader();
+    return
 }
 
 String.prototype.format = String.prototype.format || function () {

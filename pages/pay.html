@@ -161,6 +161,42 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6 data-i18n-key="pay_bill_table" onclick="redirectPage('./pages/transaction.html?transaction_type=Salary')">Bill Payment table</h6>
+                        <ul class="nav-list">
+                            <li><span onclick="openPopup('Add Salary Payment','')" >&plus;</span></li>
+                        </ul>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table id="pay_bill_table" class="table align-items-center justify-content-center mb-0" style="margin-left: 2%;">
+                                <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="seller">BillCode</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="transaction_date">Transaction Date</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="transaction_type">Buyer</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="quantity">Seller</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="action">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="datagrid__row vertical-animation">
+                                    <td><span><div class="datagrid__loader" style="width: 96%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 79%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <footer class="footer pt-3  ">
             <div class="container-fluid">
                 <div class="row align-items-center justify-content-lg-between">
@@ -214,7 +250,6 @@
         }
         else {
             data = response.data;
-            console.log(data)
             total_pay_price = 0;
             payTaxTable = document.getElementById("pay_tax_table")
             pay_rows = ""
@@ -274,6 +309,34 @@
 
         }
     });
+    MAKE_REQUEST("GET", transactionbillcodes_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear, "", true, function(response){
+        if (response instanceof Error) {
+            alert("Failed to get bill transaction List \n"+ response)
+            return
+        }
+        else {
+            data = response.data;
+            payTable = document.getElementById("pay_bill_table")
+            pay_rows = ""
+            for (i = 0; i < data.length; i++) {
+                pay_rows += `
+                        <tr>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["bill_code"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["transaction_date"].replace("T00:00:00Z",""))}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["buyer"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["seller"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0" onclick="transactionBill('${str(data[i]["bill_code"])}','${str(data[i]["transaction_date"].replace("T00:00:00Z",""))}','${str(data[i]["buyer_id"])}','${str(data[i]["seller_id"])}')">PRINT</h6></div></td>
+                          <td></td>
+                          </tr>`
+            }
+            payTable.tBodies[0].innerHTML = pay_rows;
+        }
+    });
+
+function transactionBill(bill_code, transaction_date, buyer_id, seller_id){
+    redirectPage("pages/bill.html?bill_code="+bill_code+"&transaction_date_from="+transaction_date+"&transaction_date_to="+transaction_date+"&buyer_id="+buyer_id+"&seller_id="+seller_id, "_blank");
+}
+
 </script>
 <!--   Core JS Files   -->
 <script src="../assets/js/core/popper.min.js"></script>

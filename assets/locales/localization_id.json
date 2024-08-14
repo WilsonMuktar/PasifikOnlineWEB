@@ -354,5 +354,12 @@
   "dashboard_total_debt_change": "sejak bulan lalu",
   "print": "Cetak",
   "filter": "Filter",
-  "back": "Kembali"
+  "back": "Kembali",
+  "dashboard_top10_operations": "Top10 Data operasi terakhir",
+  "operation_table_name": "Nama Tabel",
+  "operation_table_operation": "Operasi Data",
+  "operation_time": "Waktu",
+  "operation_user": "Nama User",
+  "operation_email": "Email",
+  "operation_table_data": "Data Tabel"
 }

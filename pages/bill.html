@@ -248,9 +248,22 @@
       <div class="card shadow-lg" id="right-side-navbar" hidden></div>
   </div>
   <script>
+    var needUpdateTransactions = true;
+
     // Function to print the bill
-    function printBill() {
-      window.print();
+    async function printBill() {
+      if (window.confirm(`
+          Process Nota Bill?
+          Processing each transaction data then ready to print!
+          (might take few minutes!)
+          `)) {
+        if (needUpdateTransactions) {
+          await updateTransactionBillCode()
+        } else {
+          console.log("reprinting bill only!")
+        }
+        window.print();
+      }
     }
 
     function openTransaction() {
@@ -268,6 +281,7 @@
   <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
+
       var win = navigator.platform.indexOf('Win') > -1;
       if (win && document.querySelector('#sidenav-scrollbar')) {
           var options = {
@@ -306,11 +320,8 @@
     if (resp instanceof Error) {
       console.log(resp);
     } else {
-      console.log("?")
-      console.log(getRandomIdFromHash())
       document.getElementById("nota_id").value = getRandomIdFromHash();
       processBill(resp)
-      
     }
   })
 
@@ -323,9 +334,35 @@
     total_quantity = 0
     buyer = {}
     seller = {}
+    foundBillCode = ""
     for (var i = data.length - 1; i >= 0; i--) {
+
+        // check notes data
+        // if already assigned bill_codes then need to cancel this bill creation
+        notes = data[i].notes
+        try {
+          if (notes != undefined) {
+            notesExtra = JSON.parse(notes)
+            if (notesExtra["bill_code"] != undefined) {
+                if (foundBillCode != "" && foundBillCode != notesExtra["bill_code"]) {
+                  alert("this transaction [" + data[i].transaction_id + "] been included in another BILL! [" + notesExtra["bill_code"] + "] not in ["+ foundBillCode+"]")
+                  hideLoader()
+                  return
+                }
+              // overwrite random bill code with existing one
+              document.getElementById("nota_id").value = notesExtra["bill_code"]
+              needUpdateTransactions = false // no need to update transaction, just re-print bill
+              foundBillCode = notesExtra["bill_code"]
+            }
+          }
+        }
+        catch {
+          // pass
+        }
+
         rows += `
             <tr>
+                <td class="text-center" hidden><span class="text-xs font-weight-bold">${str(data[i].transaction_id)}</span></td>
                 <td class="text-center"><span class="text-xs font-weight-bold">${str(data[i].quantity)}</span></td>
                 <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].product_name)}</span></td>
                 <td class="text-center"><span class="text-xs font-weight-bold">${curr(data[i].unit_price)}</span></td>
@@ -359,19 +396,21 @@
 
     // adding final total below
     rows += `<tr>
+            <td colspan="2" class="border-top-only" hidden></td>
             <td colspan="2" class="border-top-only">Tanda Terima</td>
             <td class="border-top-only text-right">Total Rp.</td>
             <td class="border-bottom-double">${curr(total_price_page)}</td>
           </tr>
           <tr><td class="no-border">&nbsp;</td></tr>
           <tr><td class="no-border">&nbsp;</td></tr>`
-    table.tBodies[0].innerHTML = rows;
-    document.getElementById("buyer").innerHTML = buyer["name"]
-    document.getElementById("buyer_address").innerHTML = buyer["address"]
-    document.getElementById("buyer_phone").innerHTML = buyer["phone"]
-    document.getElementById("date").innerHTML = buyer["date"]
-    document.getElementById("seller").innerHTML = seller["name"]
-    loadLocalization(localStorage.getItem("localization_language"))
+
+      table.tBodies[0].innerHTML = rows;
+      document.getElementById("buyer").innerHTML = buyer["name"]
+      document.getElementById("buyer_address").innerHTML = buyer["address"]
+      document.getElementById("buyer_phone").innerHTML = buyer["phone"]
+      document.getElementById("date").innerHTML = buyer["date"]
+      document.getElementById("seller").innerHTML = seller["name"]
+      loadLocalization(localStorage.getItem("localization_language"))
   }
 
   function getRandomIdFromHash() {
@@ -392,6 +431,49 @@
     return invoiceNumber;
   }
 
+  async function updateTransactionBillCode() {
+    billCode = document.getElementById("nota_id").value
+    transactionlist = document.getElementById("bill_table").getElementsByTagName("tbody")[0].getElementsByTagName("tr")
+    console.log(transactionlist.length)
+    for(var i=0; i<transactionlist.length; i++) {
+      transactionID = transactionlist[i].getElementsByTagName("td")[0].innerText
+      if(!transactionID.includes("-")) {continue}
+      console.log("updating " + transactionID)
+
+      await MAKE_REQUEST("GET", transaction_api_url+transactionID+"/", "", true, function(response) {
+        if (response instanceof Error) {
+          alert("Get transaction failed!");
+          hideLoader();
+          return
+        }
+
+          trx = response.data;
+          notesExtra = trx.notes
+          try {
+            if (notesExtra != undefined) {
+              notesExtra = JSON.parse(notesExtra)
+              notesExtra["bill_code"] = billCode
+            }
+          } catch {
+            notesExtra = {
+              "data": notesExtra, // keep original non-json data
+              "bill_code": billCode
+            }
+          }
+          trx.notes =  JSON.stringify(notesExtra)
+
+          // Update transaction payload to server
+          MAKE_REQUEST("PUT", transaction_api_url, JSON.stringify(trx), true, function (response) {
+            if (response instanceof Error) {
+              alert("Failed to add new transaction! \nerror:" + response.message);
+              hideLoader();
+              return
+            }
+          });
+          hideLoader();
+      });
+    }
+  }
   </script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
