@@ -361,5 +361,6 @@
   "operation_time": "Waktu",
   "operation_user": "Nama User",
   "operation_email": "Email",
-  "operation_table_data": "Data Tabel"
+  "operation_table_data": "Data Tabel",
+  "pay_bill_table": "Tabel Bill Transaksi"
 }
