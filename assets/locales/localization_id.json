@@ -362,5 +362,6 @@
   "operation_user": "Nama User",
   "operation_email": "Email",
   "operation_table_data": "Data Tabel",
-  "pay_bill_table": "Tabel Bill Transaksi"
+  "pay_bill_table": "Tabel Bill Transaksi",
+  "using_billcode": "Tambah kode bill untuk transaksi ini"
 }

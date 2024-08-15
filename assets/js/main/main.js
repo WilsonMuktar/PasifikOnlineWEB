@@ -2432,6 +2432,12 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <input id="transaction_using_billcode" type="checkbox" autocomplete="off"> 
+                                    <label for="transaction_using_billcode" class="form-control-label" data-i18n-key="using_billcode">Adding BillCode to current transaction batch</label>
+                                </div>
+                            </div>
                             <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
                         </div>
                     </div>
@@ -2451,6 +2457,7 @@ function processPopup(title, title_extra, data) {
                 });
                 document.getElementById("add_transaction_btn").addEventListener('click', function (e) {
                     // Retrieve input values
+                    let transaction_using_billcode = document.getElementById("transaction_using_billcode").checked;
                     let transaction_date = document.getElementById("transaction_date").value+"T00:00:00Z";
                     let transaction_type = document.getElementById("transaction_type").value;
                     /*let product_id = document.getElementById("assign_product_list").value;
@@ -2464,7 +2471,13 @@ function processPopup(title, title_extra, data) {
                     let payment_type = document.getElementById("payment_type").value;
                     let payment_status = parseInt(document.getElementById("payment_status").value);
                     let transaction_image_file = document.getElementById("transaction_image").files[0];
-                    let notes = document.getElementById("notes").value;
+                    let notes = {
+                        "data": document.getElementById("notes").value
+                    };
+                    // assigning bill code to current transaction batch
+                    if (transaction_using_billcode) {
+                        notes["bill_code"] = getRandomIdFromHash()
+                    }
 
                     function update() {
                         blobText = ""
@@ -2503,7 +2516,7 @@ function processPopup(title, title_extra, data) {
                                 "payment_type": payment_type,
                                 "payment_status": payment_status,
                                 "transaction_image": blobText,
-                                "notes": notes
+                                "notes": JSON.stringify(notes)
                             };
 
                             // Send payload to server
@@ -4837,7 +4850,8 @@ function processPopup(title, title_extra, data) {
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="update_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
-                            <input id="update_notes" class="form-control" type="text" value='${str((data.notes))}' onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input id="update_notes" class="form-control" type="text" value='' onfocus="focused(this)" onfocusout="defocused(this)">
+                            <input disabled id="update_existing_notes" class="form-control" type="text" value='${str((data.notes))}' onfocus="focused(this)" onfocusout="defocused(this)">
                         </div>
                     </div>
                 </div>
@@ -4879,6 +4893,18 @@ function processPopup(title, title_extra, data) {
                     notes = document.getElementById("update_notes").value;
                     transaction_image_file = document.getElementById("update_transaction_image").files[0];
 
+                    // process notes
+                    if (document.getElementById("update_existing_notes").value != "") {
+                        notesJSON = JSON.parse(document.getElementById("update_existing_notes").value)
+                        notesJSON["data"] = document.getElementById("update_notes").value
+                        notes = JSON.stringify(notesJSON)
+                    } else {
+                        if (document.getElementById("update_notes").value != "") {
+                            notes = JSON.stringify({
+                                "data": document.getElementById("update_notes").value
+                            })
+                        }
+                    }
                     function update() {
                         blobText = ""
                         if (transaction_image_file == undefined) {
@@ -5576,4 +5602,22 @@ function processPopup(title, title_extra, data) {
                 });
             }]
     }
+}
+
+function getRandomIdFromHash() {
+    // Get current date and time
+    let now = new Date();
+
+    // Format date components
+    let year = now.getFullYear().toString().slice(-2); // Last two digits of the year
+    let month = ('0' + (now.getMonth() + 1)).slice(-2); // Month (zero padded)
+    let day = ('0' + now.getDate()).slice(-2); // Day of the month (zero padded)
+
+    // Generate a random unique identifier
+    let uniqueId = Math.random().toString(36).substr(2, 6); // Random alphanumeric string of length 9
+
+    // Combine timestamp and unique identifier to create unique invoice number
+    let invoiceNumber = `${year}${month}${day}-${uniqueId}`;
+
+    return invoiceNumber;
 }

@@ -413,24 +413,6 @@
       loadLocalization(localStorage.getItem("localization_language"))
   }
 
-  function getRandomIdFromHash() {
-    // Get current date and time
-    let now = new Date();
-    
-    // Format date components
-    let year = now.getFullYear().toString().slice(-2); // Last two digits of the year
-    let month = ('0' + (now.getMonth() + 1)).slice(-2); // Month (zero padded)
-    let day = ('0' + now.getDate()).slice(-2); // Day of the month (zero padded)
-
-    // Generate a random unique identifier
-    let uniqueId = Math.random().toString(36).substr(2, 6); // Random alphanumeric string of length 9
-
-    // Combine timestamp and unique identifier to create unique invoice number
-    let invoiceNumber = `${year}${month}${day}-${uniqueId}`;
-
-    return invoiceNumber;
-  }
-
   async function updateTransactionBillCode() {
     billCode = document.getElementById("nota_id").value
     transactionlist = document.getElementById("bill_table").getElementsByTagName("tbody")[0].getElementsByTagName("tr")
