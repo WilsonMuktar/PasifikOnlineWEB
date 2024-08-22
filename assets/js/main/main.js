@@ -49,9 +49,13 @@ function reorderSelectOptions(options, selected) {
     ordered = ""
     foundSelected = false
     for (i = 0; i < options.length; i++) {
+        if (options[i] == undefined) { // fix issue
+            continue
+        }
         if (options[i].includes(`value="${selected}"`)) {
             foundSelected = true
             ordered += options[i].replace("option value", "option selected value")
+            console.log(foundSelected)
         } else {
             ordered += options[i]
         }
@@ -60,7 +64,6 @@ function reorderSelectOptions(options, selected) {
     if (foundSelected == false) {
         ordered = `<option value selected data-i18n-key="none">-- None --</option>` + ordered
     }
-
     return ordered
 }
 function str(data) {
@@ -4584,6 +4587,7 @@ function processPopup(title, title_extra, data) {
                     }
                     options[i] = `<option value="${ddata[i].person_id}">${str(ddata[i].first_name)} ${str(ddata[i].last_name)}</option>`;
                 }
+                console.log(options, data)
                 document.getElementById("assign_captain_list").innerHTML = reorderSelectOptions(options, data.captain_id);
             });
             return [`
