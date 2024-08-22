@@ -109,6 +109,7 @@ const main_nav_bar = {
     ],
     "staff": [
         {"nav_name": "dashboard.html", "nav_path": "../pages/dashboard.html", "nav_icon": "fa fa-bar-chart", "nav_title": "Dashboard", "nav_title_i18n":"breadcrumb_dashboard", "nav_separator": false},
+        {"nav_name": "stock.html", "nav_path": "../pages/stock.html", "nav_icon": "ni ni-shop", "nav_title": "Stocks", "nav_title_i18n":"breadcrumb_stock", "nav_separator": false},
         {"nav_name": "product.html", "nav_path": "../pages/product.html", "nav_icon": "fa fa-product-hunt", "nav_title": "Products", "nav_title_i18n":"breadcrumb_product", "nav_separator": false},
         {"nav_name": "transaction.html", "nav_path": "../pages/transaction.html", "nav_icon": "ni ni-credit-card", "nav_title": "Transactions", "nav_title_i18n":"breadcrumb_transaction", "nav_separator": false},
         {"nav_name": "trip.html", "nav_path": "../pages/trip.html", "nav_icon": "ni ni-calendar-grid-58", "nav_title": "Trips", "nav_title_i18n":"breadcrumb_trip", "nav_separator": false},
