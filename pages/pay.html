@@ -325,7 +325,7 @@
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["transaction_date"].replace("T00:00:00Z",""))}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["buyer"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["seller"])}</h6></div></td>
-                          <td><div><h6 class="text-sm mb-0" onclick="transactionBill('${str(data[i]["bill_code"])}','${str(data[i]["transaction_date"].replace("T00:00:00Z",""))}','${str(data[i]["buyer_id"])}','${str(data[i]["seller_id"])}')">PRINT</h6></div></td>
+                          <td><div><span class="badge badge-sm bg-gradient-secondary" onclick="transactionBill('${str(data[i]["bill_code"])}','${str(data[i]["transaction_date"].replace("T00:00:00Z",""))}','${str(data[i]["buyer_id"])}','${str(data[i]["seller_id"])}')">PRINT</span></div></td>
                           <td></td>
                           </tr>`
             }
