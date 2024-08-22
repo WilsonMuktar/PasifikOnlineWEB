@@ -159,6 +159,15 @@ dynamic_nav_bar = "<ul class=\"navbar-nav\">"
 nav_bar_by_roles = main_nav_bar[localStorage.getItem('user_roles')]
 for (let i in nav_bar_by_roles) {
     navBar = nav_bar_by_roles[i]
+
+    // check rather is current page opened
+    curr_path = window.location.href.split("/").pop()
+    currNavBarName = navBar["nav_name"]
+    highLightNavBar = ""
+    if (curr_path == currNavBarName) {
+        highLightNavBar = "style=\"background-color: aliceblue;\""
+    }
+
     if (navBar["nav_separator"]) {
         dynamic_nav_bar += `
             <li class="nav-item mt-3">
@@ -167,12 +176,12 @@ for (let i in nav_bar_by_roles) {
         `
     } else {
         dynamic_nav_bar += `
-            <li class="nav-item">
+            <li ${highLightNavBar} class="nav-item">
                 <a class="nav-link " href="${navBar["nav_path"]}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="${navBar["nav_icon"]} text-secondary text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1 ${window.location.href.includes('${navBar["nav_name"]}') ? 'text-bolder' : ''}" data-i18n-key="${navBar["nav_title_i18n"]}">${navBar["nav_title"]}</span>
+                    <span class="nav-link-text  ms-1 ${window.location.href.includes('${navBar["nav_name"]}') ? 'text-bolder' : ''}" data-i18n-key="${navBar["nav_title_i18n"]}">${navBar["nav_title"]}</span>
                 </a>
             </li>
         `
@@ -381,7 +390,11 @@ async function MAKE_REQUEST(method,url,payload,needToken,callback) {
     try {
         const response = await fetch(url, options)
         if (!response.ok) {
-            callback(new Error(`not enough permission to open [${method}]${url} \nwith error ${response.body}`))
+            if (method != "GET") {
+                callback(new Error(`not enough permission to open [${method}]${url} \nwith error ${response.body}`))
+            } else {
+                console.log(`not enough permission to open [${method}]${url} \\nwith error ${response.body}`)
+            }
             hideLoader();
             return
         }
@@ -394,7 +407,11 @@ async function MAKE_REQUEST(method,url,payload,needToken,callback) {
     } catch (ex) {
         hideLoader();
         return
-        callback(new Error(`not enough permission to open [${method}]${url} \nwith error ${ex}`))
+        if (method != "GET") {
+            callback(new Error(`not enough permission to open [${method}]${url} \nwith error ${ex}`))
+        } else {
+            console.log(`not enough permission to open [${method}]${url} \\nwith error ${response.body}`)
+        }
     }
     hideLoader();
     return
@@ -409,15 +426,9 @@ String.prototype.format = String.prototype.format || function () {
             var args = ("string" === t || "number" === t) ?
                 Array.prototype.slice.call(arguments)
                 : arguments[0];
-            console.log(arguments)
-            console.log(arguments[0])
-            console.log(args)
-            console.log(str)
             for (key in args) {
                 str = str.replace(new RegExp("\\{" + key + "\\}", "gi"), args[key]);
-                console.log(str)
             }
-            console.log(str)
         }
 
         return str;
