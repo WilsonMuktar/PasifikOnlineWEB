@@ -86,6 +86,7 @@ const main_nav_bar = {
     "manager": [
         {"nav_name": "dashboard.html", "nav_path": "../pages/dashboard.html", "nav_icon": "fa fa-bar-chart", "nav_title": "Dashboard", "nav_title_i18n":"breadcrumb_dashboard", "nav_separator": false},
         {"nav_name": "vessel.html", "nav_path": "../pages/vessel.html", "nav_icon": "fa fa-ship", "nav_title": "Vessels", "nav_title_i18n":"breadcrumb_vessel", "nav_separator": false},
+        {"nav_name": "stock.html", "nav_path": "../pages/stock.html", "nav_icon": "ni ni-shop", "nav_title": "Stocks", "nav_title_i18n":"breadcrumb_stock", "nav_separator": false},
         {"nav_name": "transaction.html", "nav_path": "../pages/transaction.html", "nav_icon": "ni ni-credit-card", "nav_title": "Transactions", "nav_title_i18n":"breadcrumb_transaction", "nav_separator": false},
         {"nav_name": "product.html", "nav_path": "../pages/product.html", "nav_icon": "fa fa-product-hunt", "nav_title": "Products", "nav_title_i18n":"breadcrumb_product", "nav_separator": false},
         {"nav_name": "people.html", "nav_path": "../pages/people.html", "nav_icon": "ni ni-single-02", "nav_title": "People", "nav_title_i18n":"breadcrumb_people", "nav_separator": false},
@@ -109,9 +110,10 @@ const main_nav_bar = {
     ],
     "staff": [
         {"nav_name": "dashboard.html", "nav_path": "../pages/dashboard.html", "nav_icon": "fa fa-bar-chart", "nav_title": "Dashboard", "nav_title_i18n":"breadcrumb_dashboard", "nav_separator": false},
+        {"nav_name": "vessel.html", "nav_path": "../pages/vessel.html", "nav_icon": "fa fa-ship", "nav_title": "Vessels", "nav_title_i18n":"breadcrumb_vessel", "nav_separator": false},
         {"nav_name": "stock.html", "nav_path": "../pages/stock.html", "nav_icon": "ni ni-shop", "nav_title": "Stocks", "nav_title_i18n":"breadcrumb_stock", "nav_separator": false},
-        {"nav_name": "product.html", "nav_path": "../pages/product.html", "nav_icon": "fa fa-product-hunt", "nav_title": "Products", "nav_title_i18n":"breadcrumb_product", "nav_separator": false},
         {"nav_name": "transaction.html", "nav_path": "../pages/transaction.html", "nav_icon": "ni ni-credit-card", "nav_title": "Transactions", "nav_title_i18n":"breadcrumb_transaction", "nav_separator": false},
+        {"nav_name": "product.html", "nav_path": "../pages/product.html", "nav_icon": "fa fa-product-hunt", "nav_title": "Products", "nav_title_i18n":"breadcrumb_product", "nav_separator": false},
         {"nav_name": "trip.html", "nav_path": "../pages/trip.html", "nav_icon": "ni ni-calendar-grid-58", "nav_title": "Trips", "nav_title_i18n":"breadcrumb_trip", "nav_separator": false},
         {"nav_name": "catch.html", "nav_path": "../pages/catch.html", "nav_icon": "fa fa-solid fa-fish", "nav_title": "Catchs", "nav_title_i18n":"breadcrumb_catch", "nav_separator": false},
         {"nav_name": "debt.html", "nav_path": "../pages/debt.html", "nav_icon": "fa fa-solid fa-money-bill", "nav_title": "Debts", "nav_title_i18n":"breadcrumb_debt", "nav_separator": false},
