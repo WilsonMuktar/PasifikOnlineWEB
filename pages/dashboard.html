@@ -196,6 +196,52 @@
           <div class="card ">
             <div class="card-header pb-0 p-3">
               <div class="d-flex justify-content-between">
+                <h6 class="mb-2" data-i18n-key="dashboard_top10_this_week_transaction">Top10 This Week Transactions</h6>
+                <ul class="nav-list text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                  <li><span onclick="redirectPage('./pages/transaction.html?order_by=total_price&order_type=asc')" >View more</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center" id="dashboard_top10_this_week_transaction">
+                <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="number"> No </th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="product_name">Product Name</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="total">Total</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="payment_type">Payment Type</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="buyer">Buyer</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="seller">Seller</th>
+                  <!--th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="payment_status">Payment Status</th-->
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="transaction_type">Transaction Type</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="transaction_date">Transaction Date</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="trip_name">Trip Name</th>
+                  <!--th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center" data-i18n-key="vessel_name">Vessel Name</th-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="datagrid__row vertical-animation">
+                  <td><span><div class="datagrid__loader" style="width: 90%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 80%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                  <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="horizontal dark">
+      <div class="row mt-4">
+        <div class="col-lg-12 mb-lg-0 mb-4">
+          <div class="card ">
+            <div class="card-header pb-0 p-3">
+              <div class="d-flex justify-content-between">
                 <h6 class="mb-2" data-i18n-key="dashboard_top10_transaction">Top10 Transactions</h6>
                 <ul class="nav-list text-secondary text-xxs font-weight-bolder opacity-7 text-center">
                   <li><span onclick="redirectPage('./pages/transaction.html?order_by=total_price&order_type=asc')" >View more</span></li>
@@ -436,6 +482,54 @@
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/chartjs.min.js"></script>
   <script>
+    function getWeekStartAndEndDates() {
+      const today = new Date();
+      const dayOfWeek = today.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
+      const startOfWeek = new Date(today);
+      const endOfWeek = new Date(today);
+
+      // Set start of week to Sunday (or change to Monday if needed)
+      startOfWeek.setDate(today.getDate() - dayOfWeek);
+      startOfWeek.setHours(0, 0, 0, 0); // Set to start of day
+
+      // Set end of week to Saturday (or change to Sunday if needed)
+      endOfWeek.setDate(today.getDate() + (6 - dayOfWeek));
+      endOfWeek.setHours(23, 59, 59, 999); // Set to end of day
+
+      return {
+        start: startOfWeek,
+        end: endOfWeek
+      };
+    }
+    thisWeek = getWeekStartAndEndDates()
+    console.log(thisWeek.start, thisWeek.end)
+    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+thisWeek.start+"&transaction_date_to="+thisWeek.end+"&order_by=transaction_date&order_type=desc", "", true, function(response){
+      if (response instanceof Error) {
+        alert("Failed to get transaction List \n"+ response)
+        return
+      }
+      else {
+        top10ThisWeekTransactionTable = document.getElementById("dashboard_top10_this_week_transactions")
+        rows = ""
+        data = response.data;
+        for (i = 0; i < data.length; i++) {
+          transaction = data[i]
+          rows += "<tr>"
+          rows += "<td>" + (i + 1) + "</td>"
+          rows += "<td>" + str(transaction["product_name"]) + "</td>"
+          rows += "<td>" + str(transaction["total_price"]) + "</td>"
+          rows += "<td>" + str(transaction["payment_type"]) + "</td>"
+          rows += "<td>" + str(transaction["buyer_first_name"]) + " " + str(transaction["buyer_last_name"]) + "</td>"
+          rows += "<td>" + str(transaction["seller_first_name"]) + " " + str(transaction["seller_last_name"]) + "</td>"
+          rows += "<td>" + str(transaction["transaction_type"]) + "</td>"
+          rows += "<td>" + str(transaction["transaction_date"]) + "</td>"
+          rows += "<td>" + str(transaction["trip_name"]) + "</td>"
+          rows += "</tr>"
+        }
+        top10ThisWeekTransactionTable.innerHTML = rows
+      }
+    })
+
     currentYear = new Date().getFullYear()
     startYear = currentYear+"-01-01"
     endYear = currentYear+"-12-31"
