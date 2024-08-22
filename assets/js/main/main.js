@@ -580,6 +580,7 @@ function processStockTable(response) {
     var table = document.getElementById("stock_table");
 
     for (var i = data.length - 1; i >= 0; i--) {
+        console.log(data[i])
         rows += `
         <tr>
             <td>
@@ -588,7 +589,7 @@ function processStockTable(response) {
                         <img src="${img(data[i].stock_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Stock: ${data[i].product_id}', '${img(data[i].stock_image)}');">
                     </div>
                     <div class="my-auto">
-                        <h6 class="mb-0 text-sm">${data[i].product_id}</h6>
+                        <h6 class="mb-0 text-sm">${data[i].product_name}</h6>
                     </div>
                 </div>
             </td>
