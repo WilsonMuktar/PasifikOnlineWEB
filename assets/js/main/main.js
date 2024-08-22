@@ -2378,8 +2378,8 @@ function processPopup(title, title_extra, data) {
                         <div class="form-group">
                             <label for="transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
                             <select id="transaction_type" class="form-control" data-toggle="select">
-                                <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
+                                <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Return" data-i18n-key="return">Return</option>
                                 <option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>
                                 <option value="Tax" data-i18n-key="tax">Tax</option>
@@ -2586,7 +2586,7 @@ function processPopup(title, title_extra, data) {
         case 'Add Maintenance':
             MAKE_REQUEST("GET", vessel_api_url, "", true, function(response) {
                 if (response instanceof Error) {
-                    alert("Add Catch get vessel list failed!")
+                    alert("Add Maintenance get vessel list failed!")
                     return
                 }
                 data = response.data;
@@ -2706,7 +2706,7 @@ function processPopup(title, title_extra, data) {
                     }
                 });
             }]
-        case 'Add Catch':
+        case 'Add Catch': //deprecated
             MAKE_REQUEST("GET", vessel_api_url, "", true, function(response) {
                 if (response instanceof Error) {
                     alert("Add Catch get vessel list failed!")
