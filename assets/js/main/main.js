@@ -155,6 +155,33 @@ document.getElementsByClassName("fixed-plugin-button")[0].addEventListener("clic
     }*/
 })
 // navigation sidebar update
+dynamic_nav_bar = "<ul class=\"navbar-nav\">"
+nav_bar_by_roles = main_nav_bar[localStorage.getItem('user_roles')]
+for (let i in nav_bar_by_roles) {
+    navBar = nav_bar_by_roles[i]
+    if (navBar["nav_separator"]) {
+        dynamic_nav_bar += `
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6" data-i18n-key="${navBar["nav_title_i18n"]}">${navBar["nav_title"]}</h6>
+            </li>
+        `
+    } else {
+        dynamic_nav_bar += `
+            <li class="nav-item">
+                <a class="nav-link " href="${navBar["nav_path"]}">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="${navBar["nav_icon"]} text-secondary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1 ${window.location.href.includes('${navBar["nav_name"]}') ? 'text-bolder' : ''}" data-i18n-key="${navBar["nav_title_i18n"]}">${navBar["nav_title"]}</span>
+                </a>
+            </li>
+        `
+    }
+}
+dynamic_nav_bar += "</ul>"
+document.getElementById("sidenav-collapse-main").innerHTML = dynamic_nav_bar
+
+/*
 if (localStorage.getItem('user_roles') == "system_admin" || localStorage.getItem('user_roles') == "domain_admin") {
     document.getElementById("sidenav-collapse-main").innerHTML = `
         <ul class="navbar-nav">
@@ -324,6 +351,7 @@ else {
         </ul>
     `
 }
+*/
 
 // Main logic //
 async function MAKE_REQUEST(method,url,payload,needToken,callback) {
@@ -5579,6 +5607,7 @@ function processPopup(title, title_extra, data) {
                 });
                 document.getElementById("delete_role_btn").addEventListener('click', function (e) {
                     role_name = document.getElementById("assign_role_name").value;
+                    console.log("role_name",role_name)
                     MAKE_REQUEST("DELETE", delete_role_api_url.format(role_name), ``, true, function(response) {
                         if (response instanceof Error) {
                             alert("Remove Role from Service failed!");

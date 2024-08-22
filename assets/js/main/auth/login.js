@@ -53,6 +53,7 @@ function login_authenticate(username, password, lang) {
             break
         }
         localStorage.setItem('user_roles', roles);
+        main_page_url = "pages/"+main_nav_bar[localStorage.getItem('user_roles')][0]["nav_name"] // set main_page_url by role after login
         redirectPage(main_page_url)
     })
 }
