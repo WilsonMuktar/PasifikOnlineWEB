@@ -164,7 +164,7 @@ for (let i in nav_bar_by_roles) {
     navBar = nav_bar_by_roles[i]
 
     // check rather is current page opened
-    curr_path = window.location.href.split("/").pop()
+    curr_path = window.location.href.split("/").pop().split("?")[0]
     currNavBarName = navBar["nav_name"]
     highLightNavBar = ""
     if (curr_path == currNavBarName) {
