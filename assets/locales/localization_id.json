@@ -339,6 +339,7 @@
   "dashboard_income_description":"Tunai + Giro - Pengeluaran",
   "dashboard_expense_description":"Belanja + Pajak + Gaji + Utang - PelunasanUtang",
   "dashboard_debt_description":"Utang Belum Bayar",
+  "dashboard_fish_debt_description":"Utang Ikan Belum Bayar",
   "dashboard_total_transaction":"Total Transaksi",
   "dashboard_total_transaction_change":"sejak bulan lalu",
   "dashboard_total_income":"Total Penghasilan",

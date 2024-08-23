@@ -904,7 +904,13 @@ function processTransactionTable(response) {
         }*/
 
         rows += `
-        <tr class="${ data[i].transaction_type=='Salary'? "bg-gradient-warning" : (data[i].transaction_type=='Tax'? "bg-gradient-warning" : (data[i].transaction_type=='FishDebtCollect'? "bg-gradient-success" : ""))}">
+        <tr class="${ 
+            (data[i].transaction_type=='DebtCollect'? "text-success" : 
+                (data[i].transaction_type=='Purchase'? "text-warning" : 
+                    (data[i].transaction_type=='Debt'? "text-warning" : 
+                        (data[i].transaction_type=='Salary'? "text-warning" : 
+                            (data[i].transaction_type=='Tax'? "text-warning" : 
+                                (data[i].transaction_type=='FishDebtCollect'? "text-success" : ""))))))}">
             <td hidden>
                 <div class="d-flex px-2">
                     <div>
