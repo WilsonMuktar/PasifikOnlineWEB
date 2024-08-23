@@ -301,7 +301,9 @@
                           <td class="bg-gradient-warning" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&payment_type=DEBT')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${BuyerDEBT[bid]["quantity"].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
                           <td class="bg-gradient-success" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&transaction_type=FishDebtCollect')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["fish_debt_collected"])}</h6></div></td>
-                          <td class="${ BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["fish_debt_collected"] == 0 ? "bg-gradient-success":"bg-gradient-warning"}" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
+                          <td class="${ BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["fish_debt_collected"] == 0 ? "bg-gradient-success":"bg-gradient-warning"}"
+                            onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}')">
+                            <div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["fish_debt_collected"])}</h6></div></td>
                           </tr>`
                     total_price_page+=BuyerDEBT[bid]["total_price"]
                     total_quantity+=BuyerDEBT[bid]["quantity"]
