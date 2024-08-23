@@ -1965,7 +1965,7 @@ function processPopup(title, title_extra, data) {
                             <select id="transaction_type" class="form-control">
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
-                                <option value="Return" data-i18n-key="return">Return</option>
+                                <option value="Debt" data-i18n-key="debt">Debt</option>
                                 <option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>
                                 <option value="Tax" data-i18n-key="tax">Tax</option>
                                 <option value="Salary" data-i18n-key="salary">Salary</option>
@@ -2457,7 +2457,7 @@ function processPopup(title, title_extra, data) {
                             <select id="transaction_type" class="form-control" data-toggle="select">
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
-                                <option value="Return" data-i18n-key="return">Return</option>
+                                <option value="Debt" data-i18n-key="debt">Debt</option>
                                 <option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>
                                 <option value="Tax" data-i18n-key="tax">Tax</option>
                                 <option value="Salary" data-i18n-key="salary">Salary</option>
@@ -2537,6 +2537,12 @@ function processPopup(title, title_extra, data) {
                                     <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                                    <textarea name="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <input name="keep_in_stock" type="checkbox">
@@ -2556,14 +2562,12 @@ function processPopup(title, title_extra, data) {
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <input id="transaction_using_billcode" type="checkbox" autocomplete="off"> 
                                     <label for="transaction_using_billcode" class="form-control-label" data-i18n-key="using_billcode">Adding BillCode to current transaction batch</label>
                                 </div>
                             </div>
-                            <textarea id="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
                         </div>
                     </div>
                 </div>
@@ -2596,13 +2600,14 @@ function processPopup(title, title_extra, data) {
                     let payment_type = document.getElementById("payment_type").value;
                     let payment_status = parseInt(document.getElementById("payment_status").value);
                     let transaction_image_file = document.getElementById("transaction_image").files[0];
-                    let notes = {
+                    /*let notes = {
                         "data": document.getElementById("notes").value
                     };
                     // assigning bill code to current transaction batch
                     if (transaction_using_billcode) {
                         notes["bill_code"] = getRandomIdFromHash()
-                    }
+                    */
+                    currentTransactionBillCode = getRandomIdFromHash()
 
                     function update() {
                         blobText = ""
@@ -2630,9 +2635,17 @@ function processPopup(title, title_extra, data) {
                                 totalPrice = parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value))
                             }
 
+                            // process notes
+                            notes = rows[i].querySelector('textarea[name="notes"]')
+                            noteJSON = {}
+                            if (notes != "") {
+                                noteJSON["data"] = notes
+                            }
+                            noteJSON["bill_code"] = currentTransactionBillCode
+
                             // extra value to be kept
-                            keep_product_in_stock = rows[i].querySelector('select[name="keep_in_stock"]').checked
-                            notes["keep_in_stock"] = keep_product_in_stock
+                            keep_product_in_stock = rows[i].querySelector('input[name="keep_in_stock"]').checked
+                            noteJSON["keep_in_stock"] = keep_product_in_stock
 
                             // Construct payload
                             let payload = {
@@ -2649,7 +2662,7 @@ function processPopup(title, title_extra, data) {
                                 "payment_type": payment_type,
                                 "payment_status": payment_status,
                                 "transaction_image": blobText,
-                                "notes": JSON.stringify(notes)
+                                "notes": JSON.stringify(noteJSON)
                             };
 
                             // Send payload to server
@@ -4324,7 +4337,7 @@ function processPopup(title, title_extra, data) {
             ordered_transaction_type = reorderSelectOptions([
                 '<option value="Purchase" data-i18n-key="purchase">Purchase</option>',
                 '<option value="Sale" data-i18n-key="sale">Sale</option>',
-                '<option value="Return" data-i18n-key="return">Return</option>',
+                '<option value="Debt" data-i18n-key="debt">Debt</option>',
                 '<option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>',
                 '<option value="Tax" data-i18n-key="tax">Tax</option>',
                 '<option value="Salary" data-i18n-key="salary">Salary</option>',
@@ -4899,7 +4912,7 @@ function processPopup(title, title_extra, data) {
                             <select id="update_transaction_type" class="form-control">
                                 <option value="Purchase" ${data.transaction_type === 'Purchase' ? 'selected' : ''} data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" ${data.transaction_type === 'Sale' ? 'selected' : ''} data-i18n-key="sale">Sale</option>
-                                <option value="Return" ${data.transaction_type === 'Return' ? 'selected' : ''} data-i18n-key="return">Return</option>
+                                <option value="Debt" ${data.transaction_type === 'Debt' ? 'selected' : ''} data-i18n-key="Debt">Debt</option>
                                 <option value="DebtCollect" ${data.transaction_type === 'DebtCollect' ? 'selected' : ''} data-i18n-key="debt_collect">DebtCollect</option>
                                 <option value="Tax" ${data.transaction_type === 'Tax' ? 'selected' : ''} data-i18n-key="tax">Tax</option>
                                 <option value="Salary" ${data.transaction_type === 'Salary' ? 'selected' : ''} data-i18n-key="salary">Salary</option>
