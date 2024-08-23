@@ -389,5 +389,17 @@
   "using_billcode": "Tambah kode bill untuk transaksi ini",
   "keep_in_stock": "Masuk ke dalam stock barang",
   "in_stock_table": "Tabel Barang Masuk Stok",
-  "stock_outflow_table": "Tabel Barang Keluar Stok"
+  "stock_outflow_table": "Tabel Barang Keluar Stok",
+    "january": "Januari",
+    "february": "Februari",
+    "march": "Maret",
+    "april": "April",
+    "may": "Mei",
+    "june": "Juni",
+    "july": "Juli",
+    "agustus": "Agustus",
+    "september": "September",
+    "october": "Oktober",
+    "november": "November",
+    "december": "Desember"
 }

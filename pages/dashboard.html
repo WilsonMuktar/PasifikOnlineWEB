@@ -720,7 +720,7 @@
                   "income": 0,
                 }
               }
-              if (ptype == "Debt") {
+              if (ptype == "Debt" || mt == "Tax" || mt == "Purchase" || mt == "Debt") {
                 monthTrans[month] = {
                   "income": monthTrans[month]["income"],
                   "debt": monthTrans[month]["debt"] + monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt],
@@ -751,8 +751,8 @@
                           <div class="numbers">
                             <center>
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="${months[m]}">${months[m]}</p>
-                                <h5 class="text-sm text-success">${currency(total_monthly_transaction["income"])}</h5>
-                                <h5 class="text-sm text-warning">${currency(total_monthly_transaction["debt"])}</h5>
+                                <h5 class="text-sm text-primary">${currency(total_monthly_transaction["income"])}</h5>
+                                <h5 class="text-sm text-warning" style="margin-top:-10px">${currency(total_monthly_transaction["debt"])}</h5>
                             </center>
                           </div>
                         </div>
@@ -833,12 +833,14 @@
               continue
             }
             monthlyTransactionTotal = monthlyTransactionByTransactionTypeandPaymentType[mt][pt] // all monthly from each category
+            console.log(mt, pt, monthlyTransactionTotal)
             monthlyAccumulateData = []
             accumulateCount = 0
-            for (j in monthBasis) {
+            for (i in monthBasis) {
               accumulateCount += monthlyTransactionTotal[monthBasis[i]]
               monthlyAccumulateData.push(accumulateCount)
             }
+            console.log("Transaction-" + mt, monthlyAccumulateData)
             monthlyDatasets.push({
               label: "Transaction-" + mt,
               tension: 0.4,
