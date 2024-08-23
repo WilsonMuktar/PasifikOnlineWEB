@@ -2877,7 +2877,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
-                    <p class="mb-0" data-i18n-key="add_transaction">${title}</p>
+                    <p class="mb-0" data-i18n-key="add_expense">${title}</p>
                 </div>
             </div>
             <div class="card-body">
@@ -3926,7 +3926,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
-                    <p class="mb-0" data-i18n-key="add_transaction">${title}</p>
+                    <p class="mb-0" data-i18n-key="add_debt">${title}</p>
                 </div>
             </div>
             <div class="card-body">
