@@ -182,7 +182,7 @@
                 <td>&nbsp;</td>
                 <td>Kepada: </td>
                 <td>&nbsp;</td>
-                <td colspan="5" class="border-bottom-dotted"><div id="seller"></div></td></tr>
+                <td colspan="5" class="border-bottom-dotted"><div id="seller" class="text-xs"></div></td></tr>
               <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -381,7 +381,17 @@
           seller = {
             "name": str(data[i].seller_first_name)+" "+str(data[i].seller_last_name),
             "address": "",
-            "phone": ""
+            "phone": "",
+            "date": data[i].transaction_date.replace("T00:00:00Z","")
+          }
+
+          // JIKA Transaction type berupa UTANG, buyer dan seller mesti di balik
+          if ( data[i].transaction_type == "Debt" ) {
+            temp = buyer
+            buyer = seller
+            seller = temp
+            // tambah nama kapal
+            seller["name"] += "\n("+data[i].vessel_name+")"
           }
         }
     }
