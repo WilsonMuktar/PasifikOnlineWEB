@@ -90,7 +90,44 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6 data-i18n-key="stock_table">Stock table</h6>
+                        <h6 data-i18n-key="in_stock_table">in Stock table</h6>
+                        <!--ul class="nav-list">
+                            <li><span onclick="openPopup('Add Transaction','')" >&plus;</span></li>
+                        </ul-->
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table id="in_stock_table" class="table align-items-center justify-content-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="product_id">ProductID</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="product_name">ProductName</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="product_category">ProductCategory</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="quantity">Quantity</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="actions">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="datagrid__row vertical-animation">
+                                    <td><span><div class="datagrid__loader" style="width: 96%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 79%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                                    <td><span><div class="datagrid__loader" style="width: 100%;"></div></span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6 data-i18n-key="stock_outflow_table">Stock Outflow table</h6>
                         <ul class="nav-list">
                             <li><span onclick="openPopup('Add Stock','')" >&plus;</span></li>
                         </ul>
@@ -156,12 +193,20 @@
 <script src="../assets/js/main/main.js"></script>
 <script src="../assets/js/main/auth/login.js"></script>
 <script>
-    // retrieve Stocks table
-    MAKE_REQUEST("GET", stock_api_url, "", true, function (resp){
-        if (resp instanceof Error) {
-            console.log(resp);
+    // retrieve Stocks outflow table
+    MAKE_REQUEST("GET", stock_api_url, "", true, function (outStockResp){
+        if (outStockResp instanceof Error) {
+            console.log(outStockResp);
         } else {
-            processStockTable(resp)
+            // retrieve in-Stocks table from transaction table
+            MAKE_REQUEST("GET", transaction_api_url+"?custom_tag=\"keep_in_stock\":\"true\"", "", true, function (inStockResp){
+                if (inStockResp instanceof Error) {
+                    console.log(inStockResp);
+                } else {
+                    processInStockTable(inStockResp, outStockResp)
+                }
+            })
+            processStockTable(outStockResp)
         }
     })
 </script>

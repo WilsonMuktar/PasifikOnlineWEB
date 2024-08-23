@@ -364,5 +364,7 @@
   "operation_table_data": "Data Tabel",
   "pay_bill_table": "Tabel Bill Transaksi",
   "using_billcode": "Tambah kode bill untuk transaksi ini",
-  "keep_in_stock": "Masuk ke dalam stock barang"
+  "keep_in_stock": "Masuk ke dalam stock barang",
+  "in_stock_table": "Tabel Barang Masuk Stok",
+  "stock_outflow_table": "Tabel Barang Keluar Stok"
 }

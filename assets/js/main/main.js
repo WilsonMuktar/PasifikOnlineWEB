@@ -590,13 +590,73 @@ function processVesselTable(response) {
     table.tBodies[0].innerHTML = rows;
 }
 
+function processInStockTable(InStock, OutStock) {
+    var rows = "";
+    var table = document.getElementById("in_stock_table");
+
+    var InStockData = InStock.data;
+    var OutStockData = OutStock.data;
+    var stockByProduct = {}
+    for (var i = 0; i < InStockData.length; i++) {
+        productID = InStockData[i].product_id;
+        quantity = InStockData[i].quantity;
+        if (productID in stockByProduct) {
+            stockByProduct[productID] = {
+                "product_name": InStockData[i].product_name,
+                "product_category": InStockData[i].product_category,
+                "quantity": stockByProduct[productID].quantity + quantity,
+            }
+        } else {
+            stockByProduct[productID] = {
+                "product_name": InStockData[i].product_name,
+                "product_category": InStockData[i].product_category,
+                "quantity": quantity,
+            }
+        }
+    }
+    for (var i = 0; i < OutStockData.length; i++) {
+        productID = OutStockData[i].product_id;
+        quantity = OutStockData[i].quantity;
+        if (productID in stockByProduct) {
+            stockByProduct[productID] = {
+                "product_name": OutStockData[i].product_name,
+                "product_category": OutStockData[i].product_category,
+                "quantity": stockByProduct[productID].quantity + quantity,
+            }
+        } else {
+            stockByProduct[productID] = {
+                "product_name": OutStockData[i].product_name,
+                "product_category": OutStockData[i].product_category,
+                "quantity": quantity,
+            }
+        }
+    }
+
+    for (var productID in stockByProduct) {
+        console.log(productID, stockByProduct[productID]);
+            rows += `
+                <tr>
+                    <td><span class="text-xs font-weight-bold">${productID}</span></td>
+                    <td><span class="text-xs font-weight-bold">${stockByProduct[productID].product_name}</span></td>
+                    <td><span class="text-xs font-weight-bold">${stockByProduct[productID].product_category}</span></td>
+                    <td><span class="text-xs font-weight-bold">${stockByProduct[productID].quantity}</span></td>
+                    <td class="align-middle text-center">
+                        <button class="btn btn-link text-secondary mb-0" onclick='redirectPage(transaction_api_url+"?custom_tag=%22keep_in_stock%22:%22true%22&product_id=${productID}")'>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+    }
+    table.tBodies[0].innerHTML = rows
+}
+
 function processStockTable(response) {
     var data = response.data;
     var rows = "";
     var table = document.getElementById("stock_table");
 
     for (var i = data.length - 1; i >= 0; i--) {
-        console.log(data[i])
         rows += `
         <tr>
             <td>
