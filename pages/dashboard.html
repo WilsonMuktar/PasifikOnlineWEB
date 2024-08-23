@@ -751,8 +751,8 @@
                           <div class="numbers">
                             <center>
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="${months[m]}">${months[m]}</p>
-                                <h5 class="text-sm text-primary">${currency(total_monthly_transaction["income"])}</h5>
-                                <h5 class="text-sm text-warning" style="margin-top:-10px">${currency(total_monthly_transaction["debt"])}</h5>
+                                <h5 class="text-sm text-primary">${currency(total_monthly_transaction["income"]-total_monthly_transaction["debt"])}</h5>
+                                <h5 class="text-sm text-warning" style="margin-top:-10px">(-${currency(total_monthly_transaction["debt"])})</h5>
                             </center>
                           </div>
                         </div>
