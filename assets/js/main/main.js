@@ -817,7 +817,7 @@ function processTransactionTable(response) {
     `;
         if (data[i].transaction_type=='DebtCollect') {
             total_final_price_page += data[i].total_price
-        } else if (data[i].transaction_type=='Tax'||data[i].transaction_type=='Salary'||data[i].transaction_type=='Purchase') {
+        } else if (data[i].transaction_type=='Tax'||data[i].transaction_type=='Salary'||data[i].transaction_type=='Purchase'||data[i].transaction_type=='Debt') {
             total_final_price_page -= data[i].total_price
         } else if (data[i].transaction_type=='Sale') {
             total_final_price_page += data[i].total_price
