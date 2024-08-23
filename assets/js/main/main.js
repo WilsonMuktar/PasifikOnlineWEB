@@ -6330,7 +6330,7 @@ function processPopup(title, title_extra, data) {
                     MAKE_REQUEST("DELETE", transaction_api_url+data.transaction_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
                             alert("Failed to delete transaction! \nerror:" + response.message);
-                            return false;
+                            location.reload();
                         }
                         // Refresh the page
                         location.reload();
