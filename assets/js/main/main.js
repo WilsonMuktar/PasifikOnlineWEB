@@ -55,7 +55,6 @@ function reorderSelectOptions(options, selected) {
         if (options[i].includes(`value="${selected}"`)) {
             foundSelected = true
             ordered += options[i].replace("option value", "option selected value")
-            console.log(foundSelected)
         } else {
             ordered += options[i]
         }
@@ -140,6 +139,23 @@ function convertPaymentStatus(input) {
         return "DONE"
     }
     return "?"
+}
+// dashboard total overview animation for value increment
+function animateValue(id, start, end, duration, isCurrency) {
+    if (start === end) return;
+    var range = end - start;
+    var current = start;
+    var increment = end > start? end/duration : -end/duration;
+    var stepTime = Math.abs(Math.floor(duration / range));
+    var obj = document.getElementById(id);
+    var timer = setInterval(function() {
+        current += increment;
+        if (isCurrency) { obj.innerHTML =  currency(current);} else {obj.innerHTML =  current;}
+        if (current >= end) {
+            clearInterval(timer);
+            if (isCurrency) { obj.innerHTML =  currency(end);} else {obj.innerHTML =  end;}
+        }
+    }, stepTime);
 }
 
 ////////////////////
@@ -2333,7 +2349,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_buyer_list"]').innerHTML = options
-                document.getElementById("assign_seller_list").innerHTML = options
+                document.getElementById("assign_seller_list").innerHTML = reorderSelectOptions(options, company_people_id) // auto-pick seller as company by default for add transaction
             })
             MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
                 if (response instanceof Error) {
@@ -2461,6 +2477,12 @@ function processPopup(title, title_extra, data) {
                                     <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input name="keep_in_stock" type="checkbox">
+                                    <label for="keep_in_stock" class="form-control-label" data-i18n-key="keep_in_stock">Keep in product stock</label>
+                                </div>
+                            </div>
                             <div class="col-md-1 justify-content-xxl-center content-center text-center text-bg-warning" style="margin:auto;" onclick="if(document.getElementById('multiple_product_transaction').getElementsByClassName('row').length > 1){this.parentElement.remove()}">
                                 &minus;
                             </div>
@@ -2530,6 +2552,10 @@ function processPopup(title, title_extra, data) {
 
                         // multiple call for all product
                         rows = document.getElementById("multiple_product_transaction").getElementsByClassName("row")
+                        if (rows.length == 0) {
+                            alert("no new transaction is available to be added!")
+                            return
+                        }
                         for(i=0;i<rows.length;i++) {
                             if (rows[i].querySelector('select[name="assign_buyer_list"]').length == 0) {continue;}
                             if (rows[i].querySelector('select[name="assign_product_list"]').length == 0) {continue;}
@@ -2543,6 +2569,10 @@ function processPopup(title, title_extra, data) {
                                 parseInt(rows[i].querySelector('input[name="unit_price"]').value) != 0 && rows[i].querySelector('input[name="unit_price"]').value != "") {
                                 totalPrice = parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value))
                             }
+
+                            // extra value to be kept
+                            keep_product_in_stock = rows[i].querySelector('select[name="keep_in_stock"]').checked
+                            notes["keep_in_stock"] = keep_product_in_stock
 
                             // Construct payload
                             let payload = {

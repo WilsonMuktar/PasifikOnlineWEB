@@ -363,5 +363,6 @@
   "operation_email": "Email",
   "operation_table_data": "Data Tabel",
   "pay_bill_table": "Tabel Bill Transaksi",
-  "using_billcode": "Tambah kode bill untuk transaksi ini"
+  "using_billcode": "Tambah kode bill untuk transaksi ini",
+  "keep_in_stock": "Masuk ke dalam stock barang"
 }

@@ -3,6 +3,8 @@ var web_service_id = "54311ba1-353d-4c28-a142-4eb465dcf1c1"
 var web_client_id = "jRqOOEBeGle1L4D31cCXai1h"
 var web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
 
+var company_people_id = "1931b5d7-c89e-4eea-b639-18bf7060ba6c"
+
 // check rather running in local
 if (window.location.href.indexOf("file:///") > -1) {
     envHost = "https://pasifikonline-yenwie-c0344cc5.koyeb.app" //"http://localhost:8080"

@@ -728,10 +728,16 @@
             }
           }
         }
-        document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction) // not include debt_collect
+        /*document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction) // not include debt_collect
         document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income - total_yearly_debt + total_yearly_debt_collect - total_yearly_expense) // not include debt
         document.getElementById("dashboard_total_expense").innerHTML = currency(total_yearly_expense)
         document.getElementById("dashboard_total_debt").innerHTML = currency(total_yearly_debt - total_yearly_debt_collect) // debt - debt_collect
+        */
+        // Animate the element's value from x to y:
+        animateValue("dashboard_total_transaction", 0, total_yearly_transaction, 200, true);
+        animateValue("dashboard_total_income", 0, total_yearly_income - total_yearly_debt + total_yearly_debt_collect - total_yearly_expense, 200, true);
+        animateValue("dashboard_total_expense", 0, total_yearly_expense, 200, true);
+        animateValue("dashboard_total_debt", 0, total_yearly_debt - total_yearly_debt_collect, 200, true);
 
         // 3. CHART TRANSACTION OVERVIEW
         // process monthlyDatasets for Chart
