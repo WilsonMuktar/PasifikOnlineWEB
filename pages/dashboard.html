@@ -171,6 +171,8 @@
         </div>
       </div>
       <hr class="horizontal dark">
+      <div class="row" id="monthly_transaction_row"></div>
+      <hr class="horizontal dark">
       <div class="row mt-4">
         <div class="col-lg-12 mb-lg-0 mb-4">
           <div class="card z-index-2 h-100">
@@ -502,7 +504,6 @@
       };
     }
     thisWeek = getWeekStartAndEndDates()
-    console.log(thisWeek.start, thisWeek.end)
     MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+thisWeek.start+"&transaction_date_to="+thisWeek.end+"&order_by=transaction_date&order_type=desc", "", true, function(response){
       if (response instanceof Error) {
         alert("Failed to get transaction List \n"+ response)
@@ -546,7 +547,7 @@
         // group all transaction to monthly basis
         monthlyTransactionByFishAndTransactionType = {}
         monthlyTransactionByTripNameAndTransactionType = {}
-        monthlyTransactionByTransactionType = {}
+        monthlyTransactionByTransactionTypeandPaymentType = {}
         monthlyTransactionByPaymentType = {}
         // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
         for (i = 0; i < data.length; i++) {
@@ -556,8 +557,13 @@
           month = transaction["transaction_date"].split("-")[1]
           transactionType = transaction["transaction_type"]
           captainName = str(transaction["captain_first_name"]) + " " + str(transaction["captain_last_name"])
-          if (monthlyTransactionByTransactionType[transactionType] == undefined) { //initiate monthly
-            monthlyTransactionByTransactionType[transactionType] = {
+
+          paymentType = transaction["payment_type"]
+          if (monthlyTransactionByTransactionTypeandPaymentType[transactionType] == undefined) {
+            monthlyTransactionByTransactionTypeandPaymentType[transactionType] = {}
+          }
+          if (monthlyTransactionByTransactionTypeandPaymentType[transactionType][paymentType] == undefined) {//initiate monthly
+            monthlyTransactionByTransactionTypeandPaymentType[transactionType][paymentType] = {
               'captain': captainName,
               '01': 0,
               '02': 0,
@@ -574,7 +580,7 @@
             }
           }
           // accumulate by category and month groupind
-          monthlyTransactionByTransactionType[transactionType][month] += transaction["total_price"]
+          monthlyTransactionByTransactionTypeandPaymentType[transactionType][paymentType][month] += transaction["total_price"]
 
           // --> group by paymentType as DEBT price
           paymentType = transaction["payment_type"]
@@ -674,7 +680,8 @@
           } else {
             fishPriceMap[transaction["unit_price"]]["total"] += 1
           }
-          // 1. TOP10 TRANSACTION OVERVIEW
+
+          // 0. TOP10 TRANSACTION OVERVIEW
           // update top10 Transaction Table
           if (i < 10) {
             rows += `
@@ -695,6 +702,68 @@
         }
         top10TransactionTable.tBodies[0].innerHTML = rows;
 
+        console.log("-------------------------")
+        // 1. Monthly total transaction row
+        monthTrans = {}
+        for (const mt in monthlyTransactionByTransactionTypeandPaymentType) {
+          for (const pt in monthlyTransactionByTransactionTypeandPaymentType[mt]) {
+            for (const mtt in monthlyTransactionByTransactionTypeandPaymentType[mt][pt]) {
+              ttype = mt
+              ptype = pt
+              month = mtt
+              if (mtt == "captain") {
+                continue
+              }
+              if (monthTrans[month] == undefined) {
+                monthTrans[month] = {
+                  "debt": 0,
+                  "income": 0,
+                }
+              }
+              if (ptype == "Debt") {
+                monthTrans[month] = {
+                  "income": monthTrans[month]["income"],
+                  "debt": monthTrans[month]["debt"] + monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt],
+                }
+              } else {
+                monthTrans[month] = {
+                  "income": monthTrans[month]["income"] + monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt],
+                  "debt": monthTrans[month]["debt"],
+                }
+              }
+            }
+          }
+        }
+        monthlyRows = ""
+        allmonth = ["01","02","03","04","05","06","07","08","09","10","11","12"]
+        for ( let m in allmonth ) {
+          month = allmonth[m]
+          startMonth = currentYear + "-" + month + "-01"
+          lastDayOfTheMonth = new Date(currentYear, parseInt(month), 0)
+          endMonth = lastDayOfTheMonth.toISOString().split("T")[0];
+          total_monthly_transaction = monthTrans[month]
+          monthlyRows += `
+                  <div class="col-xl-2">
+                  <div class="card">
+                    <div class="card-body p-2">
+                      <div class="row">
+                        <div class="col-12" onclick="redirectPage('./pages/transaction.html?transaction_date_from=${startMonth}&transaction_date_to=${endMonth}&order_by=transaction_date,total_price&order_type=ASC\`')">
+                          <div class="numbers">
+                            <center>
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="${months[m]}">${months[m]}</p>
+                                <h5 class="text-sm text-success">${currency(total_monthly_transaction["income"])}</h5>
+                                <h5 class="text-sm text-warning">${currency(total_monthly_transaction["debt"])}</h5>
+                            </center>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               `
+        }
+        $("#monthly_transaction_row").html(monthlyRows)
+
         // 2. TOTAL TRANSACTION OVERVIEW
         // process Total Transaction, Total Income, Total Expense, Total Debt
         var total_yearly_transaction = 0
@@ -702,23 +771,27 @@
         var total_yearly_expense = 0
         var total_yearly_debt = 0
         var total_yearly_fish_debt_collect = 0
-        for (const mt in monthlyTransactionByTransactionType) {
-          for (const mtt in monthlyTransactionByTransactionType[mt]) {
-            if(mtt == 'captain'){continue}
-            // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
-            if (mt == "Sale" || mt == "ColdStorage") {
-              total_yearly_income += monthlyTransactionByTransactionType[mt][mtt]
-              total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
-            } else if (mt == "FishDebtCollect") {
-              total_yearly_fish_debt_collect += monthlyTransactionByTransactionType[mt][mtt]
-              // total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt] <- skip fishDebtCollect
-            } else if (mt == "Tax" || mt == "Salary" || mt == "Debt") {
-              total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
-            } else if (mt == "DebtCollect") {
-              total_yearly_expense -= monthlyTransactionByTransactionType[mt][mtt]
-            } else {
-              total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
-              total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
+        for (const mt in monthlyTransactionByTransactionTypeandPaymentType) {
+          for (const pt in monthlyTransactionByTransactionTypeandPaymentType[mt]) {
+            for (const mtt in monthlyTransactionByTransactionTypeandPaymentType[mt][pt]) {
+              if (mtt == 'captain') {
+                continue
+              }
+              // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
+              if (mt == "Sale") {
+                total_yearly_income += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
+                total_yearly_transaction += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
+              } else if (mt == "FishDebtCollect") {
+                total_yearly_fish_debt_collect += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
+                // total_yearly_transaction += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt] <- skip fishDebtCollect
+              } else if (mt == "Tax" || mt == "Salary" || mt == "Debt") {
+                total_yearly_expense += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
+              } else if (mt == "DebtCollect") {
+                total_yearly_expense -= monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
+              } else {
+                total_yearly_expense += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
+                total_yearly_transaction += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
+              }
             }
           }
         }
@@ -753,26 +826,31 @@
         monthlyDatasets = []
         fishDebtCollected = {}
         monthBasis = ["01","02","03","04","05","06","07","08","09","10","11","12"]
-        for (const mt in monthlyTransactionByTransactionType) {
-          if (mt == 'FishDebtCollect') {fishDebtCollected = monthlyTransactionByTransactionType[mt]; continue}
-          monthlyTransactionTotal = monthlyTransactionByTransactionType[mt] // all monthly from each category
-          monthlyAccumulateData = []
-          accumulateCount = 0
-          for(i in monthBasis) {
-            accumulateCount += monthlyTransactionTotal[monthBasis[i]]
-            monthlyAccumulateData.push(accumulateCount)
+        for (const mt in monthlyTransactionByTransactionTypeandPaymentType) {
+          for (const pt in monthlyTransactionByTransactionTypeandPaymentType[mt]) {
+            if (mt == 'FishDebtCollect') {
+              fishDebtCollected = monthlyTransactionByTransactionTypeandPaymentType[mt][pt];
+              continue
+            }
+            monthlyTransactionTotal = monthlyTransactionByTransactionTypeandPaymentType[mt][pt] // all monthly from each category
+            monthlyAccumulateData = []
+            accumulateCount = 0
+            for (j in monthBasis) {
+              accumulateCount += monthlyTransactionTotal[monthBasis[i]]
+              monthlyAccumulateData.push(accumulateCount)
+            }
+            monthlyDatasets.push({
+              label: "Transaction-" + mt,
+              tension: 0.4,
+              pointRadius: 0,
+              borderColor: "#5e72e4",
+              backgroundColor: gradientGREEN,
+              borderWidth: 3,
+              fill: true,
+              data: monthlyAccumulateData,
+              maxBarThickness: 6
+            })
           }
-          monthlyDatasets.push({
-            label: "Transaction-" + mt,
-            tension: 0.4,
-            pointRadius: 0,
-            borderColor: "#5e72e4",
-            backgroundColor: gradientGREEN,
-            borderWidth: 3,
-            fill: true,
-            data: monthlyAccumulateData,
-            maxBarThickness: 6
-          })
         }
         for (const pType in monthlyTransactionByPaymentType) {
           if (pType == "DEBT") { // DEBT - DEBTCOLLECTED monthly basis
@@ -1035,7 +1113,6 @@
           let monthIndex = parseInt(monthStr, 10);
           let firstDay = new Date(currentYear, monthIndex-1, 1);
           let lastDay = new Date(currentYear, monthIndex, 0);
-          const months = ["January", "February", "March", "April","May", "June", "July", "August","September", "October", "November", "December"];
           let month = months[monthIndex - 1];
           startDate = `${firstDay.getFullYear()}-${padZeroes(firstDay.getMonth() + 1)}-${padZeroes(firstDay.getDate())}`;
           endDate = `${lastDay.getFullYear()}-${padZeroes(lastDay.getMonth() + 1)}-${padZeroes(lastDay.getDate())}`;

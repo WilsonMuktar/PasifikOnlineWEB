@@ -40,6 +40,8 @@ const logs_api_url = envHost+"/keyauth/v1/logs/"
 var main_page_url= "pages/dashboard.html"
 const login_page_url= "pages/sign-in.html"
 
+const months = ["January", "February", "March", "April","May", "June", "July", "August","September", "October", "November", "December"];
+
 /*
 * <li class="nav-item">
       <a class="nav-link " href="../pages/dashboard.html">
@@ -133,3 +135,4 @@ const main_nav_bar = {
         {"nav_name": "profile.html", "nav_path": "../pages/profile.html", "nav_icon": "ni ni-single-02 text-secondary", "nav_title": "Profile", "nav_title_i18n":"breadcrumb_profile", "nav_separator": false},
     ]
 }
+
