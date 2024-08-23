@@ -2623,7 +2623,7 @@ function processPopup(title, title_extra, data) {
                             <label for="payment_status" class="form-control-label" data-i18n-key="payment_status">Payment Status</label>
                             <select id="payment_status" class="form-control" data-toggle="select">
                                 <option value="0" data-i18n-key="pending">PENDING</option>
-                                <option value="1" data-i18n-key="done">DONE</option>
+                                <option value="1" data-i18n-key="done" selected>DONE</option>
                             </select>
                         </div>
                     </div>
@@ -3979,7 +3979,7 @@ function processPopup(title, title_extra, data) {
                             <label for="payment_status" class="form-control-label" data-i18n-key="payment_status">Payment Status</label>
                             <select id="payment_status" class="form-control" data-toggle="select">
                                 <option value="0" data-i18n-key="pending">PENDING</option>
-                                <option value="1" data-i18n-key="done">DONE</option>
+                                <option value="1" data-i18n-key="done" selected>DONE</option>
                             </select>
                         </div>
                     </div>
