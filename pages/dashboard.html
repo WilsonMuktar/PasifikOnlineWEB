@@ -701,7 +701,7 @@
         var total_yearly_income = 0
         var total_yearly_expense = 0
         var total_yearly_debt = 0
-        var total_yearly_debt_collect = 0
+        var total_yearly_fish_debt_collect = 0
         for (const mt in monthlyTransactionByTransactionType) {
           for (const mtt in monthlyTransactionByTransactionType[mt]) {
             if(mtt == 'captain'){continue}
@@ -709,9 +709,9 @@
             if (mt == "Sale" || mt == "ColdStorage") {
               total_yearly_income += monthlyTransactionByTransactionType[mt][mtt]
               total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt]
-            } else if (mt == "DebtCollect") {
-              total_yearly_debt_collect += monthlyTransactionByTransactionType[mt][mtt]
-              // total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt] <- skip debtCollect
+            } else if (mt == "FishDebtCollect") {
+              total_yearly_fish_debt_collect += monthlyTransactionByTransactionType[mt][mtt]
+              // total_yearly_transaction += monthlyTransactionByTransactionType[mt][mtt] <- skip fishDebtCollect
             } else if (mt == "Tax" || mt == "Salary" || mt == "Debt") {
               total_yearly_expense += monthlyTransactionByTransactionType[mt][mtt]
             } else {
@@ -728,16 +728,16 @@
             }
           }
         }
-        /*document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction) // not include debt_collect
-        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income - total_yearly_debt + total_yearly_debt_collect - total_yearly_expense) // not include debt
+        /*document.getElementById("dashboard_total_transaction").innerHTML = currency(total_yearly_transaction) // not include fish_debt_collect
+        document.getElementById("dashboard_total_income").innerHTML = currency(total_yearly_income - total_yearly_debt + total_yearly_fish_debt_collect - total_yearly_expense) // not include debt
         document.getElementById("dashboard_total_expense").innerHTML = currency(total_yearly_expense)
-        document.getElementById("dashboard_total_debt").innerHTML = currency(total_yearly_debt - total_yearly_debt_collect) // debt - debt_collect
+        document.getElementById("dashboard_total_debt").innerHTML = currency(total_yearly_debt - total_yearly_fish_debt_collect) // debt - fish_debt_collect
         */
         // Animate the element's value from x to y:
         animateValue("dashboard_total_transaction", 0, total_yearly_transaction, 200, true);
-        animateValue("dashboard_total_income", 0, total_yearly_income - total_yearly_debt + total_yearly_debt_collect - total_yearly_expense, 200, true);
+        animateValue("dashboard_total_income", 0, total_yearly_income - total_yearly_debt + total_yearly_fish_debt_collect - total_yearly_expense, 200, true);
         animateValue("dashboard_total_expense", 0, total_yearly_expense, 200, true);
-        animateValue("dashboard_total_debt", 0, total_yearly_debt - total_yearly_debt_collect, 200, true);
+        animateValue("dashboard_total_debt", 0, total_yearly_debt - total_yearly_fish_debt_collect, 200, true);
 
         // 3. CHART TRANSACTION OVERVIEW
         // process monthlyDatasets for Chart
@@ -749,10 +749,10 @@
         gradientRED.addColorStop(0, 'rgba(229, 239, 255, 1)')
         gradientRED.addColorStop(1, 'rgb(245,60,60, 1)')
         monthlyDatasets = []
-        debtCollected = {}
+        fishDebtCollected = {}
         monthBasis = ["01","02","03","04","05","06","07","08","09","10","11","12"]
         for (const mt in monthlyTransactionByTransactionType) {
-          if (mt == 'DebtCollect') {debtCollected = monthlyTransactionByTransactionType[mt]; continue}
+          if (mt == 'FishDebtCollect') {fishDebtCollected = monthlyTransactionByTransactionType[mt]; continue}
           monthlyTransactionTotal = monthlyTransactionByTransactionType[mt] // all monthly from each category
           monthlyAccumulateData = []
           accumulateCount = 0
@@ -778,7 +778,7 @@
             monthlyAccumulateIncomeData = []
             accumulateCount = 0
             for(i in monthBasis) {
-              accumulateCount += monthlyTransactionTotal[monthBasis[i]] - debtCollected[monthBasis[i]]
+              accumulateCount += monthlyTransactionTotal[monthBasis[i]] - fishDebtCollected[monthBasis[i]]
               monthlyAccumulateIncomeData.push(accumulateCount)
             }
             monthlyDatasets.push({
@@ -854,7 +854,7 @@
                 continue
               }
               // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
-              if (mttype == "Sale" || mttype == "ColdStorage" || mttype == "DebtCollect") {
+              if (mttype == "Sale" || mttype == "ColdStorage" || mttype == "FishDebtCollect") {
                 TripCatchTransactions[mt]['income'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
               } else if (mttype == "Debt") {
                 TripCatchTransactions[mt]['debt'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]

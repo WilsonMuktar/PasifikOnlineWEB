@@ -784,7 +784,7 @@ function processTransactionTable(response) {
         }*/
 
         rows += `
-        <tr class="${ data[i].transaction_type=='Salary'? "bg-gradient-warning" : (data[i].transaction_type=='Tax'? "bg-gradient-warning" : (data[i].transaction_type=='DebtCollect'? "bg-gradient-success" : ""))}">
+        <tr class="${ data[i].transaction_type=='Salary'? "bg-gradient-warning" : (data[i].transaction_type=='Tax'? "bg-gradient-warning" : (data[i].transaction_type=='FishDebtCollect'? "bg-gradient-success" : ""))}">
             <td hidden>
                 <div class="d-flex px-2">
                     <div>
@@ -815,7 +815,7 @@ function processTransactionTable(response) {
             </td>
         </tr>
     `;
-        if (data[i].transaction_type=='DebtCollect') {
+        if (data[i].transaction_type=='FishDebtCollect') {
             total_final_price_page += data[i].total_price
         } else if (data[i].transaction_type=='Tax'||data[i].transaction_type=='Salary'||data[i].transaction_type=='Purchase'||data[i].transaction_type=='Debt') {
             total_final_price_page -= data[i].total_price
@@ -1967,6 +1967,7 @@ function processPopup(title, title_extra, data) {
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
                                 <option value="Debt" data-i18n-key="debt">Debt</option>
                                 <option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>
+                                <option value="FishDebtCollect" data-i18n-key="fish_debt_collect">FishDebtCollect</option>
                                 <option value="Tax" data-i18n-key="tax">Tax</option>
                                 <option value="Salary" data-i18n-key="salary">Salary</option>
                                 <option value="ColdStorage" data-i18n-key="cold_storage">Cold Storage</option>
@@ -2459,6 +2460,7 @@ function processPopup(title, title_extra, data) {
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Debt" data-i18n-key="debt">Debt</option>
                                 <option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>
+                                <option value="FishDebtCollect" data-i18n-key="fish_debt_collect">FishDebtCollect</option>
                                 <option value="Tax" data-i18n-key="tax">Tax</option>
                                 <option value="Salary" data-i18n-key="salary">Salary</option>
                                 <option value="ColdStorage" data-i18n-key="cold_storage">Cold Storage</option>
@@ -3052,7 +3054,7 @@ function processPopup(title, title_extra, data) {
                         <div class="form-group">
                             <label for="transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
                             <select id="transaction_type" class="form-control" data-toggle="select"> 
-                                <option value="DebtCollect" data-i18n-key="debt_collect" selected>DebtCollect</option>
+                                <option value="FishDebtCollect" data-i18n-key="fish_debt_collect" selected>FishDebtCollect</option>
                             </select>
                         </div>
                     </div>
@@ -3201,7 +3203,7 @@ function processPopup(title, title_extra, data) {
                     }
                 });
             }]
-        case 'Add DebtCollect':
+        case 'Add FishDebtCollect':
             MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
                 if (response instanceof Error) {
                     alert("Add transaction get vessel list failed!")
@@ -3265,7 +3267,7 @@ function processPopup(title, title_extra, data) {
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
-                    <p class="mb-0" data-i18n-key="add_debt_collect">${title}</p>
+                    <p class="mb-0" data-i18n-key="add_fish_debt_collect">${title}</p>
                 </div>
             </div>
             <div class="card-body">
@@ -3280,7 +3282,7 @@ function processPopup(title, title_extra, data) {
                         <div class="form-group">
                             <label for="transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
                             <select id="transaction_type" class="form-control" data-toggle="select"> 
-                                <option value="DebtCollect" data-i18n-key="debt_collect" selected>DebtCollect</option>
+                                <option value="FishDebtCollect" data-i18n-key="fish_debt_collect" selected>FishDebtCollect</option>
                             </select>
                         </div>
                     </div>
@@ -3340,8 +3342,8 @@ function processPopup(title, title_extra, data) {
                             </div>
                             <div class="col-md-3">
                               <div class="form-group">
-                                <label for="debt_collect_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
-                                <input name="debt_collect_notes" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
+                                <label for="fish_debt_collect_notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                                <input name="fish_debt_collect_notes" class="form-control" type="text" onfocus="focused(this)" onfocusout="defocused(this)">
                               </div>
                             </div>
                             <div class="col-md-6" hidden>
@@ -3357,7 +3359,7 @@ function processPopup(title, title_extra, data) {
                     </div>
                 </div>
                 <hr class="horizontal dark">
-                <button id="add_debt_collect_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_debt_collect_btn">ADD DEBTCOLLECT</button>
+                <button id="add_fish_debt_collect_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_fish_debt_collect_btn">ADD FISHDEBTCOLLECT</button>
             </div>
         </div>
     `, function (){
@@ -3365,7 +3367,7 @@ function processPopup(title, title_extra, data) {
                     $('#assign_seller_list').select2({dropdownParent: $('#myModal')});
                     loadLocalization(localStorage.getItem("localization_language"))
                 });
-                document.getElementById("add_debt_collect_btn").addEventListener('click', function (e) {
+                document.getElementById("add_fish_debt_collect_btn").addEventListener('click', function (e) {
                     // Retrieve input values
                     let transaction_date = document.getElementById("transaction_date").value+"T00:00:00Z";
                     let transaction_type = document.getElementById("transaction_type").value;
@@ -3405,7 +3407,7 @@ function processPopup(title, title_extra, data) {
                                 "payment_type": payment_type,
                                 "payment_status": payment_status,
                                 "transaction_image": blobText,
-                                "notes": rows[i].querySelector('input[name="debt_collect_notes"]').value,
+                                "notes": rows[i].querySelector('input[name="fish_debt_collect_notes"]').value,
                             };
 
                             // Send payload to server
@@ -3648,7 +3650,7 @@ function processPopup(title, title_extra, data) {
                             crediter = rows[i].querySelector('select[name="assign_crediter_list"]').value
                             newCrediterPayload = {
                                 "transaction_date": transaction_date,
-                                "transaction_type": "DebtCollect", // paying with crediter debt
+                                "transaction_type": "FishDebtCollect", // paying with crediter debt
                                 "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
                                 "quantity": 1,
                                 "unit_price": parseFloat(rows[i].querySelector('input[name="total_price"]').value),
@@ -4339,6 +4341,7 @@ function processPopup(title, title_extra, data) {
                 '<option value="Sale" data-i18n-key="sale">Sale</option>',
                 '<option value="Debt" data-i18n-key="debt">Debt</option>',
                 '<option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>',
+                '<option value="FishDebtCollect" data-i18n-key="fish_debt_collect">FishDebtCollect</option>',
                 '<option value="Tax" data-i18n-key="tax">Tax</option>',
                 '<option value="Salary" data-i18n-key="salary">Salary</option>',
                 '<option value="COLDSTORAGE" data-i18n-key="cold_storage">Cold Storage</option>',
@@ -4914,6 +4917,7 @@ function processPopup(title, title_extra, data) {
                                 <option value="Sale" ${data.transaction_type === 'Sale' ? 'selected' : ''} data-i18n-key="sale">Sale</option>
                                 <option value="Debt" ${data.transaction_type === 'Debt' ? 'selected' : ''} data-i18n-key="Debt">Debt</option>
                                 <option value="DebtCollect" ${data.transaction_type === 'DebtCollect' ? 'selected' : ''} data-i18n-key="debt_collect">DebtCollect</option>
+                                <option value="FishDebtCollect" ${data.transaction_type === 'FishDebtCollect' ? 'selected' : ''} data-i18n-key="fish_debt_collect">FishDebtCollect</option>
                                 <option value="Tax" ${data.transaction_type === 'Tax' ? 'selected' : ''} data-i18n-key="tax">Tax</option>
                                 <option value="Salary" ${data.transaction_type === 'Salary' ? 'selected' : ''} data-i18n-key="salary">Salary</option>
                                 <option value="ColdStorage" ${data.transaction_type === 'ColdStorage' ? 'selected' : ''} data-i18n-key="cold_storage">Cold Storage</option>

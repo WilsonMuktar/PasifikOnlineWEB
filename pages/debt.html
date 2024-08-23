@@ -103,7 +103,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="buyer">Buyer</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt">Debt</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="quantity">Quantity</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt_collect">DebtCollect</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="fish_debt_collect">FishDebtCollect</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt_final">Final</th>
                                 </tr>
                                 </thead>
@@ -126,7 +126,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6 data-i18n-key="giro_table" onclick="redirectPage('./pages/transaction.html?transaction_type=DebtCollect&payment_type=GIRO')">Giro table</h6>
+                        <h6 data-i18n-key="giro_table" onclick="redirectPage('./pages/transaction.html?transaction_type=FishDebtCollect&payment_type=GIRO')">Giro table</h6>
                         <ul class="nav-list">
                             <li><span onclick="openPopup('Add Giro','')" >&plus;</span></li>
                         </ul>
@@ -164,14 +164,14 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6 data-i18n-key="debt_collected_table" onclick="redirectPage('./pages/transaction.html?transaction_type=DebtCollect&payment_type=CASH')">Debt Collected Table</h6>
+                        <h6 data-i18n-key="fish_debt_collected_table" onclick="redirectPage('./pages/transaction.html?transaction_type=FishDebtCollect&payment_type=CASH')">Fish Debt Collected Table</h6>
                         <ul class="nav-list">
-                            <li><span onclick="openPopup('Add DebtCollect','')" >&plus;</span></li>
+                            <li><span onclick="openPopup('Add FishDebtCollect','')" >&plus;</span></li>
                         </ul>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
-                            <table id="debt_collected_table" class="table align-items-center justify-content-center mb-0" style="margin-left: 2%;">
+                            <table id="fish_debt_collected_table" class="table align-items-center justify-content-center mb-0" style="margin-left: 2%;">
                                 <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="crediter">Crediter</th>
@@ -262,7 +262,7 @@
                         "quantity": 0,
                         "buyer_name": buyerName,
                         "buyer_id": buyerID,
-                        "debt_collected": 0,
+                        "fish_debt_collected": 0,
                     }
                 }
                 // debt
@@ -270,9 +270,9 @@
                     BuyerDEBT[buyerID]["total_price"] += transaction["total_price"]
                     BuyerDEBT[buyerID]["quantity"] += transaction["quantity"]
                 } else {
-                    // debtCollect
-                    if (transactionType == "DebtCollect") {
-                        BuyerDEBT[buyerID]["debt_collected"] += transaction["total_price"]
+                    // fishDebtCollect
+                    if (transactionType == "FishDebtCollect") {
+                        BuyerDEBT[buyerID]["fish_debt_collected"] += transaction["total_price"]
                     }
                 }
             }
@@ -282,7 +282,7 @@
             dataArray.sort((a, b) => b.total_price - a.total_price);
             let sortedData = {};
             dataArray.forEach(item => {
-                sortedData[item.key] = { quantity: item.quantity, total_price: item.total_price, debt_collected: item.debt_collected, buyer_name: item.buyer_name, buyer_id: item.buyer_id };
+                sortedData[item.key] = { quantity: item.quantity, total_price: item.total_price, fish_debt_collected: item.fish_debt_collected, buyer_name: item.buyer_name, buyer_id: item.buyer_id };
             });
             BuyerDEBT = sortedData
 
@@ -300,13 +300,13 @@
                           <td><div><h6 class="text-sm mb-0">${BuyerDEBT[bid]["buyer_name"]}</h6></div></td>
                           <td class="bg-gradient-warning" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&payment_type=DEBT')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${BuyerDEBT[bid]["quantity"].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
-                          <td class="bg-gradient-success" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&transaction_type=DebtCollect')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
-                          <td class="${ BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"] == 0 ? "bg-gradient-success":"bg-gradient-warning"}" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
+                          <td class="bg-gradient-success" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&transaction_type=FishDebtCollect')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["fish_debt_collected"])}</h6></div></td>
+                          <td class="${ BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["fish_debt_collected"] == 0 ? "bg-gradient-success":"bg-gradient-warning"}" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
                           </tr>`
                     total_price_page+=BuyerDEBT[bid]["total_price"]
                     total_quantity+=BuyerDEBT[bid]["quantity"]
-                    total_debt_left += (BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["debt_collected"])
-                    total_debt_payback+= BuyerDEBT[bid]["debt_collected"]
+                    total_debt_left += (BuyerDEBT[bid]["total_price"]-BuyerDEBT[bid]["fish_debt_collected"])
+                    total_debt_payback+= BuyerDEBT[bid]["fish_debt_collected"]
                 }
             // adding total below
             rows += "<tr style='background-color: lightgrey;'>" +
@@ -318,7 +318,7 @@
             debtTable.tBodies[0].innerHTML = rows;
         }
     });
-    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&transaction_type=DebtCollect", "", true, function(response){
+    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&transaction_type=FishDebtCollect", "", true, function(response){
         if (response instanceof Error) {
             alert("Failed to get giro transaction List \n"+ response)
             return
@@ -363,12 +363,12 @@
 
 
             total_cash_price = 0;
-            debtCollectedTable = document.getElementById("debt_collected_table")
-            debtCollectedRows = ""
+            fishDebtCollectedTable = document.getElementById("fish_debt_collected_table")
+            fishDebtCollectedRows = ""
             for (i = 0; i < data.length; i++) {
                 paymentType = data[i]["payment_type"]
                 if(paymentType != "GIRO") {
-                    debtCollectedRows += `
+                    fishDebtCollectedRows += `
                         <tr>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["buyer_first_name"]) + " " + str(data[i]["buyer_last_name"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["payment_type"])}</h6></div></td>
@@ -380,11 +380,11 @@
                 }
             }
             // adding total below
-            debtCollectedRows += "<tr style='background-color: lightgrey;'><td></td>" +
+            fishDebtCollectedRows += "<tr style='background-color: lightgrey;'><td></td>" +
                 "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
                 "<td><span class='text-xs font-weight-bold'>"+currency(total_cash_price)+"</span></td>" +
                 "<td colspan='2'></td></tr>"
-            debtCollectedTable.tBodies[0].innerHTML = debtCollectedRows;
+            fishDebtCollectedTable.tBodies[0].innerHTML = fishDebtCollectedRows;
         }
     });
 function claimGiro(e){
