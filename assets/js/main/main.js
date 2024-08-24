@@ -3898,10 +3898,10 @@ function processPopup(title, title_extra, data) {
                     }
                     options.push(`<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`)
                 }
-                document.querySelector('select[name="assign_seller_list"]').innerHTML = options.join("")
+                document.getElementById("assign_seller_list").innerHTML = options.join("")
                 // auto-pick seller as company by default for add expenses
-                document.getElementById("assign_buyer_list").innerHTML = options.join("")
-                $('#assign_buyer_list').select2({dropdownParent: $('#myModal')}).val(company_people_id).trigger('change');
+                document.querySelector('select[name="assign_buyer_list"]').innerHTML = options.join("")
+                document.querySelector('select[name="assign_buyer_list"]').select2({dropdownParent: $('#myModal')}).val(company_people_id).trigger('change');
             })
             MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
                 if (response instanceof Error) {
@@ -3954,8 +3954,8 @@ function processPopup(title, title_extra, data) {
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
-                            <select id="assign_buyer_list" class="form-control" data-toggle="select"></select>
+                             <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
+                             <select id="assign_seller_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -3996,8 +3996,8 @@ function processPopup(title, title_extra, data) {
                         <div class="row" style="background: lightgrey">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
-                                    <select name="assign_seller_list" class="form-control" data-toggle="select"></select>
+                                    <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
+                                    <select name="assign_buyer_list" class="form-control" data-toggle="select"></select>
                                 </div>
                             </div>
                             <div class="col-md-3">
