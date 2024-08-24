@@ -3901,7 +3901,7 @@ function processPopup(title, title_extra, data) {
                 document.getElementById("assign_seller_list").innerHTML = options.join("")
                 // auto-pick seller as company by default for add expenses
                 document.querySelector('select[name="assign_buyer_list"]').innerHTML = options.join("")
-                document.querySelector('select[name="assign_buyer_list"]').select2({dropdownParent: $('#myModal')}).val(company_people_id).trigger('change');
+                $('#assign_seller_list').select2({dropdownParent: $('#myModal')}).val(company_people_id).trigger('change');
             })
             MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
                 if (response instanceof Error) {
