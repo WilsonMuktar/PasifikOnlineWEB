@@ -835,6 +835,14 @@ function processDebtTable(response){
     total_quantity = 0
     curr_transaction_type = ""
     for (var i = data.length - 1; i >= 0; i--) {
+        notesRaw = data[i].notes
+        notes = ""
+        if (notesRaw.length > 0) {
+            notesJSON = JSON.parse(notesRaw)
+            if (notesJSON["data"]!=undefined) {
+                notes = JSON.stringify(notesJSON["data"]).replaceAll("{","").replaceAll("}","").replaceAll("\"","")
+            }
+        }
         rows += `
         <tr>
             <td hidden>
@@ -859,6 +867,7 @@ function processDebtTable(response){
             <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].payment_type)}">${str(data[i].payment_type)}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${parseInt(data[i].payment_status)}">${str(data[i].payment_status)}</span></td>
+            <td><span class="text-xs font-weight-bold">${notes}</span></td>
             <td class="align-middle text-center">
                 <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Transaction","",${JSON.stringify(data[i])})'>
                     <i class="fa fa-ellipsis-v text-xs"></i>
