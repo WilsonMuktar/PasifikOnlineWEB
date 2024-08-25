@@ -112,6 +112,7 @@
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="trip_id">Trip ID</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="payment_type">Payment Type</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="payment_status">Payment Status</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="notes">Notes</th>
                   <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" data-i18n-key="actions">Actions</th>
                 </tr></thead>
                 <tbody>
@@ -178,7 +179,7 @@
 <script src="../assets/js/main/auth/login.js"></script>
 <script>
   // retrieve Transaction table
-  MAKE_REQUEST("GET", transaction_api_url+"?transaction_type=Purchase", "", true,function(resp){
+  MAKE_REQUEST("GET", transaction_api_url+"?transaction_type=Purchase&order_by=transaction_date", "", true,function(resp){
     if (resp instanceof Error) {
       console.log(resp);
     } else {
