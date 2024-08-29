@@ -2884,10 +2884,10 @@ function processPopup(title, title_extra, data) {
                     }
                     options.push(`<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`)
                 }
-                document.querySelector('select[name="assign_buyer_list"]').innerHTML = options.join("")
+                document.querySelector('select[name="assign_seller_list"]').innerHTML = options.join("")
                 // auto-pick seller as company by default for add expenses
-                document.getElementById("assign_seller_list").innerHTML = options.join("")
-                $('#assign_seller_list').select2({dropdownParent: $('#myModal')}).val(company_people_id).trigger('change');
+                document.getElementById("assign_buyer_list").innerHTML = options.join("")
+                $('#assign_buyer_list').select2({dropdownParent: $('#myModal')}).val(company_people_id).trigger('change');
             })
             MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
                 if (response instanceof Error) {
@@ -2939,8 +2939,8 @@ function processPopup(title, title_extra, data) {
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
-                            <select id="assign_seller_list" class="form-control" data-toggle="select"></select>
+                            <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
+                            <select id="assign_buyer_list" class="form-control" data-toggle="select"></select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -2981,8 +2981,8 @@ function processPopup(title, title_extra, data) {
                         <div class="row" style="background: lightgrey">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
-                                    <select name="assign_buyer_list" class="form-control" data-toggle="select"></select>
+                                    <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
+                                    <select name="assign_seller_list" class="form-control" data-toggle="select"></select>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -3063,9 +3063,9 @@ function processPopup(title, title_extra, data) {
                     /*let product_id = document.getElementById("assign_product_list").value;
                     let quantity = parseInt(document.getElementById("quantity").value);
                     let unit_price = parseFloat(document.getElementById("unit_price").value);
-                    let total_price = parseFloat(document.getElementById("total_price").value);
-                    let buyer_id = document.getElementById("assign_buyer_list").value;*/
-                    let seller_id = document.getElementById("assign_seller_list").value;
+                    let total_price = parseFloat(document.getElementById("total_price").value);*/
+                    let buyer_id = document.getElementById("assign_buyer_list").value;
+                    //let seller_id = document.getElementById("assign_seller_list").value;
                     let vessel_id = document.getElementById("assign_vessel_list").value;
                     let trip_id = document.getElementById("assign_trip_list").value;
                     let payment_type = document.getElementById("payment_type").value;
@@ -3093,7 +3093,7 @@ function processPopup(title, title_extra, data) {
                             return
                         }
                         for(i=0;i<rows.length;i++) {
-                            if (rows[i].querySelector('select[name="assign_buyer_list"]').length == 0) {continue;}
+                            if (rows[i].querySelector('select[name="assign_seller_list"]').length == 0) {continue;}
                             if (rows[i].querySelector('select[name="assign_product_list"]').length == 0) {continue;}
                             if (rows[i].querySelector('input[name="quantity"]').length == 0) {continue;}
                             if (rows[i].querySelector('input[name="unit_price"]').length == 0) {continue;}
@@ -3126,8 +3126,8 @@ function processPopup(title, title_extra, data) {
                                 "quantity": parseInt(rows[i].querySelector('input[name="quantity"]').value) || 0,
                                 "unit_price": parseFloat(rows[i].querySelector('input[name="unit_price"]').value),
                                 "total_price": totalPrice,
-                                "seller_id": seller_id,
-                                "buyer_id": rows[i].querySelector('select[name="assign_buyer_list"]').value,
+                                "buyer_id": buyer_id,
+                                "seller_id": rows[i].querySelector('select[name="assign_seller_list"]').value,
                                 "vessel_id": vessel_id,
                                 "trip_id": trip_id,
                                 "payment_type": payment_type,
@@ -4253,6 +4253,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_seller_list"]').innerHTML = options
+
                 document.querySelector('select[name="assign_crediter_list"]').innerHTML = options
                 options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
@@ -4267,6 +4268,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_buyer_list").innerHTML = options
+                $('#assign_buyer_list').select2({dropdownParent: $('#myModal')}).val(company_people_id).trigger('change');
             })
             return [`
         <span class="close">&times;</span>
@@ -4510,6 +4512,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.querySelector('select[name="assign_seller_list"]').innerHTML = options
+
                 options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
                     if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
@@ -4523,6 +4526,7 @@ function processPopup(title, title_extra, data) {
                     options += `<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`
                 }
                 document.getElementById("assign_buyer_list").innerHTML = options
+                $('#assign_buyer_list').select2({dropdownParent: $('#myModal')}).val(company_people_id).trigger('change');
             })
             return [`
         <span class="close">&times;</span>
