@@ -5801,7 +5801,7 @@ function processPopup(title, title_extra, data) {
                     totalPrice = parseFloat(document.getElementById("update_total_price").value)
                     if (parseInt(document.getElementById("quantity").value) != 0 && document.getElementById("quantity").value != "" &&
                         parseInt(document.getElementById("unit_price").value) != 0 && document.getElementById("unit_price").value != "") {
-                        totalPrice = parseInt(document.getElementById("quantity").value) * parseInt(document.getElementById("unit_price").value)
+                        totalPrice = parseInt(document.getElementById("quantity").value) * parseFloat(document.getElementById("unit_price").value)
                     }
 
                     transaction_id = document.getElementById("update_transaction_id").value;
