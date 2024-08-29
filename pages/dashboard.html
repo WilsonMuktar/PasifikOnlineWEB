@@ -810,7 +810,7 @@
         */
         // Animate the element's value from x to y:
         animateValue("dashboard_total_transaction", 0, total_yearly_transaction, 200, true);
-        animateValue("dashboard_total_income", 0, total_yearly_income - total_yearly_debt + total_yearly_fish_debt_collect - total_yearly_expense, 200, true);
+        animateValue("dashboard_total_income", 0, total_yearly_income + total_yearly_fish_debt_collect - total_yearly_debt  - total_yearly_expense, 200, true);
         animateValue("dashboard_total_expense", 0, total_yearly_expense, 200, true);
         animateValue("dashboard_total_debt", 0, total_yearly_debt - total_yearly_fish_debt_collect, 200, true);
 
@@ -833,14 +833,12 @@
               continue
             }
             monthlyTransactionTotal = monthlyTransactionByTransactionTypeandPaymentType[mt][pt] // all monthly from each category
-            console.log(mt, pt, monthlyTransactionTotal)
             monthlyAccumulateData = []
             accumulateCount = 0
             for (i in monthBasis) {
               accumulateCount += monthlyTransactionTotal[monthBasis[i]]
               monthlyAccumulateData.push(accumulateCount)
             }
-            console.log("Transaction-" + mt, monthlyAccumulateData)
             monthlyDatasets.push({
               label: "Transaction-" + mt,
               tension: 0.4,

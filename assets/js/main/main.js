@@ -85,7 +85,11 @@ function currency(data) {
     if (data == "" || data == undefined || data == NaN || data == 'NaN') {
         return "Rp.0,00"
     }
-    return "Rp."+data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
+    // just keep single decimal precision value
+    data = data.toFixed(1)
+    // Remove trailing .0
+    data = parseFloat(data).toString();
+    return "Rp."+data.replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",00"
 }
 function curr(data) {
     if (data == "" || data == undefined || data == NaN || data == 'NaN') {
