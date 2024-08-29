@@ -2130,6 +2130,7 @@ function processPopup(title, title_extra, data) {
                             <select id="transaction_type" class="form-control">
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
+                                <option value="Return" data-i18n-key="return">Return</option>
                                 <option value="Debt" data-i18n-key="debt">Debt</option>
                                 <option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>
                                 <option value="FishDebtCollect" data-i18n-key="fish_debt_collect">FishDebtCollect</option>
@@ -2626,6 +2627,7 @@ function processPopup(title, title_extra, data) {
                             <select id="transaction_type" class="form-control" data-toggle="select">
                                 <option value="Sale" data-i18n-key="sale">Sale</option>
                                 <option value="Purchase" data-i18n-key="purchase">Purchase</option>
+                                <option value="Return" data-i18n-key="return">Return</option>
                                 <option value="Debt" data-i18n-key="debt">Debt</option>
                                 <option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>
                                 <option value="FishDebtCollect" data-i18n-key="fish_debt_collect">FishDebtCollect</option>
@@ -5123,6 +5125,7 @@ function processPopup(title, title_extra, data) {
             ordered_transaction_type = reorderSelectOptions([
                 '<option value="Purchase" data-i18n-key="purchase">Purchase</option>',
                 '<option value="Sale" data-i18n-key="sale">Sale</option>',
+                '<option value="Return" data-i18n-key="return">Return</option>',
                 '<option value="Debt" data-i18n-key="debt">Debt</option>',
                 '<option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>',
                 '<option value="FishDebtCollect" data-i18n-key="fish_debt_collect">FishDebtCollect</option>',
@@ -5699,6 +5702,7 @@ function processPopup(title, title_extra, data) {
                             <select id="update_transaction_type" class="form-control">
                                 <option value="Purchase" ${data.transaction_type === 'Purchase' ? 'selected' : ''} data-i18n-key="purchase">Purchase</option>
                                 <option value="Sale" ${data.transaction_type === 'Sale' ? 'selected' : ''} data-i18n-key="sale">Sale</option>
+                                <option value="Return" ${data.transaction_type === 'Return' ? 'selected' : ''} data-i18n-key="return">Return</option>
                                 <option value="Debt" ${data.transaction_type === 'Debt' ? 'selected' : ''} data-i18n-key="Debt">Debt</option>
                                 <option value="DebtCollect" ${data.transaction_type === 'DebtCollect' ? 'selected' : ''} data-i18n-key="debt_collect">DebtCollect</option>
                                 <option value="FishDebtCollect" ${data.transaction_type === 'FishDebtCollect' ? 'selected' : ''} data-i18n-key="fish_debt_collect">FishDebtCollect</option>
