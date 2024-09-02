@@ -839,17 +839,31 @@
               accumulateCount += monthlyTransactionTotal[monthBasis[i]]
               monthlyAccumulateData.push(accumulateCount)
             }
-            monthlyDatasets.push({
-              label: "Transaction-" + mt,
-              tension: 0.4,
-              pointRadius: 0,
-              borderColor: "#5e72e4",
-              backgroundColor: gradientGREEN,
-              borderWidth: 3,
-              fill: true,
-              data: monthlyAccumulateData,
-              maxBarThickness: 6
-            })
+            if (mt == "Debt" || mt == "Purchase" || mt == "Tax" || mt == "Salary") {
+              monthlyDatasets.push({
+                label: "Transaction-" + mt,
+                tension: 0.4,
+                pointRadius: 0,
+                borderColor: "#FF0000",
+                backgroundColor: "#FF0000",
+                borderWidth: 3,
+                fill: true,
+                data: monthlyAccumulateData,
+                maxBarThickness: 6
+              })
+            } else {
+              monthlyDatasets.push({
+                label: "Transaction-" + mt,
+                tension: 0.4,
+                pointRadius: 0,
+                borderColor: gradientGREEN,
+                backgroundColor: gradientGREEN,
+                borderWidth: 3,
+                fill: true,
+                data: monthlyAccumulateData,
+                maxBarThickness: 6
+              })
+            }
           }
         }
         for (const pType in monthlyTransactionByPaymentType) {
@@ -995,7 +1009,7 @@
                 average_unit_price +=  item.unit_price * item.total
                 average_total_amount += item.total
               }
-              productTotal[mp]["avg_unit_price"] = (average_unit_price/average_total_amount).toFixed(0)
+              productTotal[mp]["avg_unit_price"] = (average_unit_price/average_total_amount)
             }
            }
         }
@@ -1030,8 +1044,8 @@
                     </div>
                   </li>
           `
-          catchProductsTable.innerHTML = rows
         }
+        catchProductsTable.innerHTML = rows
 
         // 6. Hasil Ikan By Captains
         TripCatchTransactions = {}
