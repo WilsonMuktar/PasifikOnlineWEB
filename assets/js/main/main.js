@@ -914,7 +914,6 @@ function processTransactionTable(response) {
     total_quantity = 0
     curr_transaction_type = ""
     for (var i = data.length - 1; i >= 0; i--) {
-        console.log(i+"!")
         /*if (curr_transaction_type != data[i].transaction_type) {
             if (curr_transaction_type != "" ) {
                 // adding total below for each transaction_type
@@ -944,7 +943,6 @@ function processTransactionTable(response) {
                 }
             }
         }
-        console.log(i+"?")
 
         rows += `
         <tr class="${ 
@@ -986,9 +984,6 @@ function processTransactionTable(response) {
         </tr>
     `;
 
-        console.log(i)
-
-
         if (data[i].transaction_type=='FishDebtCollect') {
             total_final_price_page += data[i].total_price
         } else if (data[i].transaction_type=='Tax'||data[i].transaction_type=='Salary'||data[i].transaction_type=='Purchase'||data[i].transaction_type=='Debt') {
@@ -1016,7 +1011,6 @@ function processTransactionTable(response) {
             total_quantity = 0
         }
     }*/
-    console.log("adding final total")
     // adding final total below
     rows += "<tr style='background-color: lightgrey;'><td colspan='4'></td>" +
         "<td class='text-center'><span class='text-xs font-weight-bold'>Final Total:</span></td>" +
