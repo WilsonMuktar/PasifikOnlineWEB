@@ -9,7 +9,7 @@
     PASIFIK-ONLINE
   </title>
   <link href="../assets/css/main.css" rel="stylesheet" />
-<link rel="stylesheet" href="../assets/vendor/select2/select2.min.css">
+  <link rel="stylesheet" href="../assets/vendor/select2/select2.min.css">
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Nucleo Icons -->
@@ -19,7 +19,7 @@
   <script src="../assets/js/plugins/fontawesome.js" crossorigin="anonymous"></script>
   <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
-  <link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+  <link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />\
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
@@ -165,6 +165,10 @@
           </div>
         </div>
       </div>
+      <nav aria-label="Page navigation example">
+        <ul id="transactionPagination" class="pagination justify-content-end">
+        </ul>
+      </nav>
     </div>
     <footer class="footer pt-3  ">
       <div class="container-fluid">
@@ -355,6 +359,7 @@
       console.log(resp);
     } else {
       processTransactionTable(resp)
+      processPagination(resp.total_page)
     }
   })
 </script>
@@ -375,6 +380,67 @@
 <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
 <script src="../assets/vendor/select2/select2.min.js"></script>
+
+
+<script>
+
+  function appendPagination(page, pageSize) {
+    let currentUrl = window.location.href.split('?')[0]; // Base URL without parameters
+    let params = new URLSearchParams(window.location.search); // Existing parameters
+    params.set('page', page);
+    params.set('page_size', pageSize);
+    if (page >= 1) {
+      window.location.href = currentUrl + '?' + params.toString(); // Redirect to new URL
+    }
+  }
+
+  defaultPageSize = 100
+  function processPagination(totalPage) {
+    pageIndex = "1"
+    urlParams.forEach((value, key) => {
+      if (key == "page") {
+        pageIndex = value
+      }
+      if (key == "page_size") {
+        defaultPageSize = value
+      }
+    });
+    maxPageIndex = totalPage / defaultPageSize
+
+    if (pageIndex == "1") {
+      paginationComponent = `
+         <li hidden id="prev-page" class="page-item"><a class="page-link" href="#"><</a></li>
+         <li class="page-item"><a class="page-link" href="#">1</a></li>
+         <li id="next-page" class="page-item"><a class="page-link" href="#">></a></li>
+      `
+      if (totalPage < (pageIndex+1) * defaultPageSize) {
+        paginationComponent = `
+         <li hidden id="prev-page" class="page-item"><a class="page-link" href="#"><</a></li>
+         <li class="page-item"><a class="page-link" href="#">1</a></li>
+         <li hidden id="next-page" class="page-item"><a class="page-link" href="#">></a></li>
+      `
+      }
+    } else if (pageIndex < maxPageIndex) {
+      paginationComponent = `
+         <li id="prev-page" class="page-item"><a class="page-link" href="#"><</a></li>
+         <li class="page-item"><a class="page-link" href="#">${pageIndex}</a></li>
+         <li id="next-page" class="page-item"><a class="page-link" href="#">></a></li>
+    `
+    } else {
+      paginationComponent = `
+         <li id="prev-page" class="page-item"><a class="page-link" href="#"><</a></li>
+         <li class="page-item"><a class="page-link" href="#">${pageIndex}</a></li>
+         <li hidden id="next-page" class="page-item"><a class="page-link" href="#">></a></li>
+    `
+    }
+
+
+    transactionPagination = document.getElementById('transactionPagination');
+    transactionPagination.innerHTML = paginationComponent
+    document.getElementById('prev-page').onclick = () => appendPagination(parseInt(pageIndex) - 1, defaultPageSize);
+    document.getElementById('next-page').onclick = () => appendPagination(parseInt(pageIndex) + 1, defaultPageSize);
+  }
+</script>
 </body>
 
 </html>
