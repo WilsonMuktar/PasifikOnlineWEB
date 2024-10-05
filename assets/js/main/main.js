@@ -4524,7 +4524,7 @@ function processPopup(title, title_extra, data) {
 
                 options = "<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>"
                 for (i = 0; i < data.length; i++) {
-                    if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " ) {continue}
+                    if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Sekai Saikana " && str(data[i].first_name)+" "+str(data[i].last_name)!= "Kantor " ) {continue}
                     if (currentPeopleGroup != data[i].person_category) {
                         if (currentPeopleGroup != "") {
                             options += '</optgroup>'
