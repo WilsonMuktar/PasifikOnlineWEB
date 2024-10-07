@@ -2139,6 +2139,7 @@ function processPopup(title, title_extra, data) {
                                 <option value="FishDebtCollect" data-i18n-key="fish_debt_collect">FishDebtCollect</option>
                                 <option value="Tax" data-i18n-key="tax">Tax</option>
                                 <option value="Salary" data-i18n-key="salary">Salary</option>
+                                <option value="Funds" data-i18n-key="funds">Funds</option>
                                 <option value="ColdStorage" data-i18n-key="cold_storage">Cold Storage</option>
                             </select>
                         </div>
@@ -2636,6 +2637,7 @@ function processPopup(title, title_extra, data) {
                                 <option value="FishDebtCollect" data-i18n-key="fish_debt_collect">FishDebtCollect</option>
                                 <option value="Tax" data-i18n-key="tax">Tax</option>
                                 <option value="Salary" data-i18n-key="salary">Salary</option>
+                                <option value="Funds" data-i18n-key="funds">Funds</option>
                                 <option value="ColdStorage" data-i18n-key="cold_storage">Cold Storage</option>
                             </select>
                         </div>
@@ -5134,6 +5136,7 @@ function processPopup(title, title_extra, data) {
                 '<option value="FishDebtCollect" data-i18n-key="fish_debt_collect">FishDebtCollect</option>',
                 '<option value="Tax" data-i18n-key="tax">Tax</option>',
                 '<option value="Salary" data-i18n-key="salary">Salary</option>',
+                '<option value="Funds" data-i18n-key="funds">Funds</option>',
                 '<option value="COLDSTORAGE" data-i18n-key="cold_storage">Cold Storage</option>',
             ], data.transaction_type);
 
@@ -5711,6 +5714,7 @@ function processPopup(title, title_extra, data) {
                                 <option value="FishDebtCollect" ${data.transaction_type === 'FishDebtCollect' ? 'selected' : ''} data-i18n-key="fish_debt_collect">FishDebtCollect</option>
                                 <option value="Tax" ${data.transaction_type === 'Tax' ? 'selected' : ''} data-i18n-key="tax">Tax</option>
                                 <option value="Salary" ${data.transaction_type === 'Salary' ? 'selected' : ''} data-i18n-key="salary">Salary</option>
+                                <option value="Funds" ${data.transaction_type === 'Funds' ? 'selected' : ''} data-i18n-key="funds">Funds</option>
                                 <option value="ColdStorage" ${data.transaction_type === 'ColdStorage' ? 'selected' : ''} data-i18n-key="cold_storage">Cold Storage</option>
                             </select>
                         </div>

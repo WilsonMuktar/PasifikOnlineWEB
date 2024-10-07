@@ -200,7 +200,7 @@
         else {
             data = response.data;
             TransactionByTripNameAndTransactionType = {}
-            // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
+            // Purchase, Sale, Return, Debt, Tax, Salary, Funds, ColdStorage
             for (i = 0; i < data.length; i++) {
                 // --> group total price by tripName
                 transaction = data[i]
@@ -254,8 +254,8 @@
                         // captain
                         TripCatchTransactions[mt][tdate]['captain'] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["captain"]
 
-                        // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
-                        if (mttype == "Sale" || mttype == "ColdStorage") {
+                        // Purchase, Sale, Return, Debt, Tax, Salary, Funds, ColdStorage
+                        if (mttype == "Sale" || mttype == "ColdStorage" || mttype == "Funds") {
                             TripCatchTransactions[mt][tdate]['income'] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["total"]
                         } else if (mttype == "Debt") {
                             TripCatchTransactions[mt][tdate]['debt'] += TransactionByTripNameAndTransactionType[mt][tdate][mttype]["total"]

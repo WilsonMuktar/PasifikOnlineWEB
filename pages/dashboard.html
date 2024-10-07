@@ -549,7 +549,7 @@
         monthlyTransactionByTripNameAndTransactionType = {}
         monthlyTransactionByTransactionTypeandPaymentType = {}
         monthlyTransactionByPaymentType = {}
-        // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
+        // Purchase, Sale, Return, Debt, Tax, Salary, Funds, ColdStorage
         for (i = 0; i < data.length; i++) {
 
           // --> group by transactionType price
@@ -777,7 +777,7 @@
               if (mtt == 'captain') {
                 continue
               }
-              // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
+              // Purchase, Sale, Return, Debt, Tax, Salary, Funds, ColdStorage
               if (mt == "Sale") {
                 total_yearly_income += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
                 total_yearly_transaction += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
@@ -947,8 +947,8 @@
               if (mtmonth == 'captain') {
                 continue
               }
-              // Purchase, Sale, Return, Debt, Tax, Salary, ColdStorage
-              if (mttype == "Sale" || mttype == "ColdStorage" || mttype == "FishDebtCollect") {
+              // Purchase, Sale, Return, Debt, Tax, Salary, Funds, ColdStorage
+              if (mttype == "Sale" || mttype == "Funds" || mttype == "ColdStorage" || mttype == "FishDebtCollect") {
                 TripCatchTransactions[mt]['income'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
               } else if (mttype == "Debt") {
                 TripCatchTransactions[mt]['debt'] += monthlyTransactionByTripNameAndTransactionType[mt][mttype][mtmonth]
