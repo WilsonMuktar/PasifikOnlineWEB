@@ -951,7 +951,7 @@ function processTransactionTable(response) {
                     (data[i].transaction_type=='Debt'? "text-warning" : 
                         (data[i].transaction_type=='Salary'? "text-warning" : 
                             (data[i].transaction_type=='Tax'? "text-warning" : 
-                                (data[i].transaction_type=='FishDebtCollect'? "text-warning" : ""))))))}">
+                                (data[i].transaction_type=='FishDebtCollect'? "text-success" : ""))))))}">
             <td hidden>
                 <div class="d-flex px-2">
                     <div>
@@ -985,7 +985,7 @@ function processTransactionTable(response) {
     `;
 
         if (data[i].transaction_type=='FishDebtCollect') {
-            total_final_price_page -= data[i].total_price
+            total_final_price_page += data[i].total_price
         } else if (data[i].transaction_type=='Tax'||data[i].transaction_type=='Salary'||data[i].transaction_type=='Purchase'||data[i].transaction_type=='Debt') {
             total_final_price_page -= data[i].total_price
         } else if (data[i].transaction_type=='Sale') {
