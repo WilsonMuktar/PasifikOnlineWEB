@@ -2882,7 +2882,7 @@ function processPopup(title, title_extra, data) {
                 });
                 document.getElementById("add_transaction_btn").addEventListener('click', function (e) {
                     // Retrieve input values
-                    let transaction_using_billcode = document.getElementById("transaction_using_billcode").checked;
+                    //let transaction_using_billcode = document.getElementById("transaction_using_billcode").checked;
                     let transaction_date = document.getElementById("transaction_date").value+"T00:00:00Z";
                     let transaction_type = document.getElementById("transaction_type").value;
                     /*let product_id = document.getElementById("assign_product_list").value;
