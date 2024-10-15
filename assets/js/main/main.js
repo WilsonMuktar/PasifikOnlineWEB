@@ -2936,7 +2936,7 @@ function processPopup(title, title_extra, data) {
                             if (notes != "") {
                                 noteJSON["data"] = notes
                             }
-                            noteJSON["bill_code"] =  rows[i].querySelector('textarea[name="bill_code"]').value
+                            noteJSON["bill_code"] =  rows[i].querySelector('input[name="bill_code"]').value
 
                             // extra value to be kept
                             keep_product_in_stock = rows[i].querySelector('input[name="keep_in_stock"]').checked
