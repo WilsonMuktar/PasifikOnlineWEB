@@ -6276,7 +6276,18 @@ function processPopup(title, title_extra, data) {
                     // process notes
                     if (document.getElementById("update_existing_notes").value != "") {
                         notesJSON = JSON.parse(document.getElementById("update_existing_notes").value)
-                        notesJSON["data"] = document.getElementById("update_notes").value
+
+                        if (document.getElementById("update_notes").value != "") {
+                            try{
+                                updateNotesJSON = JSON.parse(document.getElementById("update_notes").value)
+                                // loop all key and assign value to notesJSON
+                                for (var key in updateNotesJSON) {
+                                    notesJSON[key] = updateNotesJSON[key]
+                                }
+                            } catch (e) {
+                                notesJSON["data"] = document.getElementById("update_notes").value
+                            }
+                        }
                         notes = JSON.stringify(notesJSON)
                     } else {
                         if (document.getElementById("update_notes").value != "") {
