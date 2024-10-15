@@ -1069,10 +1069,10 @@ function processTokoSBRTable(response) {
         rows += `
         <tr class="${
             (data[i].transaction_type=='DebtCollect'? "text-success" :
-                (data[i].transaction_type=='Purchase'? "text-warning" :
-                    (data[i].transaction_type=='Debt'? "text-warning" :
-                        (data[i].transaction_type=='Salary'? "text-warning" :
-                            (data[i].transaction_type=='Tax'? "text-warning" :
+                (data[i].transaction_type=='Purchase'? "text-success" :
+                    (data[i].transaction_type=='Debt'? "text-success" :
+                        (data[i].transaction_type=='Salary'? "text-success" :
+                            (data[i].transaction_type=='Tax'? "text-success" :
                                 (data[i].transaction_type=='FishDebtCollect'? "text-success" : ""))))))}">
             <td hidden>
                 <div class="d-flex px-2">
@@ -2832,10 +2832,16 @@ function processPopup(title, title_extra, data) {
                                     <input name="unit_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="total_price" class="form-control-label" data-i18n-key="total_price">Total Price</label>
                                     <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="transaction_image" class="form-control-label" data-i18n-key="bill_code">Bill code</label>
+                                    <input name="bill_code" class="form-control" type="text" autocomplete="off"> 
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -2859,16 +2865,6 @@ function processPopup(title, title_extra, data) {
                         <div class="form-group">
                             <label for="transaction_image" class="form-control-label" data-i18n-key="transaction_image">Transaction Image</label>
                             <input id="transaction_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <div class="col-md-5">
-                                <div class="form-group">
-                            <label for="transaction_image" class="form-control-label" data-i18n-key="using_billcode">Bill code:</label>
-                                    <input id="bill_code" class="form-control" type="text" autocomplete="off"> 
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -2907,7 +2903,6 @@ function processPopup(title, title_extra, data) {
                     if (transaction_using_billcode) {
                         notes["bill_code"] = getRandomIdFromHash()
                     */
-                    currentTransactionBillCode = document.getElementById("bill_code").value;
 
                     function update() {
                         blobText = ""
@@ -2941,7 +2936,7 @@ function processPopup(title, title_extra, data) {
                             if (notes != "") {
                                 noteJSON["data"] = notes
                             }
-                            noteJSON["bill_code"] = currentTransactionBillCode
+                            noteJSON["bill_code"] =  rows[i].querySelector('textarea[name="bill_code"]').value
 
                             // extra value to be kept
                             keep_product_in_stock = rows[i].querySelector('input[name="keep_in_stock"]').checked
