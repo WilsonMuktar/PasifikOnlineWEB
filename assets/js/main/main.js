@@ -1049,12 +1049,16 @@ function processTokoSBRTable(response) {
 
         notesRaw = data[i].notes
         notes = ""
+        billCode = ""
         if (notesRaw != undefined) {
             if (notesRaw.length > 0) {
                 try {
                     notesJSON = JSON.parse(notesRaw)
                     if (notesJSON["data"] != undefined) {
                         notes = JSON.stringify(notesJSON["data"]).replaceAll("{", "").replaceAll("}", "").replaceAll("\"", "")
+                    }
+                    if (notesJSON["bill_code"] != undefined) {
+                        billCode = JSON.stringify(notesJSON["bill_code"]).replaceAll("{", "").replaceAll("}", "").replaceAll("\"", "")
                     }
                 } catch (e) {
                     notes = notesRaw
@@ -1088,9 +1092,10 @@ function processTokoSBRTable(response) {
             <td><span class="text-xs font-weight-bold">${currency(str(data[i].total_price))}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${str((parseInt(data[i].quantity)||0))}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold">${currency(data[i].unit_price)}</span></td>
+            <td><span class="text-xs font-weight-bold">${billCode}</span></td>
             <td><span class="text-xs font-weight-bold">${notes}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
-            <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td>
+            <!--td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td-->
             <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].payment_type)}">${str(data[i].payment_type)}</span></td>
             <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${parseInt(data[i].payment_status)}">${str(data[i].payment_status)}</span></td>
             <td class="align-middle text-center">
