@@ -4,6 +4,7 @@ var web_client_id = "jRqOOEBeGle1L4D31cCXai1h"
 var web_client_secret = "vyLT4khWj2s7f3RrRShi5ljFi8TMPlaM"
 
 var company_people_id = "1931b5d7-c89e-4eea-b639-18bf7060ba6c"
+var toko_sbr_id = "60d0d14c-8205-4772-a828-e28c4cc6e5c4"
 
 // check rather running in local
 if (window.location.href.indexOf("file:///") > -1) {
@@ -57,6 +58,7 @@ const main_nav_bar = {
         {"nav_name": "dashboard.html", "nav_path": "../pages/dashboard.html", "nav_icon": "fa fa-bar-chart text-primary", "nav_title": "Dashboard", "nav_title_i18n":"breadcrumb_dashboard", "nav_separator": false},
         {"nav_name": "vessel.html", "nav_path": "../pages/vessel.html", "nav_icon": "fa fa-ship text-secondary", "nav_title": "Vessels", "nav_title_i18n":"breadcrumb_vessel", "nav_separator": false},
         {"nav_name": "stock.html", "nav_path": "../pages/stock.html", "nav_icon": "ni ni-shop text-secondary", "nav_title": "Stocks", "nav_title_i18n":"breadcrumb_stock", "nav_separator": false},
+        {"nav_name": "tokosbr.html", "nav_path": "../pages/tokosbr.html", "nav_icon": "ni ni-shop text-secondary", "nav_title": "TokoSBR", "nav_title_i18n":"breadcrumb_tokosbr", "nav_separator": false},
         {"nav_name": "transaction.html", "nav_path": "../pages/transaction.html?order_by=transaction_date&page=1&page_size=100", "nav_icon": "ni ni-credit-card text-secondary", "nav_title": "Transactions", "nav_title_i18n":"breadcrumb_transaction", "nav_separator": false},
         {"nav_name": "expense.html", "nav_path": "../pages/expense.html", "nav_icon": "ni ni-credit-card text-warning", "nav_title": "Expense", "nav_title_i18n":"breadcrumb_expense", "nav_separator": false},
         {"nav_name": "product.html", "nav_path": "../pages/product.html", "nav_icon": "fa fa-product-hunt text-secondary", "nav_title": "Products", "nav_title_i18n":"breadcrumb_product", "nav_separator": false},
@@ -76,6 +78,7 @@ const main_nav_bar = {
         {"nav_name": "dashboard.html", "nav_path": "../pages/dashboard.html", "nav_icon": "fa fa-bar-chart text-primary", "nav_title": "Dashboard", "nav_title_i18n":"breadcrumb_dashboard", "nav_separator": false},
         {"nav_name": "vessel.html", "nav_path": "../pages/vessel.html", "nav_icon": "fa fa-ship text-secondary", "nav_title": "Vessels", "nav_title_i18n":"breadcrumb_vessel", "nav_separator": false},
         {"nav_name": "stock.html", "nav_path": "../pages/stock.html", "nav_icon": "ni ni-shop text-secondary", "nav_title": "Stocks", "nav_title_i18n":"breadcrumb_stock", "nav_separator": false},
+        {"nav_name": "tokosbr.html", "nav_path": "../pages/tokosbr.html", "nav_icon": "ni ni-shop text-secondary", "nav_title": "TokoSBR", "nav_title_i18n":"breadcrumb_tokosbr", "nav_separator": false},
         {"nav_name": "transaction.html", "nav_path": "../pages/transaction.html?order_by=transaction_date&page=1&page_size=100", "nav_icon": "ni ni-credit-card text-secondary", "nav_title": "Transactions", "nav_title_i18n":"breadcrumb_transaction", "nav_separator": false},
         {"nav_name": "expense.html", "nav_path": "../pages/expense.html", "nav_icon": "ni ni-credit-card text-warning", "nav_title": "Expense", "nav_title_i18n":"breadcrumb_expense", "nav_separator": false},
         {"nav_name": "product.html", "nav_path": "../pages/product.html", "nav_icon": "fa fa-product-hunt text-secondary", "nav_title": "Products", "nav_title_i18n":"breadcrumb_product", "nav_separator": false},
@@ -95,6 +98,7 @@ const main_nav_bar = {
         {"nav_name": "dashboard.html", "nav_path": "../pages/dashboard.html", "nav_icon": "fa fa-bar-chart text-primary", "nav_title": "Dashboard", "nav_title_i18n":"breadcrumb_dashboard", "nav_separator": false},
         {"nav_name": "vessel.html", "nav_path": "../pages/vessel.html", "nav_icon": "fa fa-ship text-secondary", "nav_title": "Vessels", "nav_title_i18n":"breadcrumb_vessel", "nav_separator": false},
         {"nav_name": "stock.html", "nav_path": "../pages/stock.html", "nav_icon": "ni ni-shop text-secondary", "nav_title": "Stocks", "nav_title_i18n":"breadcrumb_stock", "nav_separator": false},
+        {"nav_name": "tokosbr.html", "nav_path": "../pages/tokosbr.html", "nav_icon": "ni ni-shop text-secondary", "nav_title": "TokoSBR", "nav_title_i18n":"breadcrumb_tokosbr", "nav_separator": false},
         {"nav_name": "transaction.html", "nav_path": "../pages/transaction.html?order_by=transaction_date&page=1&page_size=100", "nav_icon": "ni ni-credit-card text-secondary", "nav_title": "Transactions", "nav_title_i18n":"breadcrumb_transaction", "nav_separator": false},
         {"nav_name": "expense.html", "nav_path": "../pages/expense.html", "nav_icon": "ni ni-credit-card text-warning", "nav_title": "Expense", "nav_title_i18n":"breadcrumb_expense", "nav_separator": false},
         {"nav_name": "product.html", "nav_path": "../pages/product.html", "nav_icon": "fa fa-product-hunt text-secondary", "nav_title": "Products", "nav_title_i18n":"breadcrumb_product", "nav_separator": false},
@@ -122,6 +126,7 @@ const main_nav_bar = {
         {"nav_name": "dashboard.html", "nav_path": "../pages/dashboard.html", "nav_icon": "fa fa-bar-chart text-primary", "nav_title": "Dashboard", "nav_title_i18n":"breadcrumb_dashboard", "nav_separator": false},
         {"nav_name": "vessel.html", "nav_path": "../pages/vessel.html", "nav_icon": "fa fa-ship text-secondary", "nav_title": "Vessels", "nav_title_i18n":"breadcrumb_vessel", "nav_separator": false},
         {"nav_name": "stock.html", "nav_path": "../pages/stock.html", "nav_icon": "ni ni-shop text-secondary", "nav_title": "Stocks", "nav_title_i18n":"breadcrumb_stock", "nav_separator": false},
+        {"nav_name": "tokosbr.html", "nav_path": "../pages/tokosbr.html", "nav_icon": "ni ni-shop text-secondary", "nav_title": "TokoSBR", "nav_title_i18n":"breadcrumb_tokosbr", "nav_separator": false},
         {"nav_name": "transaction.html", "nav_path": "../pages/transaction.html?order_by=transaction_date&page=1&page_size=100", "nav_icon": "ni ni-credit-card text-secondary", "nav_title": "Transactions", "nav_title_i18n":"breadcrumb_transaction", "nav_separator": false},
         {"nav_name": "expense.html", "nav_path": "../pages/expense.html", "nav_icon": "ni ni-credit-card text-warning", "nav_title": "Expense", "nav_title_i18n":"breadcrumb_expense", "nav_separator": false},
         {"nav_name": "product.html", "nav_path": "../pages/product.html", "nav_icon": "fa fa-product-hunt text-secondary", "nav_title": "Products", "nav_title_i18n":"breadcrumb_product", "nav_separator": false},

@@ -1021,6 +1021,124 @@ function processTransactionTable(response) {
     loadLocalization(localStorage.getItem("localization_language"))
 }
 
+function processTokoSBRTable(response) {
+    var data = response.data;
+    var rows = "";
+    var table = document.getElementById("tokosbr_table");
+
+    total_final_price_page = 0
+    total_final_quantity = 0
+    total_price_page = 0
+    total_quantity = 0
+    curr_transaction_type = ""
+    for (var i = data.length - 1; i >= 0; i--) {
+        /*if (curr_transaction_type != data[i].transaction_type) {
+            if (curr_transaction_type != "" ) {
+                // adding total below for each transaction_type
+                rows += `<tr style='background-color: lightgrey;'><td colspan='4'></td>
+                    <td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>
+                    <td><span class='text-xs font-weight-bold'> ${currency(total_price_page)} </span></td>
+                    <td class='text-center'><span class='text-xs font-weight-bold'> ${str(total_quantity)} </span></td>
+                    <td colspan='6'></td></tr>`
+                // reset each transaction type
+                total_price_page = 0
+                total_quantity = 0
+            }
+            curr_transaction_type = data[i].transaction_type
+        }*/
+
+        notesRaw = data[i].notes
+        notes = ""
+        if (notesRaw != undefined) {
+            if (notesRaw.length > 0) {
+                try {
+                    notesJSON = JSON.parse(notesRaw)
+                    if (notesJSON["data"] != undefined) {
+                        notes = JSON.stringify(notesJSON["data"]).replaceAll("{", "").replaceAll("}", "").replaceAll("\"", "")
+                    }
+                } catch (e) {
+                    notes = notesRaw
+                }
+            }
+        }
+
+        rows += `
+        <tr class="${
+            (data[i].transaction_type=='DebtCollect'? "text-success" :
+                (data[i].transaction_type=='Purchase'? "text-warning" :
+                    (data[i].transaction_type=='Debt'? "text-warning" :
+                        (data[i].transaction_type=='Salary'? "text-warning" :
+                            (data[i].transaction_type=='Tax'? "text-warning" :
+                                (data[i].transaction_type=='FishDebtCollect'? "text-success" : ""))))))}">
+            <td hidden>
+                <div class="d-flex px-2">
+                    <div>
+                        <img src="${img(data[i].transaction_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Transaction: ${data[i].transaction_date}', '${img(data[i].transaction_image)}');">
+                    </div>
+                    <div class="my-auto">
+                        <h6 class="mb-0 text-sm">${str(data[i].transaction_id)}</h6>
+                    </div>
+                </div>
+            </td>
+            <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].product_name)}</span></td>
+            <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].buyer_first_name)+" "+str(data[i].buyer_last_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].seller_first_name)+" "+str(data[i].seller_last_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date).replace("T00:00:00Z","")}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].transaction_type)}">${str(data[i].transaction_type)}</span></td>
+            <td><span class="text-xs font-weight-bold">${currency(str(data[i].total_price))}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${str((parseInt(data[i].quantity)||0))}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${currency(data[i].unit_price)}</span></td>
+            <td><span class="text-xs font-weight-bold">${notes}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].payment_type)}">${str(data[i].payment_type)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${parseInt(data[i].payment_status)}">${str(data[i].payment_status)}</span></td>
+            <td class="align-middle text-center">
+                <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Transaction","",${JSON.stringify(data[i])})'>
+                    <i class="fa fa-ellipsis-v text-xs"></i>
+                </button>
+                <button class="btn btn-link text-warning mb-0" onclick='openPopup("Delete Transaction","",${JSON.stringify(data[i])})'><i class="fa fa-ban text-xs"></i></button>
+            </td>
+        </tr>
+    `;
+
+        if (data[i].transaction_type=='FishDebtCollect') {
+            total_final_price_page += data[i].total_price
+        } else if (data[i].transaction_type=='Tax'||data[i].transaction_type=='Salary'||data[i].transaction_type=='Purchase'||data[i].transaction_type=='Debt') {
+            total_final_price_page -= data[i].total_price
+        } else if (data[i].transaction_type=='Sale') {
+            total_final_price_page += data[i].total_price
+            total_final_quantity += (parseInt(data[i].quantity) || 0)
+        } else {
+            total_final_price_page += data[i].total_price
+        }
+        total_price_page += data[i].total_price
+        total_quantity+=(parseInt(data[i].quantity) || 0)
+    }
+
+    /*if (curr_transaction_type != "") {
+        if (total_price_page != 0 ) {
+            // adding total below for each transaction_type
+            rows += `<tr style='background-color: lightgrey;'><td colspan='4'></td>
+                    <td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>
+                    <td><span class='text-xs font-weight-bold'> ${currency(total_price_page)} </span></td>
+                    <td class='text-center'><span class='text-xs font-weight-bold'> ${str(total_quantity)} </span></td>
+                    <td colspan='6'></td></tr>`
+            // reset each transaction type
+            total_price_page = 0
+            total_quantity = 0
+        }
+    }*/
+    // adding final total below
+    rows += "<tr style='background-color: lightgrey;'><td colspan='4'></td>" +
+        "<td class='text-center'><span class='text-xs font-weight-bold'>Final Total:</span></td>" +
+        "<td><span class='text-xs font-weight-bold'>" + currency(total_final_price_page) + "</span></td>" +
+        "<td class='text-center'><span class='text-xs font-weight-bold'>" + str(total_final_quantity) + "</span></td>" +
+        "<td colspan='6'></td></tr>"
+    table.tBodies[0].innerHTML = rows;
+    loadLocalization(localStorage.getItem("localization_language"))
+}
+
 function processMaintenanceTable(response) {
     var data = response.data;
     var rows = "";
@@ -2543,6 +2661,322 @@ function processPopup(title, title_extra, data) {
                         var reader = new FileReader();
                         reader.onloadend = update
                         reader.readAsDataURL(trip_image_file);
+                    } else {
+                        update()
+                    }
+                });
+            }]
+        case 'Add TokoSBR':
+            MAKE_REQUEST("GET",product_api_url,"",true, function(response) {
+                if (response instanceof Error) {
+                    alert("Add transaction get product list failed!")
+                    return
+                }
+                data = response.data;
+                options = "<option disabled selected value data-i18n-key=\"select_product\"> -- Select Product -- </option>"
+                for (i = 0; i < data.length; i++) {
+                    options += `<option value="${data[i].product_id}">${data[i].product_name}</option>`
+                }
+                document.querySelector('select[name="assign_product_list"]').innerHTML = options
+            })
+            MAKE_REQUEST("GET",people_api_url,"",true, function(response) {
+                if (response instanceof Error) {
+                    alert("Add expense get people list failed!")
+                    return
+                }
+                data = response.data;
+                currentPeopleGroup = "";
+                options = []
+                options.push("<option disabled selected value data-i18n-key=\"select_person\"> -- Select Person -- </option>")
+                for (i = 0; i < data.length; i++) {
+                    //if( str(data[i].first_name)+" "+str(data[i].last_name)!= "Toko SBR " ) {continue}
+                    if (currentPeopleGroup != data[i].person_category) {
+                        if (currentPeopleGroup != "") {
+                            options.push('</optgroup>')
+                        }
+                        currentPeopleGroup = data[i].person_category
+                        options.push(`<optgroup label="${currentPeopleGroup}">>`)
+                    }
+                    options.push(`<option value="${data[i].person_id}">${str(data[i].first_name)} ${str(data[i].last_name)}</option>`)
+                }
+                document.querySelector('select[name="assign_seller_list"]').innerHTML = options.join("")
+                // auto-pick seller as company by default for add expenses
+                document.getElementById("assign_buyer_list").innerHTML = options.join("")
+                $('#assign_buyer_list').select2({dropdownParent: $('#myModal')}).val(toko_sbr_id).trigger('change');
+            })
+            /*MAKE_REQUEST("GET",vessel_api_url,"",true, function(response) {
+                if (response instanceof Error) {
+                    alert("Add transaction get vessel list failed!")
+                    return
+                }
+                data = response.data;
+                options = "<option selected value='' data-i18n-key=\"select_vessel\"> -- Select Vessel -- </option>"
+                for (i = 0; i < data.length; i++) {
+                    options += `<option value="${data[i].vessel_id}">${data[i].vessel_name}</option>`
+                }
+                document.getElementById("assign_vessel_list").innerHTML = options
+            })
+            MAKE_REQUEST("GET",trip_api_url,"",true, function(response) {
+                if (response instanceof Error) {
+                    alert("Add transaction get trip list failed!")
+                    return
+                }
+                data = response.data;
+                options = "<option selected value='' data-i18n-key=\"select_trip\"> -- Select Trip -- </option>"
+                for (i = 0; i < data.length; i++) {
+                    options += `<option value="${data[i].trip_id}">${data[i].trip_name}</option>`
+                }
+                document.getElementById("assign_trip_list").innerHTML = options
+            })*/
+            return [`
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex align-items-center">
+                    <p class="mb-0" data-i18n-key="add_transaction">${title}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="transaction_date" class="form-control-label" data-i18n-key="transaction_date">Transaction Date</label>
+                            <input id="transaction_date" class="form-control" type="date" value="${getTodayDate()}" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="transaction_type" class="form-control-label" data-i18n-key="transaction_type">Transaction Type</label>
+                            <select id="transaction_type" class="form-control" data-toggle="select">
+                                <option value="Sale" data-i18n-key="sale">Sale</option>
+                                <option selected value="Purchase" data-i18n-key="purchase">Purchase</option>
+                                <option value="Return" data-i18n-key="return">Return</option>
+                                <option value="Debt" data-i18n-key="debt">Debt</option>
+                                <option value="DebtCollect" data-i18n-key="debt_collect">DebtCollect</option>
+                                <option value="FishDebtCollect" data-i18n-key="fish_debt_collect">FishDebtCollect</option>
+                                <option value="Tax" data-i18n-key="tax">Tax</option>
+                                <option value="Salary" data-i18n-key="salary">Salary</option>
+                                <option value="Funds" data-i18n-key="funds">Funds</option>
+                                <option value="ColdStorage" data-i18n-key="cold_storage">Cold Storage</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                             <label for="buyer_id" class="form-control-label" data-i18n-key="buyer_id">Buyer ID</label>
+                             <select id="assign_buyer_list" class="form-control" data-toggle="select"></select>
+                        </div>
+                    </div>
+                    <div hidden class="col-md-6">
+                        <div class="form-group">
+                            <label for="vessel_id" class="form-control-label" data-i18n-key="vessel_id">Vessel ID</label>
+                            <select id="assign_vessel_list" class="form-control" data-toggle="select"></select>
+                        </div>
+                    </div>
+                    <div hidden class="col-md-6">
+                        <div class="form-group">
+                            <label for="trip_id" class="form-control-label" data-i18n-key="trip_id">Trip ID</label>
+                            <select id="assign_trip_list" class="form-control" data-toggle="select"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="payment_type" class="form-control-label" data-i18n-key="payment_type">Payment Type</label>
+                            <select id="payment_type" class="form-control" data-toggle="select">
+                                <option value="CASH" data-i18n-key="cash">CASH</option>
+                                <option value="DEBT" data-i18n-key="debt">DEBT</option>
+                                <option value="GIRO" data-i18n-key="giro">GIRO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="payment_status" class="form-control-label" data-i18n-key="payment_status">Payment Status</label>
+                            <select id="payment_status" class="form-control" data-toggle="select">
+                                <option value="0" data-i18n-key="pending">PENDING</option>
+                                <option value="1" data-i18n-key="done" selected>DONE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:auto;">
+                        <div class="col-md-12 text-center text-bg-success" style="margin:auto;" onclick="document.getElementById('multiple_product_transaction').append(document.getElementById('multiple_product_transaction').getElementsByClassName('row')[0].cloneNode(true))">&plus;</div>
+                    </div>
+                    <div id="multiple_product_transaction">
+                        <div class="row" style="background: lightgrey">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="seller_id" class="form-control-label" data-i18n-key="seller_id">Seller ID</label>
+                                    <select name="assign_seller_list" class="form-control" data-toggle="select"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="product_id" class="form-control-label" data-i18n-key="product_id">product ID</label>
+                                    <select name="assign_product_list" class="form-control" data-toggle="select"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="quantity" class="form-control-label" data-i18n-key="quantity">Quantity</label>
+                                    <input name="quantity" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="unit_price" class="form-control-label" data-i18n-key="unit_price">Unit Price</label>
+                                    <input name="unit_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="total_price" class="form-control-label" data-i18n-key="total_price">Total Price</label>
+                                    <input name="total_price" class="form-control" type="number" value="" onfocus="focused(this)" onfocusout="defocused(this)">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="notes" class="form-control-label" data-i18n-key="notes">Notes</label>
+                                    <textarea name="notes" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input name="keep_in_stock" type="checkbox">
+                                    <label for="keep_in_stock" class="form-control-label" data-i18n-key="keep_in_stock">Keep in product stock</label>
+                                </div>
+                            </div>
+                            <div class="col-md-1 justify-content-xxl-center content-center text-center text-bg-warning" style="margin:auto;" onclick="if(document.getElementById('multiple_product_transaction').getElementsByClassName('row').length > 1){this.parentElement.remove()}">
+                                &minus;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="transaction_image" class="form-control-label" data-i18n-key="transaction_image">Transaction Image</label>
+                            <input id="transaction_image" class="form-control" type="file" accept="image/*" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                            <label for="transaction_image" class="form-control-label" data-i18n-key="using_billcode">Bill code:</label>
+                                    <input id="bill_code" class="form-control" type="text" autocomplete="off"> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="horizontal dark">
+                <button id="add_transaction_btn" class="btn btn-primary btn-sm ms-auto" data-i18n-key="add_transaction_btn">ADD TRANSACTION</button>
+            </div>
+        </div>
+    `, function (){
+                $(document).ready(function() {
+                    //$('#assign_product_list').select2({dropdownParent: $('#myModal')});
+                    //$('#assign_buyer_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_trip_list').select2({dropdownParent: $('#myModal')});
+                    $('#assign_vessel_list').select2({dropdownParent: $('#myModal')});
+                    loadLocalization(localStorage.getItem("localization_language"))
+                });
+                document.getElementById("add_transaction_btn").addEventListener('click', function (e) {
+                    // Retrieve input values
+                    let transaction_using_billcode = document.getElementById("transaction_using_billcode").checked;
+                    let transaction_date = document.getElementById("transaction_date").value+"T00:00:00Z";
+                    let transaction_type = document.getElementById("transaction_type").value;
+                    /*let product_id = document.getElementById("assign_product_list").value;
+                    let quantity = parseInt(document.getElementById("quantity").value);
+                    let unit_price = parseFloat(document.getElementById("unit_price").value);
+                    let total_price = parseFloat(document.getElementById("total_price").value);
+                    let buyer_id = document.getElementById("assign_buyer_list").value;*/
+                    let buyer_id = document.getElementById("assign_buyer_list").value;
+                    let vessel_id = document.getElementById("assign_vessel_list").value;
+                    let trip_id = document.getElementById("assign_trip_list").value;
+                    let payment_type = document.getElementById("payment_type").value;
+                    let payment_status = parseInt(document.getElementById("payment_status").value);
+                    let transaction_image_file = document.getElementById("transaction_image").files[0];
+                    /*let notes = {
+                        "data": document.getElementById("notes").value
+                    };
+                    // assigning bill code to current transaction batch
+                    if (transaction_using_billcode) {
+                        notes["bill_code"] = getRandomIdFromHash()
+                    */
+                    currentTransactionBillCode = document.getElementById("bill_code").value;
+
+                    function update() {
+                        blobText = ""
+                        if (transaction_image_file != undefined) {
+                            blobText = reader.result
+                        }
+
+                        // multiple call for all product
+                        rows = document.getElementById("multiple_product_transaction").getElementsByClassName("row")
+                        if (rows.length == 0) {
+                            alert("no new transaction is available to be added!")
+                            return
+                        }
+                        for(i=0;i<rows.length;i++) {
+                            if (rows[i].querySelector('select[name="assign_seller_list"]').length == 0) {continue;}
+                            if (rows[i].querySelector('select[name="assign_product_list"]').length == 0) {continue;}
+                            if (rows[i].querySelector('input[name="quantity"]').length == 0) {continue;}
+                            if (rows[i].querySelector('input[name="unit_price"]').length == 0) {continue;}
+                            if (rows[i].querySelector('input[name="total_price"]').length == 0) {continue;}
+
+                            // process total independently
+                            totalPrice = parseFloat(rows[i].querySelector('input[name="total_price"]').value)
+                            if (parseInt(rows[i].querySelector('input[name="quantity"]').value) != 0 && rows[i].querySelector('input[name="quantity"]').value != "" &&
+                                parseInt(rows[i].querySelector('input[name="unit_price"]').value) != 0 && rows[i].querySelector('input[name="unit_price"]').value != "") {
+                                totalPrice = parseFloat(parseInt(rows[i].querySelector('input[name="quantity"]').value) * parseFloat(rows[i].querySelector('input[name="unit_price"]').value))
+                            }
+
+                            // process notes
+                            notes = rows[i].querySelector('textarea[name="notes"]').value
+                            noteJSON = {}
+                            if (notes != "") {
+                                noteJSON["data"] = notes
+                            }
+                            noteJSON["bill_code"] = currentTransactionBillCode
+
+                            // extra value to be kept
+                            keep_product_in_stock = rows[i].querySelector('input[name="keep_in_stock"]').checked
+                            noteJSON["keep_in_stock"] = keep_product_in_stock
+
+                            // Construct payload
+                            let payload = {
+                                "transaction_date": transaction_date,
+                                "transaction_type": transaction_type,
+                                "product_id": rows[i].querySelector('select[name="assign_product_list"]').value,
+                                "quantity": parseInt(rows[i].querySelector('input[name="quantity"]').value) || 0,
+                                "unit_price": parseFloat(rows[i].querySelector('input[name="unit_price"]').value),
+                                "total_price": totalPrice,
+                                "seller_id": rows[i].querySelector('select[name="assign_seller_list"]').value,
+                                "buyer_id": buyer_id,
+                                "vessel_id": vessel_id,
+                                "trip_id": trip_id,
+                                "payment_type": payment_type,
+                                "payment_status": payment_status,
+                                "transaction_image": blobText,
+                                "notes": JSON.stringify(noteJSON)
+                            };
+
+                            // Send payload to server
+                            MAKE_REQUEST("POST", transaction_api_url, JSON.stringify(payload), true, function (response) {
+                                if (response instanceof Error) {
+                                    alert("Failed to add new transaction! \nerror:" + response.message);
+                                    return false;
+                                }
+                                // Refresh the page or perform other actions
+                                location.reload();
+                            });
+                        }
+                    }
+
+                    if (transaction_image_file != undefined) {
+                        // process image uploaded file to BLOB
+                        var reader = new FileReader();
+                        reader.onloadend = update
+                        reader.readAsDataURL(transaction_image_file);
                     } else {
                         update()
                     }
