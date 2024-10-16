@@ -6273,6 +6273,12 @@ function processPopup(title, title_extra, data) {
                     notes = document.getElementById("update_notes").value;
                     transaction_image_file = document.getElementById("update_transaction_image").files[0];
 
+                    // pre-check data validity before update operation
+                    if (product_id == "" || buyer_id == "" || seller_id == "") {
+                        alert("please fill data correctly!!!")
+                        return
+                    }
+
                     // process notes
                     if (document.getElementById("update_existing_notes").value != "") {
                         notesJSON = JSON.parse(document.getElementById("update_existing_notes").value)
