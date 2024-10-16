@@ -3217,6 +3217,13 @@ function processPopup(title, title_extra, data) {
                     if (transaction_using_billcode) {
                         notes["bill_code"] = getRandomIdFromHash()
                     */
+
+                    // pre-check data validity before update operation
+                    if (seller_id === '') {
+                        alert("please fill data correctly!!!")
+                        return
+                    }
+
                     currentTransactionBillCode = getRandomIdFromHash()
 
                     function update() {
@@ -6274,7 +6281,7 @@ function processPopup(title, title_extra, data) {
                     transaction_image_file = document.getElementById("update_transaction_image").files[0];
 
                     // pre-check data validity before update operation
-                    if (product_id == "" || buyer_id == "" || seller_id == "") {
+                    if (product_id === "" || buyer_id === "" || seller_id === "") {
                         alert("please fill data correctly!!!")
                         return
                     }
@@ -6841,7 +6848,7 @@ function processPopup(title, title_extra, data) {
                     MAKE_REQUEST("DELETE", transaction_api_url+data.transaction_id+"/", "", true, function(response) {
                         if (response instanceof Error) {
                             alert("Failed to delete transaction! \nerror:" + response.message);
-                            location.reload();
+                            return true;
                         }
                         // Refresh the page
                         location.reload();
