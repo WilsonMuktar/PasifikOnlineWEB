@@ -1058,26 +1058,36 @@ function processReportTable(response) {
         total_pendapatan = 0
 
         for (var i = data.length - 1; i >= 0; i--) {
+            // SISA LABA
             if (data[i].product_id == product_sisalaba) {
                 total_sisa_laba += data[i].total_price
             }
+            // LABA
             else if (data[i].buyer_id == kantor_id && data[i].seller_id == kantor_id && data[i].transaction_type == 'Return') {
                 total_laba += data[i].total_price
-            }else if (data[i].buyer_id == toko_sbr_id) {
+            }
+            // TOKO SBR
+            else if (data[i].buyer_id == toko_sbr_id) {
                 if (data[i].transaction_type == 'Return') {
                     total_tokoSBR += data[i].total_price
                 } else {
                     total_tokoSBR -= data[i].total_price
                 }
-            } else if (data[i].seller_id == kantor_id && data[i].buyer_id == TJAI) {
+            }
+            // PRIVE
+            else if (data[i].seller_id == kantor_id && data[i].buyer_id == TJAI) {
                 if (data[i].transaction_type == 'Debt') {
                     total_prive += data[i].total_price
                 } else if (data[i].transaction_type == 'DebtCollect') {
-                    total_prive_debit += data[i].total_price
+                    total_prive_credit += data[i].total_price
                 }
-            } else if (data[i].seller_id == company_people_id && data[i].buyer_id == company_people_id && data[i].transaction_type == 'Debt') {
+            }
+            // PIUTANG NASABAH
+            else if (data[i].seller_id == company_people_id && data[i].buyer_id == company_people_id && data[i].transaction_type == 'Debt') {
                 total_piutang_nasabah += data[i].total_price
-            } else if (data[i].seller_id == company_people_id && data[i].transaction_type == 'Debt') {
+            }
+            // PINJAMAN KARYAWAN
+            else if (data[i].seller_id == company_people_id && data[i].transaction_type == 'Debt') {
                 total_pinjaman_karyawan += data[i].total_price
             } else if (data[i].seller_id == company_people_id && data[i].transaction_type == 'DebtCollect') {
                 total_pinjaman_karyawan -= data[i].total_price
@@ -1086,23 +1096,22 @@ function processReportTable(response) {
                 if (data[i].product_name == 'Modal') {
                     total_modal += data[i].total_price
                 }
-                // biaya_operational : gaji , pembelian barang untuk kantor , pembayaran yang atas nama kantor
-                if (data[i].transaction_type == 'Tax' || data[i].transaction_type == 'Salary') { // biaya operational hanya pengeluaran dri kantor
-                    total_biaya_operational_debit += data[i].total_price
-                } else if (data[i].transaction_type == 'Sale') {
-                    // penjualan ikan
+                // penjualan ikan
+                else if (data[i].transaction_type == 'Sale') {
                     if (data[i].payment_type == 'DEBT') {
                         // credit piutang pembelian ikan
-                        total_piutang_ikan_credit += data[i].total_price
+                        total_piutang_ikan += data[i].total_price
                     } else if (data[i].payment_type == 'CASH' || data[i].payment_type == 'GIRO') {
-                        // debit piutang pembelian ikan
-                        total_piutang_ikan_debit += data[i].total_price
+
                     }
                     total_penjualan_kapal += data[i].total_price
-                } else if (data[i].transaction_type == 'FishDebtCollect') {
-                    // debit piutang pembelian ikan
-                    total_piutang_ikan_debit += data[i].total_price
-                } else if ((data[i].transaction_type == 'Debt' || data[i].transaction_type == 'Purchase') && data[i].seller_id == kantor_id) {
+                }
+                // debit piutang pembelian ikan
+                else if (data[i].transaction_type == 'FishDebtCollect') {
+                    total_piutang_ikan_credit += data[i].total_price
+                }
+                // Kantor
+                else if (data[i].transaction_type == 'Debt') {
                     total_piutang_nasabah_credit += data[i].total_price
                 } else if (data[i].transaction_type == 'Return' && data[i].seller_id == kantor_id) {
                     total_piutang_nasabah_debit += data[i].total_price
@@ -1113,6 +1122,12 @@ function processReportTable(response) {
                         total_KAS += data[i].total_price
                     }
                 }
+                // biaya_operational : gaji , pembelian barang untuk kantor , pembayaran yang atas nama kantor
+                else if (data[i].transaction_type == 'Salary' || (data[i].transaction_type == 'Tax') ) { // biaya operational hanya pengeluaran dri kantor
+                    total_biaya_operational_debit += data[i].total_price
+                } else if (data[i].buyer_id==kantor_id && data[i].transaction_type=='Purchase') {
+                    total_biaya_operational += data[i].total_price
+                }
             }
         }
         // adding final total below
@@ -1121,38 +1136,38 @@ function processReportTable(response) {
             <td><span class='text-xs font-weight-bold'>${currency(total_KAS)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_KAS_debit)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_KAS_credit)}</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
+            <td><span class='text-xs font-weight-bold'>${currency(total_KAS+total_KAS_debit-total_KAS_credit)}</span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>PIUTANG PEMBELIAN IKAN</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_piutang_ikan)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_piutang_ikan_debit)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_piutang_ikan_credit)}</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
+            <td><span class='text-xs font-weight-bold'>${currency(total_piutang_ikan+total_piutang_ikan_debit-total_piutang_ikan_credit)}</span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>PIUTANG NASABAH</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_piutang_nasabah)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_piutang_nasabah_debit)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_piutang_nasabah_credit)}</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
+            <td><span class='text-xs font-weight-bold'>${currency(total_piutang_nasabah+total_piutang_nasabah_debit-total_piutang_nasabah_credit)}</span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>TOKO SBR</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_tokoSBR)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_tokoSBR_debit)}</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
+            <td><span class='text-xs font-weight-bold'>${currency(total_tokoSBR_credit)}</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_tokoSBR+total_tokoSBR_debit-total_tokoSBR_credit)}</span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>PINJAMAN KARYAWAN</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_pinjaman_karyawan)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_pinjaman_karyawan_debit)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_pinjaman_karyawan_credit)}</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
+            <td><span class='text-xs font-weight-bold'>${currency(total_pinjaman_karyawan+total_pinjaman_karyawan_debit-total_pinjaman_karyawan_credit)}</span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>PRIVE (TJAI)</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_prive)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_prive_debit)}</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'>${currency(total_prive-total_prive_debit)}</span></td></tr>
+            <td><span class='text-xs font-weight-bold'>${currency(total_prive_credit)}</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_prive+total_prive_debit-total_prive_credit)}</span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>BIAYA OPERATIONAL</span><br/>
                 <span class='text-xs'>(tax + salary)</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_biaya_operational)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_biaya_operational_debit)}</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_biaya_operational_credit)}</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
+            <td><span class='text-xs font-weight-bold'>${currency(total_biaya_operational+total_biaya_operational_debit-total_biaya_operational_credit)}</span></td></tr>
         <tr style="background-color: lightgrey;"><td><span class='text-xs font-weight-bold'>TOTAL AKTIVA</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(
                 total_KAS+
@@ -1171,32 +1186,35 @@ function processReportTable(response) {
             <td><span class='text-xs font-weight-bold'>${currency(total_penjualan_kapal)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
+            <td><span class='text-xs font-weight-bold'>${currency(total_penjualan_kapal)}</span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>KOMISI KAPAL (3%)</span></td>
             <td><span class='text-xs font-weight-bold text-warning'>${currency(total_penjualan_kapal*3/100)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
-        <tr><td><span class='text-xs font-weight-bold'>MODAL</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_penjualan_kapal*3/100)}</span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>MODAL</span><br/>
+                <span class='text-xs'>(product:modal)</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_modal)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
-        <tr><td><span class='text-xs font-weight-bold'>SISA LABA</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_modal)}</span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>SISA LABA</span><br/>
+                <span class='text-xs'>(product:sisa laba)</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_sisa_laba)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
-        <tr><td><span class='text-xs font-weight-bold'>LABA</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_sisa_laba)}</span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>LABA</span><br/>
+                <span class='text-xs'>(return kantor-kantor)</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_laba)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
+            <td><span class='text-xs font-weight-bold'>${currency(total_laba)}</span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>PENDAPATAN</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_pendapatan)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span></td></tr>
+            <td><span class='text-xs font-weight-bold'>${currency(total_pendapatan)}</span></td></tr>
         <tr style="background-color: lightgrey;"><td><span class='text-xs font-weight-bold'>TOTAL PASIVA</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_penjualan_kapal+
                 (total_penjualan_kapal*3/100)+
