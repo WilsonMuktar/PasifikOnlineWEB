@@ -7,6 +7,8 @@ var company_people_id = "1931b5d7-c89e-4eea-b639-18bf7060ba6c"
 var toko_sbr_id = "60d0d14c-8205-4772-a828-e28c4cc6e5c4"
 var kantor_id = "54eec320-05a0-4d5b-afd1-b895718b5f3b"
 var TJAI = "63b63df2-02e3-4f8f-bcb9-e9aed106e396"
+
+var product_sisalaba = "61b3035c-1cc6-4bdc-affd-0b31d4884d4f"
 var product_pinjaman = "d8605473-1edd-47be-b888-330bcbbcf7c4"
 
 // check rather running in local

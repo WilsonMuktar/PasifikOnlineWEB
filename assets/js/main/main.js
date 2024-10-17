@@ -83,7 +83,7 @@ function img(data) {
 }
 function currency(data) {
     if (data == "" || data == undefined || data == NaN || data == 'NaN') {
-        return "Rp.0,00"
+        return "" //"Rp.0,00"
     }
     // just keep single decimal precision value
     data = data.toFixed(1)
@@ -1029,6 +1029,8 @@ function processReportTable(response) {
         // Monthly report
         var monthly_rows = ""
         total_KAS = 0
+        total_KAS_debit = 0
+        total_KAS_credit = 0
         total_piutang_ikan = 0
         total_piutang_ikan_debit = 0
         total_piutang_ikan_credit = 0
@@ -1039,19 +1041,29 @@ function processReportTable(response) {
         total_tokoSBR_debit = 0
         total_tokoSBR_credit = 0
         total_pinjaman_karyawan = 0
+        total_pinjaman_karyawan_debit = 0
+        total_pinjaman_karyawan_credit = 0
         total_prive = 0
         total_prive_debit = 0
         total_prive_credit = 0
         total_biaya_operational = 0
+        total_biaya_operational_debit = 0
+        total_biaya_operational_credit = 0
 
         total_penjualan_kapal = 0
         total_komisi_kapal = 0
         total_modal = 0
+        total_sisa_laba = 0
         total_laba = 0
         total_pendapatan = 0
 
         for (var i = data.length - 1; i >= 0; i--) {
-            if (data[i].buyer_id==toko_sbr_id) {
+            if (data[i].product_id == product_sisalaba) {
+                total_sisa_laba += data[i].total_price
+            }
+            else if (data[i].buyer_id == kantor_id && data[i].seller_id == kantor_id && data[i].transaction_type == 'Return') {
+                total_laba += data[i].total_price
+            }else if (data[i].buyer_id == toko_sbr_id) {
                 if (data[i].transaction_type == 'Return') {
                     total_tokoSBR += data[i].total_price
                 } else {
@@ -1076,7 +1088,7 @@ function processReportTable(response) {
                 }
                 // biaya_operational : gaji , pembelian barang untuk kantor , pembayaran yang atas nama kantor
                 if (data[i].transaction_type == 'Tax' || data[i].transaction_type == 'Salary') { // biaya operational hanya pengeluaran dri kantor
-                    total_biaya_operational += data[i].total_price
+                    total_biaya_operational_debit += data[i].total_price
                 } else if (data[i].transaction_type == 'Sale') {
                     // penjualan ikan
                     if (data[i].payment_type == 'DEBT') {
@@ -1097,7 +1109,9 @@ function processReportTable(response) {
                 } else if (data[i].transaction_type == 'Debt' && data[i].seller_id == kantor_id) {
                     total_pinjaman_karyawan += data[i].total_price
                 } else if (data[i].transaction_type == 'Return') {
-                    total_KAS += data[i].total_price
+                    if (data[i].buyer_id == company_people_id && data[i].seller_id == company_people_id) {
+                        total_KAS += data[i].total_price
+                    }
                 }
             }
         }
@@ -1105,8 +1119,8 @@ function processReportTable(response) {
         monthly_rows += `
         <tr><td><span class='text-xs font-weight-bold'>KAS</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_KAS)}</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_KAS_debit)}</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_KAS_credit)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>PIUTANG PEMBELIAN IKAN</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
@@ -1124,9 +1138,9 @@ function processReportTable(response) {
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>PINJAMAN KARYAWAN</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_pinjaman_karyawan)}</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_pinjaman_karyawan_debit)}</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_pinjaman_karyawan_credit)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>PRIVE (TJAI)</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_prive)}</span></td>
@@ -1135,11 +1149,11 @@ function processReportTable(response) {
             <td><span class='text-xs font-weight-bold'>${currency(total_prive-total_prive_debit)}</span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>BIAYA OPERATIONAL</span><br/>
                 <span class='text-xs'>(tax + salary)</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_biaya_operational)}</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_biaya_operational_debit)}</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_biaya_operational_credit)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td></tr>
-        <tr><td><span class='text-xs font-weight-bold'>TOTAL AKTIVA</span></td>
+        <tr style="background-color: lightgrey;"><td><span class='text-xs font-weight-bold'>TOTAL AKTIVA</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(
                 total_KAS+
                 total_piutang_ikan+
@@ -1168,7 +1182,22 @@ function processReportTable(response) {
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td></tr>
-        <tr><td><span class='text-xs font-weight-bold'>TOTAL PASIVA</span></td>
+        <tr><td><span class='text-xs font-weight-bold'>SISA LABA</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_sisa_laba)}</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>LABA</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_laba)}</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>PENDAPATAN</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_pendapatan)}</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr style="background-color: lightgrey;"><td><span class='text-xs font-weight-bold'>TOTAL PASIVA</span></td>
             <td><span class='text-xs font-weight-bold'>${currency(total_penjualan_kapal+
                 (total_penjualan_kapal*3/100)+
                 total_modal
