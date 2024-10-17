@@ -739,15 +739,16 @@
         for ( let m in allmonth ) {
           month = allmonth[m]
           startMonth = currentYear + "-" + month + "-01"
+          // get lastDayOfTheMonth
           lastDayOfTheMonth = new Date(currentYear, parseInt(month), 0)
-          endMonth = lastDayOfTheMonth.toISOString().split("T")[0];
+          endMonth = currentYear + "-" + month + "-" + lastDayOfTheMonth.getDate()
           total_monthly_transaction = monthTrans[month]
           monthlyRows += `
                   <div class="col-xl-2">
                   <div class="card">
                     <div class="card-body p-2">
                       <div class="row">
-                        <div class="col-12" onclick="redirectPage('./pages/transaction.html?transaction_date_from=${startMonth}&transaction_date_to=${endMonth}&order_by=transaction_date,total_price&order_type=ASC\`')">
+                        <div class="col-12" onclick="redirectPage('./pages/report.html?transaction_date_from=${startMonth}&transaction_date_to=${endMonth}&order_by=transaction_date,transaction_type,total_price&order_type=ASC')">
                           <div class="numbers">
                             <center>
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="${months[m]}">${months[m]}</p>

@@ -1021,6 +1021,174 @@ function processTransactionTable(response) {
     loadLocalization(localStorage.getItem("localization_language"))
 }
 
+function processReportTable(response) {
+    var data = response.data;
+    var rows = "";
+    var table = document.getElementById("report_table");
+    var report_monthly_table = document.getElementById("report_monthly_table");
+
+    // Monthly report
+    total_KAS = 0
+    total_piutang_ikan = 0
+    total_piutang_ikan_debit = 0
+    total_piutang_ikan_credit = 0
+    total_piutang_nasabah = 0
+    total_piutang_nasabah_debit = 0
+    total_piutang_nasabah_credit = 0
+    total_tokoSBR = 0
+    total_pinjaman_karyawan = 0
+    total_prive = 0
+    total_biaya_operational = 0
+
+    total_penjualan_kapal = 0
+    total_komisi_kapal = 0
+    total_modal = 0
+    total_laba = 0
+    total_pendapatan = 0
+
+    for (var i = data.length - 1; i >= 0; i--) {
+        if (data[i].buyer_id==toko_sbr_id) {
+            total_tokoSBR += data[i].total_price
+        } else {
+            if (data[i].transaction_type == 'Tax' || data[i].transaction_type == 'Salary') {
+                total_biaya_operational += data[i].total_price
+            } else if (data[i].transaction_type == 'Sale') { // penjualan ikan
+                if (data[i].payment_type == 'DEBT') { // credit piutang pembelian ikan
+                    total_piutang_ikan_credit += data[i].total_price
+                } else if (data[i].payment_type == 'CASH' || data[i].payment_type == 'GIRO') { // debit piutang pembelian ikan
+                    total_piutang_ikan_debit += data[i].total_price
+                }
+                total_penjualan_kapal += data[i].total_price
+            } else if (data[i].transaction_type == 'FishDebtCollect') { // debit piutang pembelian ikan
+                total_piutang_ikan_debit += data[i].total_price
+            } else if (data[i].transaction_type == 'Debt') { // total_piutang_nasabah
+                total_piutang_nasabah_credit += data[i].total_price
+            } else if (data[i].transaction_type == 'Return') { // pengembalian_piutang_nasabah
+                total_piutang_nasabah_debit += data[i].total_price
+            }
+        }
+    }
+    // adding final total below
+    rows += `
+        <tr><td><span class='text-xs font-weight-bold'>KAS</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>PIUTANG PEMBELIAN IKAN</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span>${currency(total_piutang_ikan_debit)}</td>
+            <td><span class='text-xs font-weight-bold'></span>${currency(total_piutang_ikan_credit)}</td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>PIUTANG NASABAH</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span>${currency(total_piutang_nasabah_debit)}</td>
+            <td><span class='text-xs font-weight-bold'></span>${currency(total_piutang_nasabah_credit)}</td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>TOKO SBR</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span>${currency(total_tokoSBR)}</td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr></tr>
+        <tr><td><span class='text-xs font-weight-bold'>PENJUALAN</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span>${currency(total_penjualan_kapal)}</td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+    `
+    report_monthly_table.tBodies[0].innerHTML = rows;
+    rows = "" //reset row
+
+    total_final_price_page = 0
+    total_final_quantity = 0
+    total_price_page = 0
+    total_quantity = 0
+    curr_transaction_type = ""
+    for (var i = data.length - 1; i >= 0; i--) {
+        notesRaw = data[i].notes
+        notes = ""
+        billCode = ""
+        if (notesRaw != undefined) {
+            if (notesRaw.length > 0) {
+                try {
+                    notesJSON = JSON.parse(notesRaw)
+                    if (notesJSON["data"] != undefined) {
+                        notes = JSON.stringify(notesJSON["data"]).replaceAll("{", "").replaceAll("}", "").replaceAll("\"", "")
+                    }
+                    if (notesJSON["bill_code"] != undefined) {
+                        billCode = JSON.stringify(notesJSON["bill_code"]).replaceAll("{", "").replaceAll("}", "").replaceAll("\"", "")
+                    }
+                } catch (e) {
+                    notes = notesRaw
+                }
+            }
+        }
+
+        rows += `
+        <tr class="${
+            (data[i].transaction_type=='DebtCollect'? "text-success" :
+                (data[i].transaction_type=='Purchase'? "text-warning" :
+                    (data[i].transaction_type=='Debt'? "text-warning" :
+                        (data[i].transaction_type=='Salary'? "text-warning" :
+                            (data[i].transaction_type=='Tax'? "text-warning" :
+                                (data[i].transaction_type=='FishDebtCollect'? "text-success" : ""))))))}">
+            <td hidden>
+                <div class="d-flex px-2">
+                    <div>
+                        <img src="${img(data[i].transaction_image)}" class="avatar avatar-sm rounded-circle me-2" onclick="openPopup('show image', 'Transaction: ${data[i].transaction_date}', '${img(data[i].transaction_image)}');">
+                    </div>
+                    <div class="my-auto">
+                        <h6 class="mb-0 text-sm">${str(data[i].transaction_id)}</h6>
+                    </div>
+                </div>
+            </td>
+            <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].product_name)}</span></td>
+            <td><span class="d-flex px-2 text-xs font-weight-bold">${str(data[i].buyer_first_name)+" "+str(data[i].buyer_last_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].seller_first_name)+" "+str(data[i].seller_last_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].transaction_date).replace("T00:00:00Z","")}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].transaction_type)}">${str(data[i].transaction_type)}</span></td>
+            <td><span class="text-xs font-weight-bold">${currency(str(data[i].total_price))}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${str((parseInt(data[i].quantity)||0))}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold">${currency(data[i].unit_price)}</span></td>
+            <td><span class="text-xs font-weight-bold">${billCode}</span></td>
+            <td><span class="text-xs font-weight-bold">${notes}</span></td>
+            <!--td><span class="text-xs font-weight-bold">${str(data[i].vessel_name)}</span></td>
+            <td><span class="text-xs font-weight-bold">${str(data[i].trip_name)}</span></td-->
+            <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${str(data[i].payment_type)}">${str(data[i].payment_type)}</span></td>
+            <td class="text-center"><span class="text-xs font-weight-bold" data-i18n-key="${parseInt(data[i].payment_status)}">${str(data[i].payment_status)}</span></td>
+            <td class="align-middle text-center">
+                <button class="btn btn-link text-secondary mb-0" onclick='openPopup("Update Transaction","",${JSON.stringify(data[i])})'>
+                    <i class="fa fa-ellipsis-v text-xs"></i>
+                </button>
+                <button class="btn btn-link text-warning mb-0" onclick='openPopup("Delete Transaction","",${JSON.stringify(data[i])})'><i class="fa fa-ban text-xs"></i></button>
+            </td>
+        </tr>
+    `;
+
+        if (data[i].transaction_type=='FishDebtCollect') {
+            total_final_price_page += data[i].total_price
+        } else if (data[i].transaction_type=='Tax'||data[i].transaction_type=='Salary'||data[i].transaction_type=='Purchase'||data[i].transaction_type=='Debt') {
+            total_final_price_page -= data[i].total_price
+        } else if (data[i].transaction_type=='Sale') {
+            total_final_price_page += data[i].total_price
+            total_final_quantity += (parseInt(data[i].quantity) || 0)
+        } else {
+            total_final_price_page += data[i].total_price
+        }
+        total_price_page += data[i].total_price
+        total_quantity+=(parseInt(data[i].quantity) || 0)
+    }
+    // adding final total below
+    rows += "<tr style='background-color: lightgrey;'><td colspan='4'></td>" +
+        "<td class='text-center'><span class='text-xs font-weight-bold'>Final Total:</span></td>" +
+        "<td><span class='text-xs font-weight-bold'>" + currency(total_final_price_page) + "</span></td>" +
+        "<td class='text-center'><span class='text-xs font-weight-bold'>" + str(total_final_quantity) + "</span></td>" +
+        "<td colspan='6'></td></tr>"
+    table.tBodies[0].innerHTML = rows;
+    loadLocalization(localStorage.getItem("localization_language"))
+}
+
 function processTokoSBRTable(response) {
     var data = response.data;
     var rows = "";
