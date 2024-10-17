@@ -1023,83 +1023,163 @@ function processTransactionTable(response) {
 
 function processReportTable(response) {
     var data = response.data;
-    var rows = "";
     var table = document.getElementById("report_table");
     var report_monthly_table = document.getElementById("report_monthly_table");
 
-    // Monthly report
-    total_KAS = 0
-    total_piutang_ikan = 0
-    total_piutang_ikan_debit = 0
-    total_piutang_ikan_credit = 0
-    total_piutang_nasabah = 0
-    total_piutang_nasabah_debit = 0
-    total_piutang_nasabah_credit = 0
-    total_tokoSBR = 0
-    total_pinjaman_karyawan = 0
-    total_prive = 0
-    total_biaya_operational = 0
+        // Monthly report
+        var monthly_rows = ""
+        total_KAS = 0
+        total_piutang_ikan = 0
+        total_piutang_ikan_debit = 0
+        total_piutang_ikan_credit = 0
+        total_piutang_nasabah = 0
+        total_piutang_nasabah_debit = 0
+        total_piutang_nasabah_credit = 0
+        total_tokoSBR = 0
+        total_tokoSBR_debit = 0
+        total_tokoSBR_credit = 0
+        total_pinjaman_karyawan = 0
+        total_prive = 0
+        total_prive_debit = 0
+        total_prive_credit = 0
+        total_biaya_operational = 0
 
-    total_penjualan_kapal = 0
-    total_komisi_kapal = 0
-    total_modal = 0
-    total_laba = 0
-    total_pendapatan = 0
+        total_penjualan_kapal = 0
+        total_komisi_kapal = 0
+        total_modal = 0
+        total_laba = 0
+        total_pendapatan = 0
 
-    for (var i = data.length - 1; i >= 0; i--) {
-        if (data[i].buyer_id==toko_sbr_id) {
-            total_tokoSBR += data[i].total_price
-        } else {
-            if (data[i].transaction_type == 'Tax' || data[i].transaction_type == 'Salary') {
-                total_biaya_operational += data[i].total_price
-            } else if (data[i].transaction_type == 'Sale') { // penjualan ikan
-                if (data[i].payment_type == 'DEBT') { // credit piutang pembelian ikan
-                    total_piutang_ikan_credit += data[i].total_price
-                } else if (data[i].payment_type == 'CASH' || data[i].payment_type == 'GIRO') { // debit piutang pembelian ikan
-                    total_piutang_ikan_debit += data[i].total_price
+        for (var i = data.length - 1; i >= 0; i--) {
+            if (data[i].buyer_id==toko_sbr_id) {
+                if (data[i].transaction_type == 'Return') {
+                    total_tokoSBR += data[i].total_price
+                } else {
+                    total_tokoSBR -= data[i].total_price
                 }
-                total_penjualan_kapal += data[i].total_price
-            } else if (data[i].transaction_type == 'FishDebtCollect') { // debit piutang pembelian ikan
-                total_piutang_ikan_debit += data[i].total_price
-            } else if (data[i].transaction_type == 'Debt') { // total_piutang_nasabah
-                total_piutang_nasabah_credit += data[i].total_price
-            } else if (data[i].transaction_type == 'Return') { // pengembalian_piutang_nasabah
-                total_piutang_nasabah_debit += data[i].total_price
+            } else if (data[i].seller_id == kantor_id && data[i].buyer_id == TJAI) {
+                if (data[i].transaction_type == 'Debt') {
+                    total_prive += data[i].total_price
+                } else if (data[i].transaction_type == 'DebtCollect') {
+                    total_prive_debit += data[i].total_price
+                }
+            } else if (data[i].seller_id == company_people_id && data[i].buyer_id == company_people_id && data[i].transaction_type == 'Debt') {
+                total_piutang_nasabah += data[i].total_price
+            } else if (data[i].seller_id == company_people_id && data[i].transaction_type == 'Debt') {
+                total_pinjaman_karyawan += data[i].total_price
+            } else if (data[i].seller_id == company_people_id && data[i].transaction_type == 'DebtCollect') {
+                total_pinjaman_karyawan -= data[i].total_price
+            }  else {
+                // Modal
+                if (data[i].product_name == 'Modal') {
+                    total_modal += data[i].total_price
+                }
+                // biaya_operational : gaji , pembelian barang untuk kantor , pembayaran yang atas nama kantor
+                if (data[i].transaction_type == 'Tax' || data[i].transaction_type == 'Salary') { // biaya operational hanya pengeluaran dri kantor
+                    total_biaya_operational += data[i].total_price
+                } else if (data[i].transaction_type == 'Sale') {
+                    // penjualan ikan
+                    if (data[i].payment_type == 'DEBT') {
+                        // credit piutang pembelian ikan
+                        total_piutang_ikan_credit += data[i].total_price
+                    } else if (data[i].payment_type == 'CASH' || data[i].payment_type == 'GIRO') {
+                        // debit piutang pembelian ikan
+                        total_piutang_ikan_debit += data[i].total_price
+                    }
+                    total_penjualan_kapal += data[i].total_price
+                } else if (data[i].transaction_type == 'FishDebtCollect') {
+                    // debit piutang pembelian ikan
+                    total_piutang_ikan_debit += data[i].total_price
+                } else if ((data[i].transaction_type == 'Debt' || data[i].transaction_type == 'Purchase') && data[i].seller_id == kantor_id) {
+                    total_piutang_nasabah_credit += data[i].total_price
+                } else if (data[i].transaction_type == 'Return' && data[i].seller_id == kantor_id) {
+                    total_piutang_nasabah_debit += data[i].total_price
+                } else if (data[i].transaction_type == 'Debt' && data[i].seller_id == kantor_id) {
+                    total_pinjaman_karyawan += data[i].total_price
+                } else if (data[i].transaction_type == 'Return') {
+                    total_KAS += data[i].total_price
+                }
             }
         }
-    }
-    // adding final total below
-    rows += `
+        // adding final total below
+        monthly_rows += `
         <tr><td><span class='text-xs font-weight-bold'>KAS</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_KAS)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>PIUTANG PEMBELIAN IKAN</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span>${currency(total_piutang_ikan_debit)}</td>
-            <td><span class='text-xs font-weight-bold'></span>${currency(total_piutang_ikan_credit)}</td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_piutang_ikan_debit)}</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_piutang_ikan_credit)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>PIUTANG NASABAH</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span>${currency(total_piutang_nasabah_debit)}</td>
-            <td><span class='text-xs font-weight-bold'></span>${currency(total_piutang_nasabah_credit)}</td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_piutang_nasabah)}</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_piutang_nasabah_debit)}</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_piutang_nasabah_credit)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td></tr>
         <tr><td><span class='text-xs font-weight-bold'>TOKO SBR</span></td>
-            <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span>${currency(total_tokoSBR)}</td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_tokoSBR)}</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_tokoSBR_debit)}</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td></tr>
-        <tr></tr>
-        <tr><td><span class='text-xs font-weight-bold'>PENJUALAN</span></td>
+        <tr><td><span class='text-xs font-weight-bold'>PINJAMAN KARYAWAN</span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
-            <td><span class='text-xs font-weight-bold'></span>${currency(total_penjualan_kapal)}</td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_pinjaman_karyawan)}</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>PRIVE (TJAI)</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_prive)}</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_prive_debit)}</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_prive-total_prive_debit)}</span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>BIAYA OPERATIONAL</span><br/>
+                <span class='text-xs'>(tax + salary)</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_biaya_operational)}</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>TOTAL AKTIVA</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(
+                total_KAS+
+                total_piutang_ikan+
+                total_piutang_nasabah+
+                total_tokoSBR+
+                total_pinjaman_karyawan+
+                total_prive+
+                total_biaya_operational)}
+            </span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <br/>
+        <tr><td><span class='text-xs font-weight-bold'>PENJUALAN KAPAL</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_penjualan_kapal)}</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>KOMISI KAPAL (3%)</span></td>
+            <td><span class='text-xs font-weight-bold text-warning'>${currency(total_penjualan_kapal*3/100)}</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>MODAL</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_modal)}</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
+            <td><span class='text-xs font-weight-bold'></span></td></tr>
+        <tr><td><span class='text-xs font-weight-bold'>TOTAL PASIVA</span></td>
+            <td><span class='text-xs font-weight-bold'>${currency(total_penjualan_kapal+
+                (total_penjualan_kapal*3/100)+
+                total_modal
+        )}</span></td>
+            <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td>
             <td><span class='text-xs font-weight-bold'></span></td></tr>
     `
-    report_monthly_table.tBodies[0].innerHTML = rows;
-    rows = "" //reset row
+    report_monthly_table.tBodies[0].innerHTML = monthly_rows;
 
+    var rows = "" //reset row
     total_final_price_page = 0
     total_final_quantity = 0
     total_price_page = 0
