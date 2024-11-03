@@ -138,7 +138,7 @@
                             <table id="pay_salary_table" class="table align-items-center justify-content-center mb-0" style="margin-left: 2%;">
                                 <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="buyer">Buyer</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="seller">Seller</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="transaction_date">Transaction Date</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="transaction_type">Transaction Type</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="quantity">Nominal</th>
@@ -296,7 +296,7 @@
                 paymentType = data[i]["payment_type"]
                     pay_rows += `
                         <tr>
-                          <td><div><h6 class="text-sm mb-0">${str(data[i]["buyer_first_name"]) + " " + str(data[i]["buyer_last_name"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${str(data[i]["seller_first_name"]) + " " + str(data[i]["seller_last_name"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["transaction_date"].replace("T00:00:00Z",""))}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${str(data[i]["transaction_type"])}</h6></div></td>
                           <td><div><h6 class="text-sm mb-0">${currency(data[i]["total_price"])}</h6></div></td>
