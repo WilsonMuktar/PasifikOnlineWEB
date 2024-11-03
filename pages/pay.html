@@ -243,7 +243,7 @@
     currentYear = new Date().getFullYear()
     startYear = currentYear+"-01-01"
     endYear = currentYear+"-12-31"
-    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&transaction_type=Tax&order_by=transaction_date&order_type=ASC", "", true, function(response){
+    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&transaction_type=Tax&order_by=transaction_date&order_type=DESC", "", true, function(response){
         if (response instanceof Error) {
             alert("Failed to get tax transaction List \n"+ response)
             return
@@ -282,7 +282,7 @@
 
         }
     });
-    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&transaction_type=Salary&order_by=transaction_date&order_type=ASC", "", true, function(response){
+    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&transaction_type=Salary&order_by=transaction_date&order_type=DESC", "", true, function(response){
         if (response instanceof Error) {
             alert("Failed to get salary transaction List \n"+ response)
             return
@@ -319,7 +319,7 @@
 
         }
     });
-    MAKE_REQUEST("GET", transactionbillcodes_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&order_by=transaction_date&order_type=ASC", "", true, function(response){
+    MAKE_REQUEST("GET", transactionbillcodes_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&order_by=transaction_date&order_type=DESC", "", true, function(response){
         if (response instanceof Error) {
             alert("Failed to get bill transaction List \n"+ response)
             return
