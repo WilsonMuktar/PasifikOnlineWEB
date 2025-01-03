@@ -305,7 +305,7 @@
     }
   });
   currentYear = new Date().getFullYear()
-  startYear = currentYear+"-01-01"
+  startYear = "2024-01-01" //always start from 2024
   endYear = currentYear+"-12-31"
   if (queryString.includes("transaction_date_from") || queryString.includes("transaction_date_to")) {} else {
     if (extraParams == "") {

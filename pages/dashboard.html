@@ -532,7 +532,7 @@
     })
 
     currentYear = new Date().getFullYear()
-    startYear = currentYear+"-01-01"
+    startYear = "2024-01-01" //always start from 2024
     endYear = currentYear+"-12-31"
     MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&order_by=total_price&order_type=desc", "", true, function(response){
       if (response instanceof Error) {
