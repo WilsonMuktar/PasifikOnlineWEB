@@ -835,6 +835,7 @@ function processDebtTable(response){
     var rows = "";
     var table = document.getElementById("debt_table");
 
+    // all debt in single table
     total_final_price_page = 0
     total_final_quantity = 0
     total_price_page = 0

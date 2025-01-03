@@ -738,7 +738,7 @@
         allmonth = ["01","02","03","04","05","06","07","08","09","10","11","12"]
         for ( let m in allmonth ) {
           month = allmonth[m]
-          startMonth = currentYear + "-" + month + "-01"
+          startMonth = "2024-" + month + "-01"
           // get lastDayOfTheMonth
           lastDayOfTheMonth = new Date(currentYear, parseInt(month), 0)
           endMonth = currentYear + "-" + month + "-" + lastDayOfTheMonth.getDate()

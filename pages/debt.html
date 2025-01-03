@@ -90,6 +90,22 @@
       <div class="col-12">
         <div class="card mb-4">
           <div class="card-header pb-0">
+            <h6 data-i18n-key="debt_table" onclick="redirectPage('./pages/transaction.html?payment_type=Debt')">Debt table</h6>
+            <ul class="nav-list">
+              <li><span onclick="openPopup('Add Transaction','')" >&plus;</span></li>
+            </ul>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0" id="debt_table_group">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
             <h6 data-i18n-key="debt_table">Debt table</h6>
             <ul class="nav-list">
               <li><span onclick="openPopup('Add Debt','')" >&plus;</span></li>
@@ -186,6 +202,142 @@
       processDebtTable(resp)
     }
   })
+
+  currentYear = new Date().getFullYear()
+  startYear = "2024-01-01" //always start from 2024
+  endYear = currentYear+"-12-31"
+  MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&transaction_type=Debt,DebtCollect", "", true, function(response){
+    if (response instanceof Error) {
+      alert("Failed to get transaction List \n"+ response)
+      return
+    }
+    else {
+      var debtTable = document.getElementById("debt_table_group");
+      allData = response.data;
+
+      // group by kapal
+      debtByKapal = {};
+      for (var i = 0; i < allData.length; i++) {
+        debtGroupKey = allData[i].vessel_name
+        if (allData[i].vessel_name == undefined) {
+          debtGroupKey = allData[i].seller_first_name
+        }
+        // If the vessel_name already exists, push to an array
+        if (!debtByKapal[debtGroupKey]) {
+          debtByKapal[debtGroupKey] = []; // Initialize an empty array for new vessel
+        }
+        debtByKapal[debtGroupKey].push(allData[i]);
+      }
+
+      // per KAPAL
+      let allTables = "";
+      for (var key in debtByKapal) {
+        data = debtByKapal[key];
+        BuyerDEBT = {}
+        // Purchase, Sale, Return, Debt, Tax, Salary, Funds, ColdStorage
+        for (i = 0; i < data.length; i++) {
+          // --> group total price by tripName
+          transaction = data[i]
+          buyerID = transaction["buyer_id"]
+          buyerName = str(transaction["buyer_first_name"]) + " " + str(transaction["buyer_last_name"])
+          transactionType = transaction["transaction_type"]
+          paymentType = transaction["payment_type"]
+          // init
+          if (BuyerDEBT[buyerID] == undefined) {
+            BuyerDEBT[buyerID] = {
+              "total_price": 0,
+              "quantity": 0,
+              "buyer_name": buyerName,
+              "buyer_id": buyerID,
+              "debt_collected": 0,
+            }
+          }
+          // debt
+          if (paymentType == "DEBT") {
+            BuyerDEBT[buyerID]["total_price"] += transaction["total_price"]
+            BuyerDEBT[buyerID]["quantity"] += transaction["quantity"]
+          } else {
+            // fishDebtCollect
+            if (transactionType == "DebtCollect") {
+              BuyerDEBT[buyerID]["debt_collected"] += transaction["total_price"]
+            }
+          }
+        }
+
+        // sorting
+        let dataArray = Object.keys(BuyerDEBT).map(key => ({key, ...BuyerDEBT[key]}));
+        dataArray.sort((a, b) => b.total_price - a.total_price);
+        let sortedData = {};
+        dataArray.forEach(item => {
+          sortedData[item.key] = {
+            quantity: item.quantity,
+            total_price: item.total_price,
+            debt_collected: item.debt_collected,
+            buyer_name: item.buyer_name,
+            buyer_id: item.buyer_id
+          };
+        });
+        BuyerDEBT = sortedData
+
+        // debt per kapal dan kantor table
+        var tableName = key // kapal / kantor
+        var tableHeader = `
+             <br/><h class="text-uppercase text-primary text-xl font-weight-bolder opacity-7 ps-2" style="margin-left: 2%;">Group: ${key}</h>
+             <table id="debt_table_${tableName}" class="table align-items-center justify-content-center mb-0" style="margin-left: 2%;">
+                <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="buyer">Buyer</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt">Debt</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="quantity">Quantity</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="fish_debt_collect">FishDebtCollect</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" data-i18n-key="debt_final">Final</th>
+                </tr>
+                </thead>
+                <tbody>
+    `
+
+        tableFooter = `
+                </tbody>
+             </table>
+    `
+
+        rows = ""
+        total_price_page = 0
+        total_quantity = 0
+        total_debt_left = 0
+        total_debt_payback = 0
+        for (const bid in BuyerDEBT) { // by buyerID
+          if (BuyerDEBT[bid]["total_price"] == 0) {
+            continue
+          }
+          rows += `
+                        <tr>
+                          <td><div><h6 class="text-sm mb-0">${BuyerDEBT[bid]["buyer_name"]}</h6></div></td>
+                          <td class="bg-gradient-warning" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&payment_type=DEBT')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"])}</h6></div></td>
+                          <td><div><h6 class="text-sm mb-0">${BuyerDEBT[bid]["quantity"].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}kg</h6></div></td>
+                          <td class="bg-gradient-success" onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}&transaction_type=FishDebtCollect')"><div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
+                          <td class="${BuyerDEBT[bid]["total_price"] - BuyerDEBT[bid]["debt_collected"] == 0 ? "bg-gradient-success" : (BuyerDEBT[bid]["total_price"] - BuyerDEBT[bid]["debt_collected"] < 0 ? "bg-gradient-danger": "bg-gradient-warning")}"
+                            onclick="redirectPage('./pages/transaction.html?buyer_id=${BuyerDEBT[bid]["buyer_id"]}')">
+                            <div><h6 class="text-sm mb-0">${currency(BuyerDEBT[bid]["total_price"] - BuyerDEBT[bid]["debt_collected"])}</h6></div></td>
+                          </tr>`
+          total_price_page += BuyerDEBT[bid]["total_price"]
+          total_quantity += BuyerDEBT[bid]["quantity"]
+          total_debt_left += (BuyerDEBT[bid]["total_price"] - BuyerDEBT[bid]["debt_collected"])
+          total_debt_payback += BuyerDEBT[bid]["debt_collected"]
+        }
+        // adding total below
+        rows += "<tr style='background-color: lightgrey;'>" +
+                "<td class='text-center'><span class='text-xs font-weight-bold'>Total:</span></td>" +
+                "<td><span class='text-xs font-weight-bold'>" + currency(total_price_page) + "</span></td>" +
+                "<td><span class='text-xs font-weight-bold'>" + str(total_quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "</span></td>" +
+                "<td><span class='text-xs font-weight-bold'>" + currency(total_debt_payback) + "</span></td>" +
+                "<td><span class='text-xs font-weight-bold'>" + currency(total_debt_left) + "</span></td></tr>"
+
+        allTables += tableHeader + rows + tableFooter
+      }
+      debtTable.innerHTML = allTables;
+    }
+  });
 </script>
 <!--   Core JS Files   -->
 <script src="../assets/js/core/popper.min.js"></script>

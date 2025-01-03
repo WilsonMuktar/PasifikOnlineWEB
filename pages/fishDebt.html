@@ -239,7 +239,7 @@
     currentYear = new Date().getFullYear()
     startYear = "2024-01-01" //always start from 2024
     endYear = currentYear+"-12-31"
-    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&payment_type=Debt&transaction_type=Sale", "", true, function(response){
+    MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"transaction_type=Sale,FishDebtCollect", "", true, function(response){
         if (response instanceof Error) {
             alert("Failed to get transaction List \n"+ response)
             return
@@ -266,6 +266,7 @@
                     }
                 }
                 // debt
+                console.log("paymentType:",paymentType )
                 if (paymentType == "DEBT") {
                     BuyerDEBT[buyerID]["total_price"] += transaction["total_price"]
                     BuyerDEBT[buyerID]["quantity"] += transaction["quantity"]
