@@ -93,6 +93,28 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       <div class="row">
+        <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4 p-2">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-md-1" style="align-content: center; text-align: center;">
+                  <label class="form-control-label text-sm mb-0 text-uppercase font-weight-bold" data-i18n-key="year-selection">Year:</label>
+                </div>
+                <div class="col-md-11">
+                    <select id="year-selection" name="year-selection" class="form-control">
+                      <option value="2024" data-i18n-key="2024" selected>2024</option>
+                      <option value="2025" data-i18n-key="2025">2025</option>
+                      <option value="2026" data-i18n-key="2026">2026</option>
+                      <option value="2027" data-i18n-key="2027">2027</option>
+                      <option value="2028" data-i18n-key="2028">2028</option>
+                    </select>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
           <div class="card">
             <div class="card-body p-3">
@@ -177,7 +199,7 @@
         <div class="col-lg-12 mb-lg-0 mb-4">
           <div class="card z-index-2 h-100">
             <div class="card-header pb-0 pt-3 bg-transparent">
-              <h6 class="text-capitalize"><span  data-i18n-key="dashboard_overview_transaction">Transaction overview in </span><script>document.write(new Date().getFullYear())</script></h6>
+              <h6 class="text-capitalize"><span  data-i18n-key="dashboard_overview_transaction">Transaction overview</span></h6>
               <p class="text-sm mb-0">
                 <i class="fa fa-arrow-up text-success"></i>
                 <span class="font-weight-bold" id="dashboard_overview_transaction_change">0% more</span>
@@ -484,6 +506,33 @@
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/chartjs.min.js"></script>
   <script>
+    const yearSelectionElement = document.getElementById('year-selection');
+    yearSelectionElement.addEventListener('change', function() {
+      // Get the selected value from the <select> element
+      const selectedYear = yearSelectionElement.value;
+      // Update the URL with the selected text as a query parameter
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set('year-selection', selectedYear);  // Set or update the 'selectedText' parameter
+      // Update the URL and reload the page
+      window.location.href = currentUrl.toString();
+    });
+
+    // update year-selection according to param from URL
+    // Read the year-selection parameter from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedYear = urlParams.get('year-selection');
+    // If the selectedYear exists in the URL, set the corresponding option as selected
+    if (selectedYear) {
+      const selectElement = document.getElementById('year-selection');
+      // Loop through all options and select the one that matches the URL parameter
+      for (const option of selectElement.options) {
+        if (option.value === selectedYear) {
+          option.selected = true;
+          break;
+        }
+      }
+    }
+
     function getWeekStartAndEndDates() {
       const today = new Date();
       const dayOfWeek = today.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
@@ -531,8 +580,8 @@
       }
     })
 
-    currentYear = new Date().getFullYear()
-    startYear = "2024-01-01" //always start from 2024
+    currentYear = yearSelectionElement.value
+    startYear = currentYear+"-01-01" //always start from 2024
     endYear = currentYear+"-12-31"
     MAKE_REQUEST("GET", transaction_api_url+"?transaction_date_from="+startYear+"&transaction_date_to="+endYear+"&order_by=total_price&order_type=desc", "", true, function(response){
       if (response instanceof Error) {
@@ -738,7 +787,7 @@
         allmonth = ["01","02","03","04","05","06","07","08","09","10","11","12"]
         for ( let m in allmonth ) {
           month = allmonth[m]
-          startMonth = "2024-" + month + "-01"
+          startMonth = currentYear+"-" + month + "-01"
           // get lastDayOfTheMonth
           lastDayOfTheMonth = new Date(currentYear, parseInt(month), 0)
           endMonth = currentYear + "-" + month + "-" + lastDayOfTheMonth.getDate()
@@ -779,19 +828,21 @@
                 continue
               }
               // Purchase, Sale, Return, Debt, Tax, Salary, Funds, ColdStorage
+              if (pt == "CASH" || pt == "GIRO") {
+                if (mt == "Sale" || mt == "DebtCollect" || mt == "FishDebtCollect") {
+                  total_yearly_income += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
+                } else if (mt == "Debt") {
+                  total_yearly_income -= monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
+                }
+              }
+
               if (mt == "Sale") {
-                total_yearly_income += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
                 total_yearly_transaction += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
               } else if (mt == "FishDebtCollect") {
                 total_yearly_fish_debt_collect += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
                 // total_yearly_transaction += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt] <- skip fishDebtCollect
-              } else if (mt == "Tax" || mt == "Salary" || mt == "Debt") {
+              } else if (mt == "Tax" || mt == "Salary" || mt == "Debt" || mt == "Purchase") {
                 total_yearly_expense += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
-              } else if (mt == "DebtCollect") {
-                total_yearly_expense -= monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
-              } else {
-                total_yearly_expense += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
-                total_yearly_transaction += monthlyTransactionByTransactionTypeandPaymentType[mt][pt][mtt]
               }
             }
           }
@@ -811,7 +862,7 @@
         */
         // Animate the element's value from x to y:
         animateValue("dashboard_total_transaction", 0, total_yearly_transaction, 200, true);
-        animateValue("dashboard_total_income", 0, total_yearly_income + total_yearly_fish_debt_collect - total_yearly_debt  - total_yearly_expense, 200, true);
+        animateValue("dashboard_total_income", 0, total_yearly_income - total_yearly_expense, 200, true);
         animateValue("dashboard_total_expense", 0, total_yearly_expense, 200, true);
         animateValue("dashboard_total_debt", 0, total_yearly_debt - total_yearly_fish_debt_collect, 200, true);
 
@@ -1124,7 +1175,7 @@
         for (const i in keys) { // by captainName
           monthStr = keys[i]
           // Get Date of the month
-          let currentYear = new Date().getFullYear();
+          let currentYear = yearSelectionElement.value
           let monthIndex = parseInt(monthStr, 10);
           let firstDay = new Date(currentYear, monthIndex-1, 1);
           let lastDay = new Date(currentYear, monthIndex, 0);
