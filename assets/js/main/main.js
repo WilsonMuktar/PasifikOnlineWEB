@@ -1022,7 +1022,7 @@ function processTransactionTable(response) {
     loadLocalization(localStorage.getItem("localization_language"))
 }
 
-function processReportTable(response) {
+function processReportTable(response, transaction_date_from, transaction_date_to, order_by, order_type ) {
     var data = response.data;
     var table = document.getElementById("report_table");
     var report_monthly_table = document.getElementById("report_monthly_table");
@@ -1058,7 +1058,12 @@ function processReportTable(response) {
         total_laba = 0
         total_pendapatan = 0
 
+        let KAPALlist = {}
+
         for (var i = data.length - 1; i >= 0; i--) {
+            // record KAPAL unique list
+            KAPALlist[data[i].vessel_name] = data[i].vessel_name
+
             // SISA LABA
             if (data[i].product_id == product_sisalaba) {
                 total_sisa_laba += data[i].total_price
@@ -1226,6 +1231,31 @@ function processReportTable(response) {
             <td><span class='text-xs font-weight-bold'></span></td></tr>
     `
     report_monthly_table.tBodies[0].innerHTML = monthly_rows;
+
+    // KAPAL list under report monthly table
+    KapalListElements = `
+                <div class="col-xl-2">
+                  <div class="card">
+                    <div class="card-body p-2">
+                      <div class="row">`
+    console.log("???",Object.keys(KAPALlist).length )
+    Object.entries(KAPALlist).forEach((([key, value], index) => {
+        if (key !== "undefined") {
+            namaKapal = key
+            KapalListElements += `
+                        <div class="col-3" onclick="redirectPage('./pages/transaction.html?except_transaction_page=FishDebtCollect&transaction_date_from=${transaction_date_from}&transaction_date_to=${transaction_date_to}&order_by=${order_by}&order_type=${order_type}')">
+                          <label class="form-control-label text-sm mb-0 text-uppercase font-weight-bold p3" style="padding: 20px;">${namaKapal}</label>
+                        </div>`
+            if (i % 4 === 0) {
+                KapalListElements += `
+                        </div>
+                    </div>
+                  </div>
+            </div>`
+            }
+        }
+    }));
+    document.getElementById("monthly_kapal_options").innerHTML = KapalListElements
 
     var rows = "" //reset row
     total_final_price_page = 0

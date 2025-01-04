@@ -126,6 +126,20 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
+                        <h6 data-i18n-key="report_monthly_by_kapal">Monthly Report By Vessel</h6>
+                        <ul class="nav-list">
+                            <!--li><span onclick="openPopup('Add Report','')">&plus;</span></li-->
+                        </ul>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2" id="monthly_kapal_options">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
                         <h6 data-i18n-key="report_table">Report table</h6>
                         <ul class="nav-list">
                             <!--li><span onclick="openPopup('Add Report','')">&plus;</span></li-->
@@ -226,7 +240,7 @@
         if (resp instanceof Error) {
             console.log(resp);
         } else {
-            processReportTable(resp)
+            processReportTable(resp, transaction_date_from, transaction_date_to, order_by, order_type)
         }
     })
 </script>
