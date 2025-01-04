@@ -1234,7 +1234,7 @@ function processReportTable(response, transaction_date_from, transaction_date_to
 
     // KAPAL list under report monthly table
     KapalListElements = `
-                <div class="col-xl-2">
+                <div class="col-xl-12">
                   <div class="card">
                     <div class="card-body p-2">
                       <div class="row">`
@@ -1243,7 +1243,7 @@ function processReportTable(response, transaction_date_from, transaction_date_to
         if (key !== "undefined") {
             namaKapal = key
             KapalListElements += `
-                        <div class="col-3" onclick="redirectPage('./pages/transaction.html?except_transaction_page=FishDebtCollect&transaction_date_from=${transaction_date_from}&transaction_date_to=${transaction_date_to}&order_by=${order_by}&order_type=${order_type}')">
+                        <div class="col-xl-3 col-sm-3 col-3 mb-xl-0 mb-4 p-2"" onclick="redirectPage('./pages/transaction.html?except_transaction_page=FishDebtCollect&transaction_date_from=${transaction_date_from}&transaction_date_to=${transaction_date_to}&order_by=${order_by}&order_type=${order_type}')">
                           <label class="form-control-label text-sm mb-0 text-uppercase font-weight-bold p3" style="padding: 20px;">${namaKapal}</label>
                         </div>`
             if (i % 4 === 0) {
